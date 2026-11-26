@@ -1,0 +1,25 @@
+{
+  "lean": "Lean (version 4.36.0, arm64-apple-darwin24.6.0, commit 611c117bfaf7b7ae1cfcf246ce6fba31e8f509e9, Release)",
+  "mathlib": "fc4f59e577feb1a4956671bc04ac18aaaf8cd842",
+  "targets": [
+    "Canonne.uniformLaw_law",
+    "Canonne.uniformLaw_cut",
+    "Canonne.uniformLaw_phi",
+    "Canonne.uniformLaw_inverse_upper",
+    "Canonne.universal_lower_coefficient_optimal"
+  ],
+  "sources_sha256": {
+    "Model.lean": "7221daf080fd9a573b766b5a921e360e92f62c1cc3275229dd7c5ba620cf7017",
+    "Peetre.lean": "9f84059d3f3b4e595dfbb371a69c5edc1d8f0a22a8fac85b7ddeeaef2e0c347c",
+    "Uniform.lean": "0f02d635019431aa4466eb18188ab6713dcebf975b10cd33e4ea6de542d74f78"
+  },
+  "export_sha256": "e64c6dbce5eb6db6845a7165afa227df7f68f2089fee87cc2995a9519f932143",
+  "exported_axioms": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "nanoda_sha256": "44ba1e3472937ddfc56c9e132a8d227be46694e4a970af8cd2699d09e2acaf10",
+  "isolation": "macOS Seatbelt",
+  "independent_verdict": "Checked 18972 declarations with no errors"
+}

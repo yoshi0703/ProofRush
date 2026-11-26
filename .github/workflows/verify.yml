@@ -27,6 +27,9 @@ jobs:
       - name: Check the graph witness
         run: python3 experiments/counterexample.py
 
+      - name: Compare the identity-testing functionals in exact arithmetic
+        run: python3 -B studies/canonne-functional-comparison/check.py
+
       - name: Check masked guidance with exact rational arithmetic
         run: |
           python3 studies/masked-guidance/experiment.py
@@ -86,7 +89,7 @@ jobs:
           cd "$mathlib"
           mapfile -t study_modules < <(
             awk '$1 == "import" && $2 ~ /^Mathlib[.]/ {print $2}' \
-              "$GITHUB_WORKSPACE"/studies/{masked-guidance,string-identified-bpe,attention-value-dimension,shoreline-transects,althofer-game}/lean/*.lean | sort -u
+              "$GITHUB_WORKSPACE"/studies/{masked-guidance,string-identified-bpe,attention-value-dimension,shoreline-transects,althofer-game,canonne-functional-comparison}/lean/*.lean | sort -u
           )
           lake exe cache get Mathlib.Combinatorics.SimpleGraph.Coloring.Vertex \
             Mathlib.Combinatorics.SimpleGraph.Diam Mathlib.Data.Fin.VecNotation "${study_modules[@]}"
@@ -121,6 +124,20 @@ jobs:
             cat "$RUNNER_TEMP/checked-proof/report.json"
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Check the countable identity-testing comparison and sharpness independently
+        shell: bash
+        run: |
+          set -euo pipefail
+          umask 022
+          for bundle in comparison extremal; do
+            output="$RUNNER_TEMP/canonne-$bundle"
+            python3 studies/canonne-functional-comparison/verify.py --bundle "$bundle" \
+              --mathlib "$RUNNER_TEMP/mathlib" \
+              --nanoda "$RUNNER_TEMP/nanoda/target/release/nanoda_bin" \
+              --docker-image "$CHECK_IMAGE" --run-dir "$output"
+            tail -n 1 "$output/nanoda.txt" >> "$GITHUB_STEP_SUMMARY"
+          done
 
       - name: Check the masked-guidance theorem bundles independently
         shell: bash

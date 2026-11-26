@@ -1,0 +1,253 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.98in]{geometry}
+\usepackage{fontspec,amsmath,amssymb,amsthm}
+\usepackage[hidelinks,pdftitle={A Sharp Comparison of a Truncated Quasinorm and an Inverse Peetre Functional},pdfauthor={ProofRush Research Team}]{hyperref}
+% Small OFL-licensed fallback included with this source.
+\IfFileExists{fonts/ProofRushDirectorJP.otf}
+  {\newfontfamily\namefont[Path=fonts/]{ProofRushDirectorJP.otf}}
+  {\IfFontExistsTF{Noto Sans CJK JP}
+    {\newfontfamily\namefont{Noto Sans CJK JP}}
+    {\IfFontExistsTF{Hiragino Sans}
+      {\newfontfamily\namefont{Hiragino Sans}}
+      {\newfontfamily\namefont{HaranoAjiMincho-Regular.otf}}}}
+\newtheorem{theorem}{Theorem}
+\newcommand{\director}{{\namefont 大束良明} (Yoshiaki Otsuka)}
+\newcommand{\F}{F_p}
+\newcommand{\D}{D_p}
+\title{A Sharp Comparison of a Truncated Quasinorm\\ and an Inverse Peetre Functional}
+\author{ProofRush Research Team\\\small Research directed by \director}
+\date{27 November 2026 JST (26 November 2026 UTC)\\\small Preprint, version 1}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We prove a direct comparison between the truncated \(\ell_{2/3}\)
+quasinorm in the Valiant--Valiant identity-testing bounds and the inverse
+\((\ell_1,\ell_2)\) Peetre functional in the Blais--Canonne--Gur bounds.
+This answers the inequalities in Clément Canonne's 2019 MathOverflow
+question and gives a direct answer to his COLT 2024 Open Question~2.
+The lower comparison holds at the same radius. The upper comparison
+uses a smaller truncation radius and has an optimal coefficient \(1/4\)
+in its radius-gap term. The upper comparison cannot hold at the same
+radius, even for probability vectors of arbitrarily small
+\(\ell_2\)-norm. The proof uses deterministic inequalities on finite
+or countably infinite probability laws.
+\end{abstract}
+
+\section{The question and the bounds}
+For a probability sequence \(p_1\ge p_2\ge\cdots\ge0\), let
+\[
+ N_e=\min\Bigl\{N\ge0:\sum_{i=1}^N p_i\ge1-e\Bigr\},
+ \qquad
+ \F(e)=\left(\sum_{i=2}^{N_e}p_i^{2/3}\right)^{3/2}
+ \quad (0<e\le1).
+\]
+The retained prefix includes the entire atom at the cutoff. The sum is
+zero when \(N_e\le1\). In the notation of Canonne's MathOverflow question,
+\(\F(e)=\Phi(e,p)\) \cite{mo}. Define
+\[
+ K_p(t)=\inf_{\substack{a\in\ell_1,\,b\in\ell_2\\a+b=p}}
+                 \bigl(\|a\|_1+t\|b\|_2\bigr),\qquad
+ \D(e)=\inf\{t\ge0:K_p(t)\ge1-e\}.
+\]
+The infimum over decompositions is over real signed sequences. In
+\cite{mo}, \(\D(e)=\Psi(e,p)\) for \(0<e<1\). Canonne's COLT 2024
+formulation uses \(K_p^{-1}(1-2e)\) for its BCG quantity \cite{colt}.
+
+The testing bounds of Valiant and Valiant \cite{vv} and Blais, Canonne,
+and Gur \cite{bcg} yield the following comparison by combining
+different sample-complexity estimates. Canonne asked for a direct
+argument. His equation~(4) is, for all \(p\) and \(0<e<1/9\),
+\begin{equation}\label{moeq}
+ 1\vee\Phi(9e,p)\ \lesssim\ 1\vee\Psi(e,p)\
+   \lesssim\ 1\vee \frac{\Phi(e/32,p)}{e}.
+\end{equation}
+Here \(\lesssim\) allows an absolute constant factor.
+
+\begin{theorem}\label{main}
+For every probability sequence \(p\) and \(0<s<e<1\),
+\begin{equation}\label{ineq}
+ \F(e)\le\D(e)\le
+ \sqrt{1+\left(\frac{\F(s)}{4(e-s)}\right)^2}.
+\end{equation}
+The left coefficient \(1\) and the coefficient \(1/4\) in the
+right-hand radius-gap term are optimal universal constants.
+For each fixed \(0<e<1\), there exist laws for which \(\F(e)\) is
+bounded and \(\D(e)\) is unbounded. These sharpness and obstruction
+claims hold even on finite laws under any prescribed positive upper
+bound on \(\|p\|_2\).
+\end{theorem}
+
+In \eqref{moeq}, the left constant can be taken to be \(1\) by monotonicity of
+\(\F\). Choosing \(s=e/32\) gives
+\(\D(e)\le1+(8/31)\F(e/32)/e\), so the right constant may be taken to
+be \(39/31\). If \(\|p\|_2\le1/2\), the bounds
+\(\D(e)\ge(1-e)/\|p\|_2\) and
+\(\F(e/32)\ge1-e/32-p_1\) make both right-hand baseline terms
+inactive in this range.
+
+\section{Proof of the comparisons}
+\paragraph{Inverse representation.}
+For \(0<e<1\), \(\D(e)\) is the minimum \(\ell_2\)-norm of a vector
+\(0\le z_i\le1\) with \(\sum_i p_i z_i\ge1-e\).
+Indeed, every such \(z\in\ell_2\) satisfies
+\(K_p(\|z\|_2)\ge\sum_i p_i z_i\) by Hölder's inequality applied to
+each signed decomposition. To see that equality of the inverse and
+the minimum holds, choose \(h>0\) so that \(z_i=\min(1,hp_i)\) satisfies
+\(\sum_i p_i z_i=1-e\). Such \(h\) exists by continuity and dominated
+convergence as the captured mass increases from zero to one.
+Set \(b=z/h\), \(a=p-b\). Since \(a_i z_i=a_i\), the target is
+\(\|a\|_1+\|z\|_2^2/h\). At every \(t<\|z\|_2\) this decomposition
+has cost below the target. This gives the inverse formula with
+attainment on a countable alphabet. It is a special case of the
+standard dual formula for \(K_p\) \cite{ms}.
+
+The function \(K_p\) is concave and nondecreasing by definition. It
+tends to one, since the vectors \(\min(1,hp_i)\) have captured mass
+tending to one and \(K_p\le1\). Concavity implies strict increase
+where the value is below one, so no inverse convention affects
+\(\D(e)\) for \(0<e<1\). At \(e=1\) one has \(\F(1)=\D(1)=0\)
+with \(K_p(0)=0\). For completeness, if \(p\) has \(m\) positive
+coordinates, the top level forms the plateau \(t\ge\sqrt m\):
+the indicator of the support attains mass one there. For any
+integer \(r>t^2\) positive coordinates, placing a common positive
+mass \(c\) from each into \(b\) gives cost \(1-cr+tc\sqrt r<1\)
+when \(c\) is at most their minimum. This excludes earlier
+plateaus and excludes attainment of level one at finite \(t\)
+for infinite support.
+
+\paragraph{Lower comparison.}
+If \(N=N_e=1\), the claim is immediate. Otherwise \(p_N>0\). For
+any feasible \(z\), minimality of \(N\) gives
+\(\sum_{i\ge N}p_i z_i\ge\sum_{i<N}p_i(1-z_i)\).
+On \(i\ge N\) we have \(p_i^{2/3}\ge p_i/p_N^{1/3}\), and on
+\(i<N\) the inequality reverses. Thus
+\[
+ \sum_{i=2}^N p_i^{2/3}
+ \le\sum_{i<N}p_i^{2/3}
+ \le\sum_i p_i^{2/3}z_i
+ \le
+ \left(\sum_i p_i\right)^{2/3}\left(\sum_i z_i^3\right)^{1/3}
+ \le\left(\sum_i z_i^2\right)^{1/3}.
+\]
+The penultimate step is Hölder's inequality. Raise to the power
+\(3/2\) and minimize over \(z\).
+
+\paragraph{Upper comparison.}
+Protect the largest atom by choosing \(z_1=1\) and put
+\(S=\sum_{i=2}^{N_s}p_i^{2/3}\). If \(S=0\), this coordinate alone
+suffices. Otherwise set \(\lambda=4(e-s)/S\) and choose
+\(z_i=\min(1,p_i^{1/3}/\lambda)\) for \(2\le i\le N_s\) and zero
+after the cutoff. For \(x\ge0\),
+\(x(1-x/\lambda)_+\le\lambda/4\), where \(u_+=\max(u,0)\).
+Writing \(x=p_i^{1/3}\) for each retained atom gives
+\[
+ \sum_{i=2}^{N_s}p_i(1-z_i)\le S\lambda/4=e-s,\qquad
+ \sum_{i=2}^{N_s}z_i^2\le S/\lambda^2.
+\]
+The discarded mass is at most \(s\), so the witness is feasible
+and has squared norm at most \(1+\F(s)^2/[16(e-s)^2]\).
+
+\section{Sharpness and the radius change}
+For the uniform law on \(m\) labels, symmetry or Cauchy--Schwarz
+gives \(\D(e)=(1-e)\sqrt m\), and
+\(\F(e)=(\lceil(1-e)m\rceil-1)^{3/2}/m\).
+First \(m\to\infty\) and then \(e\downarrow0\) makes
+\(\F(e)/\D(e)\) approach \(1\).
+
+For sharpness of the upper coefficient fix \(0<s<e<1\) with
+\(2e-s<1\), and set \(g=e-s\) and \(H=1-s-2g\).
+Consider \(L\) equal head atoms of total mass \(H\), followed by
+\(m\) equal atoms of total mass \(2g\) and \(m^2\) equal atoms of
+total mass \(s\). Here \(L\) is fixed and \(m\) is large, so the
+blocks are in decreasing order. The minimal prefix at radius \(s\)
+ends with the second block, and \(\F(s)/(2g\sqrt m)\to1\).
+Every feasible witness satisfies
+\[
+ H+g
+ \le H+\left(2g/\sqrt m+s/m\right)\|z\|_2 .
+\]
+This follows by bounding the captured mass of the first block by
+\(H\) and applying Cauchy--Schwarz to each of the other blocks.
+It yields \(\liminf_{m\to\infty}g\,\D(e)/\F(s)\ge1/4\).
+The upper bound proves equality in the limit. Taking \(L\) large
+and then \(m\) large gives any prescribed positive \(\ell_2\) ceiling.
+
+For the same-radius obstruction, fix \(0<e<1\), set
+\(\gamma=m^{-1/3}\), and discard small \(m\) for which the
+construction is unordered or has a nonpositive head. The law
+has \(L\) equal head atoms of total mass \(1-e-\gamma\) and \(m\)
+equal tail atoms of total mass \(t=e+\gamma\).
+The cutoff keeps \(\lceil m\gamma/t\rceil\) tail atoms. Their
+contribution to \(\F(e)^{2/3}\) is bounded by
+\((m\gamma/t+1)(t/m)^{2/3}=O_e(1)\). The head contribution is also
+bounded at fixed \(L\). A feasible witness must capture at least
+\(\gamma\) from the tail, and Cauchy--Schwarz gives
+\(\D(e)\ge\gamma\sqrt m/t\to\infty\).
+Choosing \(L\) sufficiently large before sending \(m\) to infinity
+again meets any prescribed positive \(\ell_2\) ceiling.
+
+\section{Relation to prior work and provenance}
+The dual description of \(K_p\) and its connection to Rademacher
+sums are classical \cite{ms}. Holmstedt's estimates and the
+partition \(Q\)-norm comparison give useful approximations to
+\(K_p\) itself \cite{holm,bcg}. A multiplicative approximation
+to \(K_p\) can shift the inverse level near one. The present
+argument treats that level directly. The point-mass example in
+Pinelis's answer to \cite{mo} explains the need for a baseline in a
+universal upper comparison. A targeted literature search did not
+find a prior direct proof of \eqref{moeq} or \eqref{ineq}.
+This search gives limited evidence on priority. External peer
+review is pending. Section~5 of \cite{colt} names an extra-large
+wombat plush toy for Question~2. The AUD~200 offer concerns
+Question~1 on minimax sample complexity.
+
+\paragraph{Contributions and computation.}
+\director\ directed the research and set its criteria.
+OpenAI Codex agents served as the ProofRush mathematical team.
+GPT-6.2-Astra at maximum reasoning effort coordinated and developed
+the analytic proof. GPT-6.2-Sol at medium effort independently
+reviewed the proof, reproduced the bounds, checked examples, and
+drafted this manuscript. GPT-6.1-Terra at medium effort audited the
+prior literature and formalized lower-bound steps. GPT-6.2-Sol at
+high effort worked on formalizing the upper witness and reconciling
+the source radii. Exact arithmetic checks on an Apple M3 Pro
+covered 1,000 finite examples, 20 cutoff-boundary cases, and one
+countable example with divergent untruncated
+\(\ell_{2/3}\) quasinorm. The checks supplement the analytic proof.
+No additional paid API was used.
+
+\paragraph{Formal verification and reproduction.}
+The \href{https://github.com/yoshi0703/ProofRush/tree/canonne-functional-comparison-v0.1.0/studies/canonne-functional-comparison}{companion archive}
+contains the Lean~4.36 proofs, pinned Mathlib revision, source-matching
+audit, and replay commands. Lean and the separate Rust kernel nanoda
+verified the inverse level for countable laws, both inequalities in
+\eqref{ineq}, the original radii in \eqref{moeq}, optimality of both
+universal coefficients, and the same-radius obstruction at every fixed
+interior radius. The split-head refinements imposing arbitrarily small
+\(\ell_2\)-norm are proved above.
+
+\begin{thebibliography}{9}\small
+\bibitem{mo} C. Canonne, \emph{Relation between two different
+functionals: \(\lVert p^{-\max}_{-\varepsilon}\rVert\) and
+\(\kappa_p^{-1}(1-\varepsilon)\)}, MathOverflow question 332062
+(20 May 2019), \href{https://mathoverflow.net/questions/332062/relation-between-two-different-functionals-lvert-p-max-varepsilon-rve}{question and discussion}.
+\bibitem{colt} C. Canonne, \emph{Open Problem: Tight Characterization of
+Instance-Optimal Identity Testing}, COLT 2024, PMLR 247, 5312--5316.
+\href{https://proceedings.mlr.press/v247/canonne24a.html}{Proceedings}.
+\bibitem{vv} G. Valiant and P. Valiant, \emph{An Automatic Inequality
+Prover and Instance Optimal Identity Testing}, SIAM J. Comput.
+46(1) (2017), 429--455. \href{https://doi.org/10.1137/151002526}{DOI}.
+\bibitem{bcg} E. Blais, C. L. Canonne, and T. Gur, \emph{Distribution
+Testing Lower Bounds via Reductions from Communication Complexity},
+ACM Trans. Comput. Theory 11(2) (2019), article 6, pp. 6:1--6:37.
+\href{https://doi.org/10.1145/3305270}{Journal}
+and \href{https://doi.org/10.4230/LIPIcs.CCC.2017.28}{CCC 2017, LIPIcs 79, pp. 28:1--28:40}.
+\bibitem{ms} S. J. Montgomery-Smith, \emph{The distribution of Rademacher
+sums}, Proc. Amer. Math. Soc. 109(2) (1990), 517--522.
+\href{https://doi.org/10.1090/S0002-9939-1990-1013975-0}{DOI}.
+\bibitem{holm} T. Holmstedt, \emph{Interpolation of quasi-normed
+spaces}, Math. Scand. 26 (1970), 177--199.
+\href{https://doi.org/10.7146/math.scand.a-10976}{DOI}.
+\end{thebibliography}
+\end{document}

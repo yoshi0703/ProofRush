@@ -1,0 +1,33 @@
+{
+  "lean": "Lean (version 4.36.0, arm64-apple-darwin24.6.0, commit 611c117bfaf7b7ae1cfcf246ce6fba31e8f509e9, Release)",
+  "mathlib": "fc4f59e577feb1a4956671bc04ac18aaaf8cd842",
+  "targets": [
+    "Canonne.inverse_attained",
+    "Canonne.peetre_level_iff",
+    "Canonne.retainedLength_discardedTail",
+    "Canonne.canonical_two_radius",
+    "Canonne.source_equation_four",
+    "Canonne.source_equation_four_positive",
+    "Canonne.point_atom_example"
+  ],
+  "sources_sha256": {
+    "Model.lean": "7221daf080fd9a573b766b5a921e360e92f62c1cc3275229dd7c5ba620cf7017",
+    "Peetre.lean": "9f84059d3f3b4e595dfbb371a69c5edc1d8f0a22a8fac85b7ddeeaef2e0c347c",
+    "Level.lean": "07df12aac12f5a46f0dda58bc503e267f3f7066f0720327f7a2f2e682ceedb03",
+    "Lower.lean": "b3502e8187f5936cd37c0b52a3cf018a1de997918835e92a3bb2cf1edbb5af3c",
+    "Upper.lean": "9761b51f3724ff8a214d9c8d0113a46b9ab4786e5096a0bf2d048698b65987de",
+    "Cutoff.lean": "bc306a9181a5550edbb182612986da69633161d4b2dc5e353a8f0982aa3ade8e",
+    "Results.lean": "595992ac0e6e32f6033beb2cfd3c66ebef6d4cf269ebcff3a29dca526b303933",
+    "Source.lean": "e6f268f006a41f17ad3ab842688b35b45940131c474ecc1fb0cf9050bb2e14fb",
+    "Comparison.lean": "0c14eedaf1a390a30b1ac53ad03b0df1220d6809a7de4227fa9d3cce0e6364ce"
+  },
+  "export_sha256": "882d0a7be446decc3a34ca17f68a959bb0a153d8d1cc31fd05e49a2ba613003b",
+  "exported_axioms": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "nanoda_sha256": "44ba1e3472937ddfc56c9e132a8d227be46694e4a970af8cd2699d09e2acaf10",
+  "isolation": "macOS Seatbelt",
+  "independent_verdict": "Checked 19298 declarations with no errors"
+}

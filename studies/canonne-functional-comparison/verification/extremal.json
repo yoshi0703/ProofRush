@@ -1,0 +1,28 @@
+{
+  "lean": "Lean (version 4.36.0, arm64-apple-darwin24.6.0, commit 611c117bfaf7b7ae1cfcf246ce6fba31e8f509e9, Release)",
+  "mathlib": "fc4f59e577feb1a4956671bc04ac18aaaf8cd842",
+  "targets": [
+    "Canonne.cutIndex_eq_of_cut",
+    "Canonne.canonical_lower_optimal",
+    "Canonne.canonical_upper_optimal",
+    "Canonne.same_radius_unbounded"
+  ],
+  "sources_sha256": {
+    "Model.lean": "7221daf080fd9a573b766b5a921e360e92f62c1cc3275229dd7c5ba620cf7017",
+    "Peetre.lean": "9f84059d3f3b4e595dfbb371a69c5edc1d8f0a22a8fac85b7ddeeaef2e0c347c",
+    "Cutoff.lean": "bc306a9181a5550edbb182612986da69633161d4b2dc5e353a8f0982aa3ade8e",
+    "Sharp.lean": "f560e4843ad52c771b17cdfaebb207ff161870e65c2a31edb8bd3f471c844c75",
+    "Uniform.lean": "0f02d635019431aa4466eb18188ab6713dcebf975b10cd33e4ea6de542d74f78",
+    "SameRadius.lean": "c829b2835b7060a9fee770c9872c4b008b9ebeb5cf2ae42ab28236eb08a4a7ec",
+    "Extremal.lean": "65d8b653abfb64fcb35792575d40d5fae57ab40b195308c6ff92b71560996cea"
+  },
+  "export_sha256": "cb703a7cda13cd400b16d1160fc298b3b2a8db9369b6f5f5cd83e7fe553640f9",
+  "exported_axioms": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "nanoda_sha256": "44ba1e3472937ddfc56c9e132a8d227be46694e4a970af8cd2699d09e2acaf10",
+  "isolation": "macOS Seatbelt",
+  "independent_verdict": "Checked 19622 declarations with no errors"
+}
