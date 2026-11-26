@@ -14,7 +14,7 @@
 \maketitle
 
 \begin{abstract}
-Baliga, Xie and Byju ask whether the replacement-count guarantee for greedy byte-pair encoding survives on non-uniquely-decodable inputs when tokens with the same spelling are identified. A sequence of fourteen unary token spellings admits a legal four-merge greedy run saving four tokens. Four other full merges save ten, exceeding the guarantee's permitted comparator utility. We also construct weighted corpora on which every greedy tie order fails. For growing budgets, a family of binary merge trees with pre-existing internal spellings gives instances on which even the most favorable greedy tie order has asymptotic ratio at most $1/6$. The finite refutation and a four-budget family for all tie orders have independent kernel checks. The construction is for arbitrary string-valued initial atoms, the model of the original authors' non-unique-decoding examples and reference checker.
+Baliga, Xie and Byju ask whether the replacement-count guarantee for greedy byte-pair encoding survives on non-uniquely-decodable inputs when tokens with the same spelling are identified. A sequence of fourteen unary token spellings admits a legal four-merge greedy run saving four tokens. Four other full merges save ten, exceeding the guarantee's permitted comparator utility. We also construct weighted corpora on which every greedy tie order fails. For growing budgets, a layered construction makes the worst-case ratio tend to zero even with the most favorable greedy tie order. This holds for rankings by disjoint replacements and by overlapping occurrences. The input can use a single underlying character, with a growing dictionary of initial tokens. The construction is for arbitrary string-valued initial atoms, the model of the original authors' non-unique-decoding examples and reference checker.
 \end{abstract}
 
 \section{The open question}
@@ -86,10 +86,46 @@ U=6\sum_{s=0}^{L-1}(k-s)=3L(2k-L+1).
 \]
 Add $k$ private two-token rows of weight $M=L+3$. Lemma~\ref{lem:decoy} forces greedy savings $kM$. To make a single string, write out the rows with their integer multiplicities and insert a different new character at each boundary. An ordered pair involving a separator occurs at most once while the private rules are used. The other counts equal the sums of the within-row counts. The private maxima still exceed all competitors throughout the first $k$ steps. The doubling comparator leaves the separators in place and retains all its savings. Taking $L=\lfloor\sqrt{k}\rfloor$ for every $k\ge16$ gives the limit bound.
 \end{proof}
-The exact large-budget infimum is undetermined. The construction bounds it from above even when ties favor greedy. It uses initial atom spellings of unbounded length.
+The six-phase construction was the upper bound in version 3.0.0 of this study. Its initial atom spellings have unbounded length. A different family yields the exact limit below.
+
+\section{The exact large-budget limit}
+We give one input for every sufficiently large budget. The example works for both the replacement-count ranking and the ranking by all adjacent occurrences, including overlapping ones. In both cases the merge itself is a full left-to-right pass. In this section $R_k$ always takes the best tie order on each input before taking the infimum over inputs.
+
+\begin{theorem}\label{th:zero}
+For any $m\ge2$ and $k\ge 2m^2$ there is a single finite word of nonempty, ambiguously decodable initial token spellings such that every $k$-step greedy run saves exactly $k(m+1)$ tokens. A fixed sequence of $2m^2$ rules saves $m^3(m+1)$. Consequently
+\[
+  0\le R_k\le \frac{k}{m^3},\qquad \lim_{k\to\infty} R_k=0.
+\]
+These conclusions apply separately to both rankings. The set of allowable initial token spellings varies with the budget.
+\end{theorem}
+
+\begin{proof}
+Put $B=2m^2+1$ and, for $0\le j,i<m$, set
+\[
+ U_{ji}=jm+i+1,\qquad V_{ji}=B-U_{ji},\qquad H_j=(j+1)B
+\]
+with $H_m=(m+1)B$ as well. In the core, each displayed integer denotes a token whose spelling is that many copies of $a$. The $U$-tokens occupy $[1,m^2]$, the $V$-tokens occupy $[m^2+1,2m^2]$, and the $H$-tokens are distinct multiples of $B$. For each triple $(s,x,y)\in\{0,\ldots,m-1\}^3$, start one row at $[H_s]$. For successive $j=s,\ldots,m-1$ put $U_{j,i_j}$ on its left and $V_{j,i_j}$ on its right, where $i_j=x$ for $j$ even and $i_j=y$ for $j$ odd. Triples represent separate copies, including when they generate the same token sequence. The factor $[U_{00},H_0,V_{00}]$ in the row $(0,0,0)$ and the factor $[H_1]$ in the row $(1,0,0)$ have identical spellings.
+
+An ordered pair inside the core has at most $m$ occurrences across all copies. At the center, the pair identifies its seed $s$ and one of $x,y$. On either outer part of a row, the pair consists of consecutive $U$ levels or consecutive $V$ levels. Each token identifies its level and index, so the pair gives both $x$ and $y$, leaving at most $m$ choices for the seed. The four types occupy disjoint ordered length ranges. Each such pair occurs at most once per row. Every adjacent pair inside the core consists of distinct tokens.
+
+In increasing order of $j$, apply the following two rules for $i=0,\ldots,m-1$:
+\[
+  (U_{ji},H_j)\longmapsto H_j+U_{ji},\qquad
+  (H_j+U_{ji},V_{ji})\longmapsto H_{j+1}.
+\]
+When level $j$ starts, every row seeded at or below it has collapsed through level $j-1$ to a central $H_j$ with the matching outer neighbors. The intermediate spelling lies strictly between $H_j$ and $H_{j+1}$ and identifies its unique index $i$. The other level-$j$ rules leave that row's selected pair intact. A row with seed above $j$ contains no $H_j$ and no such intermediate. Thus the displayed script is possible with full passes and makes exactly two replacements per active row at level $j$. Summing gives $2m^2\sum_{s=0}^{m-1}(m-s)=m^3(m+1)$.
+
+For each of $k$ distinct new letters $b_i$, add $m+1$ copies of the two-token row $[b_i,b_i]$. Write the entire collection as one word, with a distinct new separator character after every copy. During the first $k$ greedy steps a pair containing a separator occurs at most once. Each unused pair $(b_i,b_i)$ occurs $m+1$ times, with all its occurrences disjoint. When selected, every corresponding two-token row becomes one token. Nothing in the core changes. Induction shows that the maximizers are exactly the unused private pairs, for both rankings and every tie order. The comparator can ignore the private rows and separators. This establishes the claimed bound against the optimum, even though its exact value on this family is unknown.
+
+For $k\ge8$ choose $m=\lfloor\sqrt{k/2}\rfloor$. Then $2m^2\le k<2(m+1)^2$. In particular $k/m^3<8/m\to0$ for all budgets. Nonnegativity gives the reverse limit bound. The argument proves an upper rate of order $k^{-1/2}$ and gives no matching rate.
+\end{proof}
+
+The same construction can be realized over the single \emph{spelling character} $a$. Keep all core lengths. Choose consecutive private operand lengths $p_0,\ldots,p_{k-1}$ larger than $H_m$ with $p_{k-1}<2p_0$. Choose distinct separator lengths greater than $2p_{k-1}$. Every token created by a core comparator is at most $H_m$. Every selected private token has length $2p_i$. The four ranges therefore stay disjoint during each of the two runs. Each boundary-containing pair occurs at most once. Using these unary initial tokens preserves the proof. This fixed spelling alphabet still requires a growing dictionary of compound initial tokens.
+
+For $m=13$ and $k=338$, greedy saves $4{,}732$ tokens and the displayed comparator saves $30{,}758$, so the ratio is at most $2/13<1/6$. An independent literal-length replay verified both rankings on a unary instance with $159{,}298{,}694$ underlying characters. In the smaller $m=2$ test, the checker also expanded the spellings into actual character strings and visited all $256$ subsets of the eight private choices.
 
 \section{Verification and contributions}
-The Lean files define tokens as lists of actual letters, concatenate them on every merge, quantify greedy maximality over all pairs of spellings and define $\OPT$ as the largest shortening over all feasible partial runs using at most $k$ rules. The independent Rust kernel nanoda checks the exported negation of the proposed bound, the generic forcing lemma and the family with $k=4$ and arbitrary integer $n\ge6$. The proof of Theorem~\ref{th:family} above combines phase counting, the comparator induction, and the separator construction. The archive states which auxiliary claims have been formally checked and includes exact computational tests. The arbitrary-$k$ theorem currently has a mathematical proof and a partial Lean formalization.
+Lean represents tokens as lists of letters and defines $\OPT$ by taking the largest shortening over all legal partial runs of at most $k$ merges. For Theorem~\ref{th:zero}, the exported statements define $R_k$ by an infimum of real ratios over admissible single words and explicitly maximize over all greedy tie orders on each word. The formal proofs include existence of maximizing runs, genuine ambiguity in the serialized word, the complete partial comparator, and convergence to zero separately for both ranking rules. The formal word uses distinct separator characters. The unary recoding and the stronger full-pass comparator description are proved above and replayed independently in exact code. The archive also retains the component-level formalization of the earlier six-phase construction in Theorem~\ref{th:family}.
 
 {\namefont 大束良明} initiated the project, set its research criteria and authorized public archiving. The ProofRush AI agents designed the examples and general construction, formalized the results, conducted separate literature and semantic reviews, and prepared this manuscript. External peer review is pending. The research record lists the models, timing, hardware, prior-art searches and reproducible checks.
 

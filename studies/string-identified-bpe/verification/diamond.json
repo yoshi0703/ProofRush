@@ -1,0 +1,46 @@
+{
+  "lean": "Lean (version 4.36.0, arm64-apple-darwin24.6.0, commit 611c117bfaf7b7ae1cfcf246ce6fba31e8f509e9, Release)",
+  "mathlib": "fc4f59e577feb1a4956671bc04ac18aaaf8cd842",
+  "targets": [
+    "DiamondResult.replacement_limit_zero",
+    "DiamondResult.overlapping_limit_zero",
+    "DiamondResult.below_one_sixth",
+    "DiamondGuarantee.all_ties",
+    "DiamondGuarantee.comparator_lower",
+    "DiamondLimit.le_best",
+    "RawDiamond.rawGreedy_all_ties",
+    "DiamondResult.input_allowed"
+  ],
+  "sources_sha256": {
+    "SpellingBPE.lean": "c83ba02ccb10c384b66c4635fd43cbed89cce2d88c41e26fa9d0ad8b873e51f8",
+    "DecoyRows.lean": "e5d3f6f53d4b6ecce74eae00c1968b63f3d6fabad0e423cbde7512057fabb3eb",
+    "CombComparator.lean": "c7eb359ecfb10a5ba9c0f066d5fd5a8fa538522f4345f43d1a7addcb71ec3839",
+    "PairRoster.lean": "0c655c9c965f3f900c4455417e9e63d72c5127c7fc55df223ace37096ce9dd4a",
+    "Common.lean": "da0cd1edfcd6b23685508921077103f0e13fd1faa94802de895b79c9d05339ec",
+    "Separators.lean": "9f655bd3614d2edf545c65a0fcae04ba837829c7ba5f42b72967ecc4100c0830",
+    "Forcing.lean": "13f85dc929ad6c149d204560c705bb5db93f1844938284a59a54ca5add23bb9a",
+    "DiamondFamily.lean": "44c5871429032157366922fa2fab96de72c024f3d4e703b2e222de452791013c",
+    "EdgeCases.lean": "04b860048e94f86d92930a6cc2956f5ec3334b72a82d371c59ac9258be6d5861",
+    "EdgeCodes.lean": "36f5b2c8ba78776fb5c3b04eb66bf3324a86b759d3fe4670300e436a6281c710",
+    "DistinctRows.lean": "24996b524a8fb560bd95ecd09a1b62e4a95bcf2f3a5e40f2fc0db85f4447592f",
+    "InitialDomain.lean": "34a23a6850727e0f2d2c6845d32370818dfca3c76829a87b8f6d2e67cc055dc2",
+    "DiamondCount.lean": "db0af57c3c60de73af1735ef78a621fee6df66f9c510cc3b0be5fdbe6c5470db",
+    "DiamondComparator.lean": "3aa0913129fc7851be1ddd7f7de822b61530f2992afb7451dde8962b32d87c3e",
+    "Witness.lean": "831de846b2fea7afcdf7d4cfcc9e7065cc2b197614ee6388462ef0d7772cdfb0",
+    "DiamondConclusion.lean": "d6fe629de071d26a786398637b0fe126fd6695425be9ae3a0bcdb29c88c2d973",
+    "DiamondBudget.lean": "a63a1ea015eaf482027b2ed8e3592a9608440be8ca44cfad8bd2b83e437e744b",
+    "Asymptotic.lean": "4b23857e409c65323351509b132cc48d34c57352aae5aa1668b8167705e99795",
+    "LimitRatio.lean": "3a33427dc9f5ca6ee58094b1f00d93ea7b6bdd34aeb795bc03b2ebc447e78ab5",
+    "RawDiamond.lean": "a533191a4ffd09e49b54da2480416a69e2645d80bf29ee6e596ed39e7cefc2a5",
+    "DiamondResult.lean": "db62ae77addfec8df1372a7dd65d5866a7a429ce4a7a2aee9c1a8e3a6327b714"
+  },
+  "export_sha256": "a29c17882aa028085f85e2f9583358c241d7df1de8fbfa6f266363cb81aa5dbd",
+  "exported_axioms": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "nanoda_sha256": "44ba1e3472937ddfc56c9e132a8d227be46694e4a970af8cd2699d09e2acaf10",
+  "isolation": "macOS Seatbelt",
+  "independent_verdict": "Checked 12435 declarations with no errors"
+}

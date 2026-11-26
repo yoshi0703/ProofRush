@@ -1,0 +1,8 @@
+m=1 budget=2 greedy=4 comparator=2 upper=2
+m=2 budget=8 greedy=24 comparator=24 upper=1
+m=3 budget=18 greedy=72 comparator=108 upper=2/3
+m=4 budget=32 greedy=160 comparator=320 upper=1/2
+m=5 budget=50 greedy=300 comparator=750 upper=2/5
+m=6 budget=72 greedy=504 comparator=1512 upper=1/3
+m=7 budget=98 greedy=784 comparator=2744 upper=2/7
+m=8 budget=128 greedy=1152 comparator=4608 upper=1/4

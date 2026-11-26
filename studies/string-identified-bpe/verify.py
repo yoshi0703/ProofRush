@@ -7,6 +7,15 @@ import sys
 
 HERE = Path(__file__).resolve().parent
 BUNDLES = {
+    'diamond': (
+        ['SpellingBPE', 'DecoyRows', 'CombComparator', 'PairRoster', 'Common', 'Separators',
+         'Forcing', 'DiamondFamily', 'EdgeCases', 'EdgeCodes', 'DistinctRows', 'InitialDomain',
+         'DiamondCount', 'DiamondComparator', 'Witness', 'DiamondConclusion', 'DiamondBudget',
+         'Asymptotic', 'LimitRatio', 'RawDiamond', 'DiamondResult'],
+        ['DiamondResult.replacement_limit_zero', 'DiamondResult.overlapping_limit_zero',
+         'DiamondResult.below_one_sixth', 'DiamondGuarantee.all_ties',
+         'DiamondGuarantee.comparator_lower', 'DiamondLimit.le_best',
+         'RawDiamond.rawGreedy_all_ties', 'DiamondResult.input_allowed']),
     'finite': (
         ['SpellingBPE', 'FourMerges'],
         ['SpellingWitness.refutes_extension', 'SpellingWitness.histories',

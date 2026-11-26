@@ -4,8 +4,8 @@ title: "Ambiguous initial spellings break the approximation guarantee for greedy
 type: software
 authors:
   - name: "ProofRush"
-version: "3.0.0"
+version: "3.1.0"
 date-released: 2026-11-26
 license: MIT
 repository-code: "https://github.com/yoshi0703/ProofRush"
-url: "https://github.com/yoshi0703/ProofRush/releases/tag/v3.0.0"
+url: "https://github.com/yoshi0703/ProofRush/releases/tag/v3.1.0"

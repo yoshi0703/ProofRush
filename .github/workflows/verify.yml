@@ -38,6 +38,9 @@ jobs:
           python3 studies/string-identified-bpe/verify_unique_greedy.py
           python3 studies/string-identified-bpe/check_family.py
           python3 studies/string-identified-bpe/check_scope.py
+          python3 studies/string-identified-bpe/check_diamond.py
+          python3 studies/string-identified-bpe/check_unary_diamond.py --m 2 --literal --all-subsets
+          python3 studies/string-identified-bpe/check_unary_diamond.py --m 13
 
       - name: Install the pinned Lean release
         shell: bash

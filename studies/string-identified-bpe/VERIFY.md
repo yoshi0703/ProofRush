@@ -27,7 +27,7 @@ The finite counterexample uses arbitrary string-valued initial tokens in the sou
 
 ## Lean and an independent kernel
 
-The following Bash commands install the pinned toolchain and Mathlib, build the Rust checker from its pinned sources, and check all four bundles from a fresh local build directory. Git, Python, Elan, Rustup and a C linker must be installed. The first build downloads public dependencies.
+The following Bash commands install the pinned toolchain and Mathlib, build the Rust checker from its pinned sources, and check all five bundles from a fresh local build directory. Git, Python, Elan, Rustup and a C linker must be installed. The first build downloads public dependencies.
 
 ```bash
 set -euo pipefail
@@ -51,16 +51,29 @@ python3 "$study/verify.py" --mathlib "$check_dir/mathlib" \
   --nanoda "$check_dir/nanoda/target/release/nanoda_bin" --run-dir "$check_dir/verified"
 ```
 
-The verifier builds each bundle with Lean 4.36.0, invokes leanchecker, exports the specified theorems and their dependencies, audits the axiom names, and asks the independent nanoda kernel to check the proof terms. Only the Lean foundations `propext`, `Quot.sound` and `Classical.choice` are permitted. The records name the exact targets and give the source, export and binary hashes. Counts for the four bundles overlap. The public Linux workflow builds the checker independently and runs it inside an unprivileged, read-only Docker container without network access. [Workflow](../../.github/workflows/verify.yml)
+The verifier builds each bundle with Lean 4.36.0, invokes leanchecker, exports the specified theorems and their dependencies, audits the axiom names, and asks the independent nanoda kernel to check the proof terms. Only the Lean foundations `propext`, `Quot.sound` and `Classical.choice` are permitted. The records name the exact targets and give the source, export and binary hashes. Counts for the five bundles overlap. The public Linux workflow builds the checker independently and runs it inside an unprivileged, read-only Docker container without network access. [Workflow](../../.github/workflows/verify.yml)
 
 | Bundle | Independently checked claim | Local record |
 |---|---|---|
+| Diamond | Exact worst-case limit zero under both rankings, existence of complete runs, single-word domain and finite bound. | [Kernel report](verification/diamond.json) |
 | Finite | Negation of the proposed universal bound for the original partial-rule optimum, actual ambiguity of the input, and the two greedy/comparator histories. | [Kernel report](verification/finite.json) |
 | Forced | Private rows force a greedy rule under every tie order, and the four-merge inequality fails at every integer weight parameter at least six. | [Kernel report](verification/forced.json) |
 | Phases | Incidence bound at every possible positive gap in the six periodic schedules, and a conditional quantitative bound arbitrarily close to one sixth. | [Kernel report](verification/phases.json) |
 | Comparator | The doubling rules save exactly one token per active row per step. The sum over arbitrary seeds and schedules gives the stated comparator utility for every budget. | [Kernel report](verification/comparator.json) |
 
-The paper proves the arbitrary-budget theorem by combining the incidence bound, comparator, private rows and separator construction. The correspondence from row adjacency to phase incidence, the passage to a single separated string and their assembly into the final limit theorem are mathematical proofs in the manuscript. The exact optimum ten in the finite example is established by independent exhaustive programs. The formal negation needs and proves the comparator lower bound ten. [Manuscript](paper.pdf) · [Lean source](lean/) · [Research provenance](RESEARCH.md)
+For the earlier six-phase family in v3.0.0, the paper proves the arbitrary-budget upper bound by combining the incidence bound, comparator, private rows and separator construction. The correspondence from row adjacency to phase incidence, the passage to a single separated string and their assembly into the final limit theorem are mathematical proofs in the manuscript. The exact optimum ten in the finite example is established by independent exhaustive programs. The formal negation needs and proves the comparator lower bound ten. [Manuscript](paper.pdf) · [Lean source](lean/) · [Research provenance](RESEARCH.md)
+
+## The zero limit under both rankings
+
+The two final Lean theorems quantify over all sufficiently large budgets. The definition of the objective takes the best complete greedy execution on each input, then the infimum over genuinely ambiguous words with nonempty atoms and positive optimum. The independent checker receives the complete terms for both limits and the explicit strict inequality below 1/6. The limit proof uses a partial comparator, which is exactly what the source permits. The manuscript proves the displayed comparator can also run in full. The one-letter recoding is checked separately. [Theorem statements](lean/DiamondResult.lean) · [Objective and its quantifiers](lean/LimitRatio.lean) · [Kernel report](verification/diamond.json)
+
+The following commands reproduce the integer construction, both pair rankings, and the independent one-letter replay. The final command uses length arithmetic and streams the hash of the underlying characters. It does not allocate a 159 MB input word. The smaller test directly expands the token strings and visits every spent subset.
+
+```sh
+python3 studies/string-identified-bpe/check_diamond.py
+python3 studies/string-identified-bpe/check_unary_diamond.py --m 2 --literal --all-subsets
+python3 studies/string-identified-bpe/check_unary_diamond.py --m 13
+```
 
 ## Rebuilding the manuscript
 
