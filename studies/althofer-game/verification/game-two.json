@@ -1,0 +1,23 @@
+{
+  "lean": "Lean (version 4.36.0, arm64-apple-darwin24.6.0, commit 611c117bfaf7b7ae1cfcf246ce6fba31e8f509e9, Release)",
+  "mathlib": "fc4f59e577feb1a4956671bc04ac18aaaf8cd842",
+  "targets": [
+    "Althofer.move_unique",
+    "Althofer.move_exists",
+    "Althofer.loses_in_two_iff_families",
+    "Althofer.explicit_starts",
+    "Althofer.strictMono_starts"
+  ],
+  "sources_sha256": {
+    "GameTwo.lean": "e8a47e57a2128b913d711a4add0cee8e1e8284ba50f72797336926faafc0882e"
+  },
+  "export_sha256": "160d9632ecbdedb5d414f19444130ca4fd121d88b1467d64bc6026d59cbbd94f",
+  "exported_axioms": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "nanoda_sha256": "44ba1e3472937ddfc56c9e132a8d227be46694e4a970af8cd2699d09e2acaf10",
+  "isolation": "macOS Seatbelt",
+  "independent_verdict": "Checked 3228 declarations with no errors"
+}

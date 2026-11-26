@@ -1,0 +1,24 @@
+{
+  "lean": "Lean (version 4.36.0, arm64-apple-darwin24.6.0, commit 611c117bfaf7b7ae1cfcf246ce6fba31e8f509e9, Release)",
+  "mathlib": "fc4f59e577feb1a4956671bc04ac18aaaf8cd842",
+  "targets": [
+    "Althofer.seed_period_coefficient",
+    "Althofer.seed_period_multiple",
+    "Althofer.seed_congruence",
+    "Althofer.seed_density_witness",
+    "Althofer.seed_density"
+  ],
+  "sources_sha256": {
+    "GameTwo.lean": "e8a47e57a2128b913d711a4add0cee8e1e8284ba50f72797336926faafc0882e",
+    "Seeds.lean": "919e422f8b65ddb8cf122cb899e6a5cc0d76b1bf339a54d366e3b93817a9c029"
+  },
+  "export_sha256": "3d444be8725320f03f088bde767ec66fbb3598cfbb736177edf50895afa3ab14",
+  "exported_axioms": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "nanoda_sha256": "44ba1e3472937ddfc56c9e132a8d227be46694e4a970af8cd2699d09e2acaf10",
+  "isolation": "macOS Seatbelt",
+  "independent_verdict": "Checked 2947 declarations with no errors"
+}

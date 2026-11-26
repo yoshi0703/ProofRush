@@ -1,0 +1,31 @@
+{
+  "lean": "Lean (version 4.36.0, arm64-apple-darwin24.6.0, commit 611c117bfaf7b7ae1cfcf246ce6fba31e8f509e9, Release)",
+  "mathlib": "fc4f59e577feb1a4956671bc04ac18aaaf8cd842",
+  "targets": [
+    "Althofer.loses_in_two_iff_families",
+    "Althofer.explicit_starts",
+    "Althofer.strictMono_starts",
+    "Althofer.losesBy_two_iff",
+    "Althofer.horizons_disjoint",
+    "Althofer.forced_outcomes_disjoint",
+    "Althofer.diamond_eight",
+    "Althofer.diamond_sixteen",
+    "Althofer.win_from_loss",
+    "Althofer.forced_loss_diamond_eight",
+    "Althofer.forced_loss_diamond_sixteen",
+    "Althofer.forced_win_from_loss"
+  ],
+  "sources_sha256": {
+    "GameTwo.lean": "e8a47e57a2128b913d711a4add0cee8e1e8284ba50f72797336926faafc0882e",
+    "Diamonds.lean": "78b87286e92de9529c1f18346ca0fb9edf884cee8c232734f0f1e9682280f15e"
+  },
+  "export_sha256": "1c09d4f1f9f765df175ff49d681b529967095608ebcb923208b04241a23e1ba3",
+  "exported_axioms": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "nanoda_sha256": "44ba1e3472937ddfc56c9e132a8d227be46694e4a970af8cd2699d09e2acaf10",
+  "isolation": "macOS Seatbelt",
+  "independent_verdict": "Checked 3268 declarations with no errors"
+}

@@ -18,6 +18,10 @@ A two-bit distribution disproves the support-ordering conjecture of He, Rojas an
 
 One spreadsheet option in NOAA's 2021 field guide gives each end strip of a beach a 12.92% or 13.30% chance of selection under two ways of redrawing duplicates. Uniform selection gives 20%. A single four-strip visit without a record of the selection procedure cannot yield an estimator unbiased for all count patterns under all three designs. In two disjoint samples of eligible US sites, the site-weighted frequencies of observing an end strip were 17.2% and 12.6%. The public records identify neither the drawing procedure nor how much litter selection may have missed. This exploratory methods report has not undergone external peer review. [English manuscript](studies/shoreline-transects/paper.pdf) · [Statistical and formal reproduction](studies/shoreline-transects/VERIFY.md) · [Sources and prior work](studies/shoreline-transects/PRIOR-ART.md)
 
+## Forced outcomes in Althöfer's alternating Collatz game
+
+We classify exactly the starts where the second player can force a win on the second move. Four infinite families suffice, beginning at 7, 29, 57 and 227. Two inverse constructions propagate finite losing strategies. They generate a self-similar set of 2-adic limits, including limits of losses in every prescribed residue class modulo a power of three. The dyadic closures of both the forced wins and the forced losses within each such class have Hausdorff dimension at least 0.57969. Althöfer's €500 problem of proving finite optimal play from every odd start remains open. This preprint awaits external peer review. [English paper](studies/althofer-game/paper.pdf) · [Proofs and reproduction](studies/althofer-game/VERIFY.md) · [Research history](studies/althofer-game/RESEARCH.md) · [Sponsor](https://althofer.de/collatz-prizes.html)
+
 ## Earlier graph catalogue study
 
 This earlier publication addresses a machine-generated inequality. It is archived and contributes zero to the programme for human-posed open research problems. The files below describe that publication. [Archived v1.0.0 release](https://github.com/yoshi0703/ProofRush/releases/tag/v1.0.0)

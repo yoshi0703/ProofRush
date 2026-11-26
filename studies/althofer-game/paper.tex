@@ -1,0 +1,171 @@
+\documentclass[11pt]{article}
+\usepackage[margin=.89in]{geometry}
+\usepackage{fontspec,amsmath,amssymb,amsthm,booktabs,microtype}
+\usepackage[hidelinks]{hyperref}
+\IfFontExistsTF{Noto Sans CJK JP}{\newfontfamily\namefont{Noto Sans CJK JP}}{\IfFontExistsTF{Hiragino Sans}{\newfontfamily\namefont{Hiragino Sans}}{\newfontfamily\namefont{HaranoAjiMincho-Regular.otf}}}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\oddpart}{\operatorname{oddpart}}
+\newcommand{\dimH}{\dim_{\mathrm H}}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\vTwo}{v_2}
+\newcommand{\vThree}{v_3}
+
+\title{Exact two-move losses and \(2\)-adic limit sets\\in Althöfer's \(3n\pm1\) game}
+\author{ProofRush research team\\[-1pt]\small Project directed by {\namefont 大束良明}}
+\date{26 November 2026 UTC \quad\(\cdot\)\quad Unreviewed preprint}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+In Althöfer's alternating \(3n\pm1\) game the player who moves to \(1\) wins. We classify exactly the odd positions from which the second player can force a win on the second move. They form four exponential families. We also give two pairs of affine maps that turn a certified losing position into another one by specifying a reply to either first move. Iteration constructs a compact \(2\)-adic set of Hausdorff dimension \(d=0.57969203\ldots\), where \(2\cdot 8^{-d}+2\cdot 16^{-d}=1\). Within each prescribed residue class modulo a power of \(3\), the \(2\)-adic closure of the forced losses contains this set and the closure of the forced wins contains a similar copy. Separately, we find infinitely many of both outcomes in every prescribed signed valuation class \(\vTwo(n-\sigma)\ge2\) and every ternary residue class. These results leave the existence of draw positions open.
+\end{abstract}
+
+\section{The game}
+
+For an odd positive integer \(n>1\), a move with sign \(s\in\{-1,1\}\) sends \(n\) to
+\[
+ S_s(n)=\oddpart(3n+s)=\frac{3n+s}{2^{\vTwo(3n+s)}} .
+\]
+Moving to \(1\) wins immediately. Otherwise the other player moves. We treat \(1\) as a terminal position and an infinite play as a draw. A forced win means that the player to move can ensure winning within a finite number of moves, against both choices at each opposing turn. A forced loss means that the opponent can do this. Because the move tree is finitely branching, a strategy that ensures its own win after finitely many moves against every reply has a finite bound from the given start, by Kőnig's lemma. Our statements use the original unbounded move rule \cite{sponsor,ahz}. The conjecture that every position is a forced win or a forced loss remains open.
+
+Althöfer's 2023 presentation gives \(n=7\) as a two-move loss. It reports that a computation treating positions above 150 million as draws resolves all odd starts below one million \cite{talk}. The sponsor's November 2026 update reports verification through \(10^9-1\) and records that a proposed proof could not be completed \cite{sponsor}. Cabrera reports a separate bounded computation exhibiting both outcomes in occurring odd residue classes modulo \(2^j\) for \(j\le12\) \cite{cabrera}. We derive unbounded families and geometric properties from the move rule. The examples in the talk and the bounded residue experiment are prior evidence. The available preview of the original paper omits the main game analysis, and we did not obtain the proposed proof. Priority of the exact formulas and the closure construction remains unverified.
+
+\section{The two-move losses}
+
+\begin{theorem}\label{thm:two}
+An odd \(n>1\) is a forced loss within two moves if and only if it has one of the following forms with \(k\ge1\).
+\begin{center}
+\begin{tabular}{@{}cc@{}}\toprule
+Position & Exponent \(a\)\\\midrule
+\((2^a-1)/9\) & \(6k\)\\
+\((2^a+1)/9\) & \(6k+3\)\\
+\((2^a-5)/9\) & \(6k+5\)\\
+\((2^a+5)/9\) & \(6k+2\)\\\bottomrule
+\end{tabular}
+\end{center}
+\end{theorem}
+
+\begin{proof}
+An odd start loses within two moves exactly when both children exceed \(1\) and both have a move to \(1\). The numerators \(3n\pm1\) differ by \(2\), so one has valuation \(1\) and the other has valuation \(e\ge2\). Denote the two children by \(y=(3n+\epsilon)/2\) and \(z=(3n-\epsilon)/2^e\). An immediate reply winning from each child means
+\[
+ 3y+\delta=2^b,\quad 3z+\gamma=2^c,\qquad
+ 2^{b+1}-2^{e+c}=6\epsilon+2\delta-\gamma 2^e
+\]
+for signs \(\delta,\gamma\in\{-1,1\}\), where the last identity follows by subtraction. The short child \(y\) is at least \(5\) and \(z\) is at least \(3\). Consequently \(b+1,e+c\ge5\), and the left side is divisible by \(32\). If \(e\ge4\), the right side is congruent to one of \(\pm4,\pm8\bmod16\), a contradiction. For \(e=2\) or \(3\) the right side has absolute value at most \(16\) and must vanish. For \(e=2\), the only signs are \(\delta=-\epsilon,\gamma=\epsilon\), giving \(9n=2^a-\epsilon\), \(a=b+1\). For \(e=3\) they are \(\delta=\gamma=\epsilon\), giving \(9n=2^a-5\epsilon\). The powers of \(2\) have period \(6\) modulo \(9\). The admissible exponents satisfy \(a\ge5\), and the sole extra case at \(a=5\) gives \(n=3\), which has an immediate winning move.
+
+Conversely, in the first two families the short and long numerators are \((2^a+2\epsilon)/3\) and \((2^a-4\epsilon)/3\), with valuations \(1,2\). In the last two they are \((2^a-2\epsilon)/3\) and \((2^a-8\epsilon)/3\), with valuations \(1,3\). All these starts are at least \(7\), so both children exceed \(1\). With the signs just found the two replies have numerators \(2^{a-1}\) and \(2^{a-e}\), giving the desired wins.
+\end{proof}
+
+\section{Inverse constructions for finite strategies}
+
+\begin{lemma}\label{lem:diamond}
+Let \(g>20\) be an odd forced loss and \(s\in\{-1,1\}\). Whenever the displayed value is integral,
+\[
+ A_s(g)=\frac{8g-s}{9},\qquad B_s(g)=\frac{16g-5s}{9}
+\]
+is an odd forced loss. A bound of \(k\) moves at \(g\) gives a bound of \(k+2\) moves at either predecessor. If \(T(g)=(2g-1)/3\) is integral, it is a forced win with a bound of \(k+1\) moves.
+\end{lemma}
+
+\begin{proof}
+For the \(A\) map put \(q=4,\delta=-s\), and for the \(B\) map put \(q=8,\delta=s\). In either case the predecessor \(n\) is odd. Its two children are
+\[
+ y=\frac{3n+s}{2}=\frac{qg-\delta}{3},\qquad
+ z=\frac{3n-s}{q}=\frac{2g-s}{3}.
+\]
+The right-hand sides are integers, since integrality of \(n\) gives \(2g\equiv s\bmod3\), and \(qg\equiv\delta\bmod3\) in each case. They are odd and exceed \(1\). Thus the displayed quotients remove the full powers of \(2\) from the respective numerators. After either first move there is a reply to \(g\), because \(3y+\delta=qg\) and \(3z+s=2g\). The first player is then to move at \(g\), so the second player can use the strategy there. For \(T(g)>1\), the plus move goes directly to \(g\) because \(3T(g)+1=2g\). This gives the final claim.
+\end{proof}
+
+\section{Mixed valuation and residue classes}
+
+\begin{lemma}\label{lem:four}
+For \(\sigma\in\{-1,1\}\) and \(a\ge12\) with \(2^a\equiv4\sigma\bmod81\), the odd start
+\[
+ n=\frac{2^{a+2}+65\sigma}{81}
+\]
+is a loss in exactly four moves under optimal play with the winner playing to finish quickly and the loser delaying.
+\end{lemma}
+
+\begin{proof}
+Write \(n=\sigma+16z\), where \(z=(2^a-4\sigma)/324\) is positive and odd. Its two children are \(y=\sigma+24z\) and \(u=\sigma+12z\), obtained using signs \(-\sigma,\sigma\) and valuations \(1,2\) respectively. The short move from \(y\) reaches \(\sigma+36z=(2^a+5\sigma)/9\), a two-move loss by Theorem~\ref{thm:two}. From \(u\), sign \(\sigma\) gives numerator \(3u+\sigma=(2^a+32\sigma)/9\) of valuation \(5\). Its child \((2^{a-5}+\sigma)/9\) is a second two-move loss. The required exponent residues follow from \(2^a\equiv4\sigma\bmod9\) and \(2^{a-5}\equiv-\sigma\bmod9\).
+
+The second player can therefore reply to either first move and reach a two-move loss. At the starting position \(\vTwo(n-\sigma)=4\). In the two-move loss table the anchor is the unique element of \(\{-1,1\}\) congruent to the position modulo \(4\), and its valuation there is \(2\) or \(3\). Thus \(n\) is not a two-move loss. A win for the second player has even length, proving exactness.
+\end{proof}
+
+\begin{theorem}\label{thm:mixed}
+For each \(\sigma\in\{-1,1\}\), \(t\ge2\), \(h\ge0\) and residue \(c\bmod3^h\), there are infinitely many forced wins and infinitely many forced losses among the odd starts with
+\[
+ \vTwo(n-\sigma)=t,\qquad n\equiv c\pmod{3^h}.
+\]
+\end{theorem}
+
+\begin{proof}
+For \(t=2,3,4\), losing seeds are \((2^a+C)/D\) with
+\[
+ (C,D)=(5\sigma,9),\quad(\sigma,9),\quad(65\sigma,81),
+\]
+respectively. In the last case the exponent \(a\) is the exponent in Lemma~\ref{lem:four} increased by \(2\). In each family impose \(2^a\equiv Dc-C\bmod D3^h\). This simultaneously gives integrality and the desired ternary class. In the last case the integrality condition is equivalent to \(2^{a-2}\equiv4\sigma\bmod81\). The right side of the seed congruence is a unit. The order of \(2\) modulo \(3^k\) is \(2\cdot3^{k-1}\), because \(\vThree(4^{3^m}-1)=m+1\) by induction on \(m\), factoring a difference of cubes. Thus every seed congruence has arbitrarily large exponents. For sufficiently large exponents the precise anchored valuations follow by subtracting \(\sigma\) from each formula.
+
+Write \(t=b+3r\), \(b\in\{2,3,4\}\). Choose a seed \(g\) at valuation \(b\) with \(g-\sigma=9^r u\) and \(8^r u\equiv c-\sigma\bmod3^h\). These constraints are one congruence for \(g\bmod3^{h+2r}\) and can be met by arbitrarily large seeds. Apply \(A_{-\sigma}\) exactly \(r\) times. At each step
+\[
+ A_{-\sigma}(x)=\sigma+\tfrac89(x-\sigma);
+\]
+every step is integral and, for a sufficiently large seed, Lemma~\ref{lem:diamond} applies. The resulting loss has offset \(8^r u\), so it has the desired valuation and residue.
+
+A winning seed at \(t=2\) is \(n=(2^a-\sigma)/3\) for a sufficiently large exponent solving \(2^a\equiv3c+\sigma\bmod3^{h+1}\). For \(t>2\), choose a losing child \(m\) at valuation \(t-1\) such that \(m-\sigma\equiv3u\bmod3^{h+1}\), where the integer \(u\) satisfies \(2u\equiv c-\sigma\bmod3^h\). The predecessor \(n=\sigma+2(m-\sigma)/3\) is integral, has the two required congruences, and can move to \(m\) with sign \(-\sigma\), since \(3n-\sigma=2m\). Arbitrarily large choices of the seed give infinitely many distinct starts in every case.
+\end{proof}
+
+Taking \(t\ge\max(2,j)\) gives wins and losses in the same residue class modulo \(2^j3^h\), for every \(j,h\ge0\). This rules out any global outcome classifier depending only on a fixed such modulus. The construction exhibits mixed classes anchored at \(\sigma=\pm1\bmod2^j\) and does not treat every dyadic residue. It also rules out a nonempty draw set that is an entire union of the signed valuation and ternary classes in the theorem.
+
+\section{Hausdorff dimension of the closures}
+
+Let \(O=1+2\Z_2\) be the odd \(2\)-adic integers, with distance \(\lvert x-y\rvert_2=2^{-\vTwo(x-y)}\). Division by \(9\) is defined on \(\Z_2\). The four maps in Lemma~\ref{lem:diamond} send \(O\) onto four disjoint balls.
+\[
+\begin{array}{c|cccc}
+ &A_+&A_-&B_+&B_-\\\hline
+\text{image}&15+16\Z_2&1+16\Z_2&19+32\Z_2&13+32\Z_2\\
+\text{ratio}&1/8&1/8&1/16&1/16
+\end{array}
+\]
+The images follow by evaluating each map at \(1\) and multiplying \(2\Z_2\) by its linear coefficient. For example, \(A_+(1)=7/9\equiv15\bmod16\). For each word \((f_1,\ldots,f_r)\) of maps, its cylinder is the ball \((f_1\circ\cdots\circ f_r)(O)\). The cylinders of any fixed length are disjoint. Along each infinite word they nest and shrink uniformly, defining a unique point. Let \(K\) be the set of these points, equivalently the intersection of the compact unions of cylinders at every word length.
+
+\begin{theorem}\label{thm:dim}
+For each \(h\ge0\) and residue \(c\bmod3^h\), the closure in \(\Z_2\) of the forced losses congruent to \(c\) contains \(K\), and the closure of the forced wins congruent to \(c\) contains \(T(K)\), where \(T(x)=(2x-1)/3\). Both compact sets have Hausdorff dimension equal to the unique positive solution \(d\) of
+\[
+ 2\cdot8^{-d}+2\cdot16^{-d}=1,\qquad d=0.57969203\ldots .
+\]
+In particular the dimension of each specified outcome closure is at least \(d\).
+\end{theorem}
+
+\begin{proof}
+Fix a word of length \(r\) and write its composition as \(F(g)=(2^Dg-C)/9^r\), with integers \(C,D\). To obtain a final integer congruent to \(c\bmod3^h\), impose
+\[
+ 2^Dg\equiv C+9^r c\pmod{9^r3^h}.
+\]
+The coefficient is a unit. The two-move losses \(g=(2^{6m}-1)/9\) realize every class modulo \(3^H\) infinitely often for every \(H\ge0\). Indeed, for a prescribed residue \(g_0\), solving \(2^a\equiv1+9g_0\bmod3^{H+2}\) forces \(a\equiv0\bmod6\) and admits arbitrarily large exponents by the order computation used in Theorem~\ref{thm:mixed}. The imposed congruence makes every intermediate value integral. To see this, the numerator of the composition modulo \(9\) is a power of \(2\) times the numerator of the innermost map. Thus that innermost division is integral. Applying the same argument to the remaining composition gives integrality by induction. All intermediate values exceed \(20\) when the seed is sufficiently large, since each partial composition has positive linear coefficient. Lemma~\ref{lem:diamond} now gives infinitely many actual integer losses in the chosen cylinder and ternary class. As the cylinders shrink along an infinite word, this proves the assertion for \(K\).
+
+For the winning positions, in each cylinder prescribe instead \(2g\equiv1+3c\bmod3^{h+1}\) for its integer losses \(g\). This ensures that \(T(g)\) is an integer congruent to \(c\bmod3^h\). By the lemma, \(T(g)\) is winning. Its dyadic limits include \(T(K)\), since \(T\) is a similarity of ratio \(1/2\).
+
+For completeness, the dimension calculation uses the separated cylinders directly, as in the classical method for self-similar sets \cite{hutchinson}. Put \(p_f=\lambda_f^d\), where \(\lambda_f\) is the ratio of map \(f\). The defining equation for \(d\) gives \(\sum_f p_f=1\). At each word length the sum of the \(d\)-th powers of the cylinder diameters is \(\operatorname{diam}(O)^d\). The largest diameter tends to zero, yielding \(\dimH K\le d\). For the reverse inequality, the independent-symbol distribution with probabilities \(p_f\) puts mass \((\operatorname{diam}(B)/\operatorname{diam}(O))^d\) on each cylinder \(B\). For a scale \(R=2^{-j}<1/2\), stop each word at the first cylinder of diameter at most \(R\). Its diameter lies in \((R/16,R]\). These stopped cylinders are disjoint. Every one meeting a ball of radius \(R\) lies within that ball, by the ultrametric inequality. Each such cylinder has Haar measure equal to its diameter under the normalization \(\mu(\Z_2)=1\), so at most \(16\) can meet the ball. The probability of the ball is at most \(16(R/\operatorname{diam}(O))^d\).
+
+Any nonempty set of positive diameter \(R\) lies in a ball of radius \(R\), and points have zero probability by the cylinder mass formula. Summing the bound over any sufficiently fine cover of \(K\) gives a positive lower bound on its \(d\)-dimensional Hausdorff content. This proves the equality for \(K\), and similarity preserves it for \(T(K)\).
+\end{proof}
+
+The constructed compact sets are sets of \(2\)-adic limits. The integer outcome sets are countable, and the theorem supplies neither their natural densities nor an upper bound on the dimensions of their full closures. The two contained compact sets need not coincide.
+
+\section{Verification and provenance}
+
+The companion Python scripts enumerate two-move losses through \(5{,}000{,}000\) and check finite strategies by literal signed moves. Lean certifies the exact classification, existence and uniqueness of the accelerated move, and the finite-strategy inverse steps. The \texttt{Seeds.lean} module certifies arbitrarily large two-move losses of the form \((64^m-1)/9\) in each residue class modulo \(3^h\). The \texttt{Words.lean} module certifies the full integer path from such a seed for any prescribed finite word of inverse maps. The final loss, or its winning predecessor, can exceed any bound and satisfy any prescribed ternary residue. It has a strategy bound of \(2+2r\) or \(3+2r\) moves, respectively, for words of length \(r\). We give written proofs of the four-move family, the signed-valuation infinitude theorem, and the topological and dimension conclusions. The verification guide and research record detail the independent kernel checks.
+
+{\namefont 大束良明} directed the project. Codex agents working on a local Apple M3 Pro derived the classifications and constructions, ran independent checks, and prepared the Lean formalization. The work used the existing Codex subscription and public sources. It has not been submitted to the sponsor or externally peer reviewed.
+
+\begin{thebibliography}{9}
+\bibitem{sponsor} I. Althöfer, \href{https://althofer.de/collatz-prizes.html}{Collatz Prizes}, Prize 3, updated 26 November 2026.
+\bibitem{talk} I. Althöfer, M. Hartisch and T. Zipproth, \href{https://www.youtube.com/watch?v=-BWhB0zFi7o&t=540s}{Analysis of a Collatz Game and Other Variants of the \(3n+1\) Problem}, ACG 2023 Session 5, 30 November 2023. Game slides at approximately 08:50--12:30.
+\bibitem{ahz} I. Althöfer, M. Hartisch and T. Zipproth, \href{https://doi.org/10.1007/978-3-031-54968-7_11}{Analysis of a Collatz Game and Other Variants of the \(3n+1\) Problem}, \emph{Advances in Computer Games}, LNCS 14528 (2024), 123--132.
+\bibitem{cabrera} J. Cruz Cabrera, \href{https://github.com/joelcanary/collatz-kodama-observable/blob/a25878f82e9c75c6a14e6f6de05bc4f0fb7279a1/papers/althofer-prize3/paper.tex}{The two-player \(3n\pm1\) game (Althöfer Prize 3)}, repository manuscript dated July 2026, version accessed 26 November 2026.
+\bibitem{hutchinson} J. E. Hutchinson, \href{https://doi.org/10.1512/iumj.1981.30.30055}{Fractals and self-similarity}, \emph{Indiana Univ. Math. J.} 30 (1981), 713--747.
+\end{thebibliography}
+\end{document}

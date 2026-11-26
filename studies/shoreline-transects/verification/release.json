@@ -1,0 +1,13 @@
+{
+  "revision": "4fde3c90c98a4ad36cd62e711d7c83b94e76a628",
+  "release": "https://github.com/yoshi0703/ProofRush/releases/tag/shoreline-methods-v0.1.0",
+  "published_at": "2026-11-26T21:50:04Z",
+  "public_pdf": "https://github.com/yoshi0703/ProofRush/releases/download/shoreline-methods-v0.1.0/paper.pdf",
+  "pdf_bytes": 96621,
+  "pdf_sha256": "57eefab1cbf02b1c7ba75bd380d8f72c1767ae1c85a9d6ca140365cb52f6bc31",
+  "anonymously_retrieved_pdf_equals_local": true,
+  "successful_workflows": {
+    "main": "https://github.com/yoshi0703/ProofRush/actions/runs/45900688213",
+    "shoreline-methods-v0.1.0": "https://github.com/yoshi0703/ProofRush/actions/runs/45900689214"
+  }
+}

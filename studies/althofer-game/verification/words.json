@@ -1,0 +1,24 @@
+{
+  "lean": "Lean (version 4.36.0, arm64-apple-darwin24.6.0, commit 611c117bfaf7b7ae1cfcf246ce6fba31e8f509e9, Release)",
+  "mathlib": "fc4f59e577feb1a4956671bc04ac18aaaf8cd842",
+  "targets": [
+    "Althofer.InversePath.lifts_loss",
+    "Althofer.inverse_word_density",
+    "Althofer.inverse_word_win_density"
+  ],
+  "sources_sha256": {
+    "GameTwo.lean": "e8a47e57a2128b913d711a4add0cee8e1e8284ba50f72797336926faafc0882e",
+    "Diamonds.lean": "78b87286e92de9529c1f18346ca0fb9edf884cee8c232734f0f1e9682280f15e",
+    "Seeds.lean": "919e422f8b65ddb8cf122cb899e6a5cc0d76b1bf339a54d366e3b93817a9c029",
+    "Words.lean": "e6cf576b8c1544c7a3d9cecdc56b6019aeee050176f4e6a99ccc5996c707b7cd"
+  },
+  "export_sha256": "6d47b724c3e6a74a3d83deb9dae26806a8a08365b07690beb15966d4275a9fdc",
+  "exported_axioms": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "nanoda_sha256": "44ba1e3472937ddfc56c9e132a8d227be46694e4a970af8cd2699d09e2acaf10",
+  "isolation": "macOS Seatbelt",
+  "independent_verdict": "Checked 3339 declarations with no errors"
+}
