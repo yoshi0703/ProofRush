@@ -1,0 +1,6 @@
+'RegularCliqueCover.refutes_5ed263d5' depends on axioms: [propext, Classical.choice, Quot.sound]
+'RegularCliqueCover.refutes_5ed263d5_on_domain' depends on axioms: [propext, Classical.choice, Quot.sound]
+RegularCliqueCover.refutes_5ed263d5 : ¬CliqueCoverStatement.Pastorek5ed263d5
+'RegularCliqueCover.refutes_5ed263d5' depends on axioms: [propext, Classical.choice, Quot.sound]
+RegularCliqueCover.refutes_5ed263d5_on_domain : ¬CliqueCoverStatement.Pastorek5ed263d5OnDomain
+'RegularCliqueCover.refutes_5ed263d5_on_domain' depends on axioms: [propext, Classical.choice, Quot.sound]

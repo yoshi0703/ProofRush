@@ -1,0 +1,81 @@
+name: Verify
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  proof:
+    name: Witness, Lean and independent Rust kernel
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      LEAN_ARCHIVE_SHA256: 2b7ab1ed8b92d2e6abfaf41344823b510064dbc9c0260cac73eb496ab2dea6eb
+      MATHLIB_REV: fc4f59e577feb1a4956671bc04ac18aaaf8cd842
+      NANODA_REV: 0da9f98feadd3a0a2ef4b3dbcf52a298a6fef929
+      CHECK_IMAGE: ubuntu@sha256:9a04f13b3f80ef056361e30868593b1cfd2279fe19e4081cb93a90bf56819d6a
+    steps:
+      - name: Check out the proof
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Check the graph witness
+        run: python3 experiments/counterexample.py
+
+      - name: Install the pinned Lean release
+        shell: bash
+        run: |
+          set -euo pipefail
+          archive="$RUNNER_TEMP/lean-4.36.0-linux.tar.zst"
+          curl -fsSL --retry 3 --output "$archive" \
+            https://github.com/leanprover/lean4/releases/download/v4.36.0/lean-4.36.0-linux.tar.zst
+          echo "$LEAN_ARCHIVE_SHA256  $archive" | sha256sum --check --strict
+          tar --zstd --extract --file "$archive" --directory "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/lean-4.36.0-linux/bin" >> "$GITHUB_PATH"
+
+      - name: Fetch the pinned Mathlib dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          mathlib="$RUNNER_TEMP/mathlib"
+          git clone --quiet --depth 1 --branch v4.36.0 https://github.com/leanprover-community/mathlib4.git "$mathlib"
+          test "$(git -C "$mathlib" rev-parse HEAD)" = "$MATHLIB_REV"
+          cd "$mathlib"
+          lake exe cache get Mathlib.Combinatorics.SimpleGraph.Coloring.Vertex \
+            Mathlib.Combinatorics.SimpleGraph.Diam Mathlib.Data.Fin.VecNotation
+
+      - name: Build the independent Rust kernel
+        shell: bash
+        run: |
+          set -euo pipefail
+          kernel="$RUNNER_TEMP/nanoda"
+          git init --quiet "$kernel"
+          git -C "$kernel" fetch --quiet --depth 1 https://github.com/ammkrn/nanoda_lib.git "$NANODA_REV"
+          git -C "$kernel" checkout --quiet --detach FETCH_HEAD
+          test "$(git -C "$kernel" rev-parse HEAD)" = "$NANODA_REV"
+          rustup toolchain install 1.97.1 --profile minimal
+          cargo +1.97.1 build --manifest-path "$kernel/Cargo.toml" \
+            --target-dir "$kernel/target" --locked --release
+          docker pull "$CHECK_IMAGE"
+
+      - name: Rebuild the proof, audit the export and run nanoda
+        shell: bash
+        run: |
+          set -euo pipefail
+          umask 022
+          python3 lean/verify.py --mathlib "$RUNNER_TEMP/mathlib" \
+            --nanoda "$RUNNER_TEMP/nanoda/target/release/nanoda_bin" \
+            --docker-image "$CHECK_IMAGE" --run-dir "$RUNNER_TEMP/checked-proof"
+          cat "$RUNNER_TEMP/checked-proof/lean.txt"
+          cat "$RUNNER_TEMP/checked-proof/nanoda.txt"
+          {
+            echo '### Independent proof verification'
+            echo '```json'
+            cat "$RUNNER_TEMP/checked-proof/report.json"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

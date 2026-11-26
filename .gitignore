@@ -1,0 +1,10 @@
+/work/
+/outputs/
+.DS_Store
+__pycache__/
+.lake/
+*.olean
+*.ilean
+*.aux
+*.log
+*.out

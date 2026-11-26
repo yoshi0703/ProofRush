@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "Please cite the technical note and its versioned proof archive."
+title: "A cubic counterexample to the diameter bound in AutoGraphForge conjecture 5ed263d5"
+type: software
+authors:
+  - name: "ProofRush"
+version: "1.0.0"
+date-released: 2026-11-26
+license: MIT
+repository-code: "https://github.com/yoshi0703/ProofRush"
+url: "https://github.com/yoshi0703/ProofRush/releases/tag/v1.0.0"

@@ -1,0 +1,55 @@
+{
+  "cutoff_utc": "2026-11-26T17:34:30.846Z",
+  "model": "gpt-6.2-astra",
+  "reasoning_effort": "max",
+  "accounting": "Per-response recorded usage, including cached input. Reasoning output is part of output.",
+  "additional_paid_api_calls": 0,
+  "attributable_inference_cost": null,
+  "cost_note": "No per-response subscription invoice or attributable price was available.",
+  "sessions": {
+    "graphs": {
+      "completed_responses": 129,
+      "input_tokens": 18714141,
+      "cached_input_tokens": 18476032,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 63185,
+      "reasoning_output_tokens": 15087,
+      "total_tokens": 18777326
+    },
+    "sequences": {
+      "completed_responses": 110,
+      "input_tokens": 16457873,
+      "cached_input_tokens": 16204160,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 63801,
+      "reasoning_output_tokens": 20115,
+      "total_tokens": 16521674
+    },
+    "coordinator": {
+      "completed_responses": 95,
+      "input_tokens": 12495163,
+      "cached_input_tokens": 12181632,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 68772,
+      "reasoning_output_tokens": 14067,
+      "total_tokens": 12563935
+    },
+    "lean": {
+      "completed_responses": 116,
+      "input_tokens": 13964223,
+      "cached_input_tokens": 13876480,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 49940,
+      "reasoning_output_tokens": 17954,
+      "total_tokens": 14014163
+    }
+  },
+  "total": {
+    "completed_responses": 450,
+    "input_tokens": 61631400,
+    "cached_input_tokens": 60738304,
+    "output_tokens": 245698,
+    "reasoning_output_tokens": 67223,
+    "total_tokens": 61877098
+  }
+}
