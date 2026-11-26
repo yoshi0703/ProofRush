@@ -1,0 +1,2 @@
+465 parameter pairs passed with exact counts, including all maximizing rule types.
+k=4, L=4: every greedy order saves 28 and the comparator saves 60.

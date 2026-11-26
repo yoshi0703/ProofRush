@@ -32,6 +32,12 @@ jobs:
           python3 studies/masked-guidance/experiment.py
           python3 studies/masked-guidance/leading_terms.py
 
+      - name: Check the spelling-identified BPE witnesses
+        run: |
+          python3 studies/string-identified-bpe/verify_witness.py
+          python3 studies/string-identified-bpe/verify_unique_greedy.py
+          python3 studies/string-identified-bpe/check_family.py
+
       - name: Install the pinned Lean release
         shell: bash
         run: |
@@ -51,12 +57,12 @@ jobs:
           git clone --quiet --depth 1 --branch v4.36.0 https://github.com/leanprover-community/mathlib4.git "$mathlib"
           test "$(git -C "$mathlib" rev-parse HEAD)" = "$MATHLIB_REV"
           cd "$mathlib"
-          mapfile -t guidance_modules < <(
+          mapfile -t study_modules < <(
             awk '$1 == "import" && $2 ~ /^Mathlib[.]/ {print $2}' \
-              "$GITHUB_WORKSPACE"/studies/masked-guidance/lean/*.lean | sort -u
+              "$GITHUB_WORKSPACE"/studies/{masked-guidance,string-identified-bpe}/lean/*.lean | sort -u
           )
           lake exe cache get Mathlib.Combinatorics.SimpleGraph.Coloring.Vertex \
-            Mathlib.Combinatorics.SimpleGraph.Diam Mathlib.Data.Fin.VecNotation "${guidance_modules[@]}"
+            Mathlib.Combinatorics.SimpleGraph.Diam Mathlib.Data.Fin.VecNotation "${study_modules[@]}"
 
       - name: Build the independent Rust kernel
         shell: bash
@@ -99,4 +105,16 @@ jobs:
             --docker-image "$CHECK_IMAGE" --run-dir "$RUNNER_TEMP/masked-guidance"
           for report in "$RUNNER_TEMP"/masked-guidance/*/report.json; do
             python3 -c 'import json,sys; j=json.load(open(sys.argv[1])); print(j["independent_verdict"], j["targets"][-1])' "$report"
+          done
+
+      - name: Check the spelling-identified BPE theorem bundles independently
+        shell: bash
+        run: |
+          set -euo pipefail
+          umask 022
+          python3 studies/string-identified-bpe/verify.py --mathlib "$RUNNER_TEMP/mathlib" \
+            --nanoda "$RUNNER_TEMP/nanoda/target/release/nanoda_bin" \
+            --docker-image "$CHECK_IMAGE" --run-dir "$RUNNER_TEMP/string-identified-bpe"
+          for report in "$RUNNER_TEMP"/string-identified-bpe/*/report.json; do
+            python3 -c 'import json,sys; j=json.load(open(sys.argv[1])); print(j["independent_verdict"], j["targets"][-1])' "$report" | tee -a "$GITHUB_STEP_SUMMARY"
           done

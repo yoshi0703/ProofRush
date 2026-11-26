@@ -1,0 +1,24 @@
+{
+  "lean": "Lean (version 4.36.0, arm64-apple-darwin24.6.0, commit 611c117bfaf7b7ae1cfcf246ce6fba31e8f509e9, Release)",
+  "mathlib": "fc4f59e577feb1a4956671bc04ac18aaaf8cd842",
+  "targets": [
+    "SpellingDecoy.force",
+    "SpellingDecoy.pick_list",
+    "SpellingForced.forced_failure",
+    "SpellingForced.available_greedy"
+  ],
+  "sources_sha256": {
+    "SpellingBPE.lean": "c83ba02ccb10c384b66c4635fd43cbed89cce2d88c41e26fa9d0ad8b873e51f8",
+    "DecoyRows.lean": "e5d3f6f53d4b6ecce74eae00c1968b63f3d6fabad0e423cbde7512057fabb3eb",
+    "ForcedFour.lean": "ec27078a0c796d63fb055e8e464434158ec8397735f73603361f12e2e80276cf"
+  },
+  "export_sha256": "9f3279d84547b6f814c15353534405b2ee18d0bceee49147dd320927eb7a2f44",
+  "exported_axioms": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "nanoda_sha256": "44ba1e3472937ddfc56c9e132a8d227be46694e4a970af8cd2699d09e2acaf10",
+  "isolation": "macOS Seatbelt",
+  "independent_verdict": "Checked 2899 declarations with no errors"
+}

@@ -1,0 +1,102 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{fontspec,amsmath,amssymb,amsthm,booktabs,microtype}
+\usepackage[hidelinks]{hyperref}
+\IfFontExistsTF{Noto Sans CJK JP}{\newfontfamily\namefont{Noto Sans CJK JP}}{\IfFontExistsTF{Hiragino Sans}{\newfontfamily\namefont{Hiragino Sans}}{\newfontfamily\namefont{HaranoAjiMincho-Regular.otf}}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\OPT}{\mathrm{OPT}}
+\newcommand{\cnt}{\mathrm{cnt}}
+\title{Ambiguous initial spellings break the approximation guarantee for greedy byte-pair encoding}
+\author{ProofRush\\[2pt]\small Research initiated and directed by {\namefont 大束良明}}
+\date{26 November 2026 UTC}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Baliga, Xie and Byju ask whether the replacement-count guarantee for greedy byte-pair encoding survives on non-uniquely-decodable inputs when tokens with the same spelling are identified. A sequence of fourteen unary token spellings admits a legal four-merge greedy run saving four tokens. Four other full merges save ten, exceeding the guarantee's permitted comparator utility. We also construct weighted corpora on which every greedy tie order fails. For growing budgets, a family of binary merge trees with pre-existing internal spellings gives instances on which even the most favorable greedy tie order has asymptotic ratio at most $1/6$. The finite refutation and a four-budget family for all tie orders have independent kernel checks. The construction is for arbitrary string-valued initial atoms, the model of the original authors' non-unique-decoding examples and reference checker.
+\end{abstract}
+
+\section{The open question}
+A word is given as a finite sequence of nonempty strings called atoms. Its tokens initially are those atoms. A rule $(X,Y)$ replaces an adjacent occurrence of $X,Y$ by the literal concatenation $XY$. This string represents one token and is identical to any existing token with that spelling. A full pass scans from left to right and replaces every available nonoverlapping occurrence. A partial pass may take any disjoint subset. Utility is the number of tokens saved. With a budget $k$, let $\OPT$ be the maximum utility of at most $k$ partial rules. Greedy selects a pair whose full replacement count is maximal and applies the full rule. A word table has positive row weights. Counts and utilities are summed with those weights, and a rule never crosses a row boundary.
+
+Baliga, Xie and Byju prove that when the input spelling determines its atom factorization, every greedy run of $k\ge2$ steps has utility at least
+\[
+c_k\OPT,\qquad c_k=\tfrac12\bigl(1-(1-2/k)^k\bigr).
+\]
+They ask in Sections 8 and 11 whether this conclusion extends to ambiguous inputs \cite{bxb}. Two different sequences of atoms must occur as actual factors of the input and have the same concatenation to witness ambiguity. The authors already show that an intermediate counting inequality can fail. Their Appendix G reports searches without a violation of the approximation guarantee itself at budgets up to three.
+
+We use the mathematical spelling model of their Appendix D and their released non-unique-decoding checker \cite{supp}. For example, Appendix D permits both \texttt{ab} and \texttt{bc} as initial tokens inside rows. The specialization in which the only compound raw symbols consist of a character with one common suffix used only at word ends remains open in this study. The fresh-symbol model of Kozma and Voderholzer \cite{kv} and the source theorem on uniquely decodable inputs retain their original guarantees.
+
+\section{A four-step counterexample on one word}
+Write $j$ for the spelling $a^j$ over one underlying letter. The sum of two lengths specifies their concatenation exactly. Consider the input
+\[
+(8,4,2,1,1,8,2,2,4,4,4,8,8,8).
+\]
+Both the singleton token $2$ and the two-token factor $(1,1)$ occur, with the same spelling $aa$.
+
+\begin{theorem}\label{th:finite}
+A legal greedy run on this input saves four tokens in four full merges. A legal four-merge comparator saves ten. Thus the proposed extension of the $c_4=15/32$ guarantee is false even on a single word over a one-letter spelling alphabet.
+\end{theorem}
+\begin{proof}
+Apply $(8,4),(12,2),(14,1),(15,1)$ successively. Each step joins the leftmost two tokens. Its count is one. Every other distinct-symbol pair has at most one occurrence on each current tape, and the runs of three equal tokens each contribute only one replacement of their self-pair. Thus one is the maximum at every step. In contrast, the four full doubling rules $(1,1),(2,2),(4,4),(8,8)$ save $1,2,3,4$ tokens. The successive tapes are
+\[
+\begin{aligned}
+ &(8,4,2,2,8,2,2,4,4,4,8,8,8),\\
+ &(8,4,4,8,4,4,4,4,8,8,8),\\
+ &(8,8,8,8,8,8,8,8),\\
+ &(16,16,16,16).
+\end{aligned}
+\]
+Consequently $\OPT\ge10$ and $32\cdot4<15\cdot10$. Each newly created spelling in the first three doubling passes can be used together with copies already present when training began.
+\end{proof}
+The doubling history is itself a favorable greedy tie choice on this word. Both our exhaustive checker and the original authors' partial-merge optimizer give successive optimum utilities $0,1,3,6,10$ at budgets zero through four \cite{supp}. The formal refutation needs only the displayed comparator.
+
+\section{Forcing every tie order}
+\begin{lemma}\label{lem:decoy}
+Suppose the maximum replacement count on a weighted core corpus is strictly less than $M$. Add $k$ private two-token rows, each of weight $M$, with distinct pairs absent from the core. Any greedy run of at most $k$ steps chooses a different one of those pairs at each step and saves exactly $M$ tokens per step.
+\end{lemma}
+\begin{proof}
+An untouched private row gives its pair count $M$ and has no other pair. Once chosen, the row consists of a single token. Merging a private pair leaves the core fixed. Every other available pair has only its original core count. Induction gives the claim.
+\end{proof}
+
+For an explicit four-step family, give each of the rows
+\[
+(8,4,2,1,1),\quad(8,2,2,4),\quad(4,4,8),\quad(8,8)
+\]
+weight $n$. The ten internal ordered pairs of the four unweighted rows are distinct. Add four private two-token rows of weight $n+1$, each a repeated private character distinct from the characters of the other rows. Lemma~\ref{lem:decoy} gives four-step greedy utility $4(n+1)$ under \emph{every} tie order. The four doubling rules save $10n$ on the core. For each integer $n\ge6$ we have $32\cdot4(n+1)<15\cdot10n$.
+
+\section{A general construction at large budgets}
+Let $R_k$ be the infimum, over ambiguous string-valued inputs of positive optimum, of the utility of the \emph{best} greedy tie order divided by $\OPT$ at budget $k$. We allow the initial collection of spellings to vary with $k$.
+\begin{theorem}\label{th:family}
+For each $4\le L\le k$ there are a word table and a single input word for which every $k$-step greedy run has utility divided by $\OPT$ at most
+\[
+\frac{k(L+3)}{3L(2k-L+1)}.
+\]
+In particular $\limsup_{k\to\infty}R_k\le1/6$.
+\end{theorem}
+\begin{proof}
+Let $P_j=a^{2^j}$. For each seed $0\le s<L$ construct six rows. Start each row with $(P_s,P_s)$. For $j=s+1,\ldots,k-1$, attach $P_j$ to the left or to the right of the existing row. The directions at level $j$ come from one of the two phases of the periodic sequence $LRLR\ldots$ or one of the four phases of $LLRRLLRR\ldots$. Give each row weight one, combining identical rows by adding their weights.
+
+All self-pairs on the initial tape have replacement count at most six. The only equal neighbouring tokens in such a row are its two seed tokens. To bound a fixed ordered pair of unequal levels $i<j$, consider first the order $(P_i,P_j)$ on the right. For $s<i$, these two levels become neighbours exactly if $i$ and $j$ are successive attachments on the right. Across the six phases there is one qualifying phase at gap one, one at gap two and one at gap three, with none at a larger gap. The length-two period supplies gap two. The length-four period supplies gaps one and three. The same counts hold for consecutive attachments on the left in the order $(P_j,P_i)$. Thus each $s<i$ contributes at most one. If $s=i$, level $j$ must be the first attachment on the indicated side. At most three phases put it there, since only three attach level $j$ to that side. Larger seeds cannot contribute. For $i<L$ the total is at most $i+3\le L+2$. For $i\ge L$ it is at most $L$. As $L\ge4$, $L+2$ bounds every initial pair count.
+
+Apply the comparator rules $(P_j,P_j)$ in ascending order for $0\le j<k$. In a row with seed $s$, the passes before $s$ do nothing. At $j=s$ the two middle tokens merge. Inductively the part of the word built through level $j-1$ has become one $P_j$, adjacent to the copy of $P_j$ attached at level $j$. Higher-level attachments are outside this pair. Each subsequent pass therefore saves one more token in that row. The number of savings over all rows is
+\[
+U=6\sum_{s=0}^{L-1}(k-s)=3L(2k-L+1).
+\]
+Add $k$ private two-token rows of weight $M=L+3$. Lemma~\ref{lem:decoy} forces greedy savings $kM$. To make a single string, write out the rows with their integer multiplicities and insert a different new character at each boundary. An ordered pair involving a separator occurs at most once while the private rules are used. The other counts equal the sums of the within-row counts. The private maxima still exceed all competitors throughout the first $k$ steps. The doubling comparator leaves the separators in place and retains all its savings. Taking $L=\lfloor\sqrt{k}\rfloor$ for every $k\ge16$ gives the limit bound.
+\end{proof}
+The exact large-budget infimum is undetermined. The construction bounds it from above even when ties favor greedy. It uses initial atom spellings of unbounded length.
+
+\section{Verification and contributions}
+The Lean files define tokens as lists of actual letters, concatenate them on every merge, quantify greedy maximality over all pairs of spellings and define $\OPT$ as the largest shortening over all feasible partial runs using at most $k$ rules. The independent Rust kernel nanoda checks the exported negation of the proposed bound, the generic forcing lemma and the family with $k=4$ and arbitrary integer $n\ge6$. The proof of Theorem~\ref{th:family} above combines phase counting, the comparator induction, and the separator construction. The archive states which auxiliary claims have been formally checked and includes exact computational tests. The arbitrary-$k$ theorem currently has a mathematical proof and a partial Lean formalization.
+
+{\namefont 大束良明} initiated the project, set its research criteria and authorized public archiving. The ProofRush AI agents designed the examples and general construction, formalized the results, conducted separate literature and semantic reviews, and prepared this manuscript. External peer review is pending. The research record lists the models, timing, hardware, prior-art searches and reproducible checks.
+
+\begin{thebibliography}{9}
+\bibitem{bxb} K. Baliga, A. Xie and A. Byju. \emph{Greedy BPE with Replacement Counts Saves at Least $\frac12(1-(1-2/k)^k)$ of the Optimum, Which Is Tight as $k\to\infty$}. Version 3, 23 November 2026, Sections 3, 8 and 11 and Appendices D and G. \url{https://arxiv.org/abs/2611.08671v3}.
+\bibitem{supp} K. Baliga, A. Xie and A. Byju. Supplement to the third version of the preceding paper. 2026. The non-uniquely-decodable checker is in \texttt{supplement/check/stringid/check\_nonfree.py}. \url{https://doi.org/10.5281/zenodo.24451469}.
+\bibitem{kv} L. Kozma and J. Voderholzer. \emph{Theoretical Analysis of Byte-Pair Encoding}. ESA 2026, LIPIcs 388, 80:1--80:17. \url{https://doi.org/10.4230/LIPIcs.ESA.2026.80}.
+\bibitem{zouhar} V. Zouhar, C. Meister, J. Gastaldi, L. Du, T. Vieira, M. Sachan and R. Cotterell. \emph{A Formal Perspective on Byte-Pair Encoding}. Findings of ACL 2023, 598--614. \url{https://aclanthology.org/2023.findings-acl.38/}.
+\end{thebibliography}
+\end{document}

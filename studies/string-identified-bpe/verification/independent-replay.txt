@@ -1,0 +1,12 @@
+Greedy
+step=1 chosen=(8, 4) gain=1 max=1 maximizers=[(1, 1), (1, 8), (2, 1), (2, 2), (2, 4), (4, 2), (4, 4), (4, 8), (8, 2), (8, 4), (8, 8)] positions=(0,) output=(12, 2, 1, 1, 8, 2, 2, 4, 4, 4, 8, 8, 8)
+step=2 chosen=(12, 2) gain=1 max=1 maximizers=[(1, 1), (1, 8), (2, 1), (2, 2), (2, 4), (4, 4), (4, 8), (8, 2), (8, 8), (12, 2)] positions=(0,) output=(14, 1, 1, 8, 2, 2, 4, 4, 4, 8, 8, 8)
+step=3 chosen=(14, 1) gain=1 max=1 maximizers=[(1, 1), (1, 8), (2, 2), (2, 4), (4, 4), (4, 8), (8, 2), (8, 8), (14, 1)] positions=(0,) output=(15, 1, 8, 2, 2, 4, 4, 4, 8, 8, 8)
+step=4 chosen=(15, 1) gain=1 max=1 maximizers=[(1, 8), (2, 2), (2, 4), (4, 4), (4, 8), (8, 2), (8, 8), (15, 1)] positions=(0,) output=(16, 8, 2, 2, 4, 4, 4, 8, 8, 8)
+Full comparator
+step=1 chosen=(1, 1) gain=1 max=1 maximizers=[(1, 1), (1, 8), (2, 1), (2, 2), (2, 4), (4, 2), (4, 4), (4, 8), (8, 2), (8, 4), (8, 8)] positions=(3,) output=(8, 4, 2, 2, 8, 2, 2, 4, 4, 4, 8, 8, 8)
+step=2 chosen=(2, 2) gain=2 max=2 maximizers=[(2, 2)] positions=(2, 5) output=(8, 4, 4, 8, 4, 4, 4, 4, 8, 8, 8)
+step=3 chosen=(4, 4) gain=3 max=3 maximizers=[(4, 4)] positions=(1, 4, 6) output=(8, 8, 8, 8, 8, 8, 8, 8)
+step=4 chosen=(8, 8) gain=4 max=4 maximizers=[(8, 8)] positions=(0, 2, 4, 6) output=(16, 16, 16, 16)
+exact full optimum=10 exact partial optimum=10
+ratio=2/5 < stated threshold=15/32

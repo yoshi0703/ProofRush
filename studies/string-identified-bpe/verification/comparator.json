@@ -1,0 +1,26 @@
+{
+  "lean": "Lean (version 4.36.0, arm64-apple-darwin24.6.0, commit 611c117bfaf7b7ae1cfcf246ce6fba31e8f509e9, Release)",
+  "mathlib": "fc4f59e577feb1a4956671bc04ac18aaaf8cd842",
+  "targets": [
+    "CombComparator.doubling_single_row",
+    "CombComparator.doubling_step",
+    "CombComparator.doubling_single_row_feasible",
+    "CombComparator.doubling_table",
+    "CombComparator.twice_doubling_table",
+    "CombComparator.twice_doubling_augmented_lower"
+  ],
+  "sources_sha256": {
+    "SpellingBPE.lean": "c83ba02ccb10c384b66c4635fd43cbed89cce2d88c41e26fa9d0ad8b873e51f8",
+    "DecoyRows.lean": "e5d3f6f53d4b6ecce74eae00c1968b63f3d6fabad0e423cbde7512057fabb3eb",
+    "CombComparator.lean": "c7eb359ecfb10a5ba9c0f066d5fd5a8fa538522f4345f43d1a7addcb71ec3839"
+  },
+  "export_sha256": "2bef25941233b4a11467bcf4f2f1d0ad9cf341788a9b657396b767cb656a4c5e",
+  "exported_axioms": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "nanoda_sha256": "44ba1e3472937ddfc56c9e132a8d227be46694e4a970af8cd2699d09e2acaf10",
+  "isolation": "macOS Seatbelt",
+  "independent_verdict": "Checked 1929 declarations with no errors"
+}

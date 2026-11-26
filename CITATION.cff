@@ -1,11 +1,11 @@
 cff-version: 1.2.0
 message: "Please cite the technical note and its versioned proof archive."
-title: "When classifier-free guidance favors shared outputs in masked discrete diffusion"
+title: "Ambiguous initial spellings break the approximation guarantee for greedy byte-pair encoding"
 type: software
 authors:
   - name: "ProofRush"
-version: "2.0.0"
+version: "3.0.0"
 date-released: 2026-11-26
 license: MIT
 repository-code: "https://github.com/yoshi0703/ProofRush"
-url: "https://github.com/yoshi0703/ProofRush/releases/tag/v2.0.0"
+url: "https://github.com/yoshi0703/ProofRush/releases/tag/v3.0.0"

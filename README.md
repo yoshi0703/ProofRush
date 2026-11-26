@@ -1,5 +1,11 @@
 # ProofRush
 
+## Spelling identity in byte-pair encoding
+
+Baliga, Xie and Byju asked whether their compression guarantee survives when distinct initial tokenizations can have the same spelling. Four greedy merges can save only four tokens on a 14-token input, while four other merges save ten. The ratio `2/5` violates their proposed lower bound of `15/32`. A family of inputs also forces the failure under every tie order. With growing merge budgets, its worst-case ratio has limit superior at most `1/6` even for the best greedy tie order. The input model accepts pre-existing string-valued tokens.
+
+The 14-token example was found by 19:13 UTC on 26 November 2026. The finite refutation and a four-merge family have complete Lean proofs and independent kernel checks. The paper gives a mathematical proof of the large-budget bound and identifies its formalized components. Our prior-art review found no earlier resolution of the stated extension. External peer review is pending. 大束良明 directed the project. The research log identifies the AI models that developed and checked the proofs. [English paper](studies/string-identified-bpe/paper.pdf) · [Proofs and reproduction](studies/string-identified-bpe/VERIFY.md) · [Research log and contributions](studies/string-identified-bpe/RESEARCH.md) · [Original question, Sections 8 and 11](https://arxiv.org/html/2611.08671v3)
+
 ## Masked discrete diffusion
 
 A two-bit distribution disproves the support-ordering conjecture of He, Rojas and Tao (ICLR 2026, Conjecture E.1) and the limiting-support conclusion of Proposition 3.3(2). We also prove a finite-alphabet theorem identifying which outputs survive strong guidance, a subset recurrence computing their decay exponents and coefficients, and a product construction in which arbitrarily rare class overlap becomes nearly certain. The English manuscript and formal proofs are available for independent review. External peer review is pending. [Research paper](studies/masked-guidance/paper.pdf) · [Study and reproducibility](studies/masked-guidance/README.md) · [ICLR source](https://proceedings.iclr.cc/paper_files/paper/2026/hash/a14193e9d9fb0b03af0b717de1cac8ac-Abstract-Conference.html)

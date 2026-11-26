@@ -1,0 +1,11 @@
+Uniquely forced greedy
+pair=(8, 4) saving=44 max=44 maximizers=1
+pair=(12, 2) saving=43 max=43 maximizers=1
+pair=(14, 1) saving=42 max=42 maximizers=1
+pair=(15, 1) saving=41 max=41 maximizers=1
+Full comparator
+pair=(1, 1) saving=41 max=44 maximizers=1
+pair=(2, 2) saving=81 max=81 maximizers=1
+pair=(4, 4) saving=121 max=121 maximizers=1
+pair=(8, 8) saving=161 max=161 maximizers=1
+upper bound on greedy/OPT = 85/202 <= 17/40 < 15/32
