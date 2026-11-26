@@ -1,0 +1,385 @@
+{
+  "audit": {
+    "rows": 2182,
+    "sites": 24,
+    "visits": 664,
+    "flow": {
+      "included": 359,
+      "incompatible positions or width": 1,
+      "other protocol": 303,
+      "other visit size": 1
+    }
+  },
+  "nominal": [
+    {
+      "site_id": 1165,
+      "visits": 23,
+      "endpoint_counts": [
+        2,
+        1
+      ],
+      "items_per_strip_means": [
+        47.56521739130435,
+        46.77933901591229,
+        46.76487562748096
+      ]
+    },
+    {
+      "site_id": 1173,
+      "visits": 22,
+      "endpoint_counts": [
+        5,
+        3
+      ],
+      "items_per_strip_means": [
+        29.772727272727273,
+        30.414452665298736,
+        30.50320584283481
+      ]
+    },
+    {
+      "site_id": 1233,
+      "visits": 31,
+      "endpoint_counts": [
+        5,
+        2
+      ],
+      "items_per_strip_means": [
+        5.564516129032258,
+        5.582359472209881,
+        5.590138992559328
+      ]
+    },
+    {
+      "site_id": 1266,
+      "visits": 9,
+      "endpoint_counts": [
+        1,
+        1
+      ],
+      "items_per_strip_means": [
+        9.333333333333334,
+        9.4629039561237,
+        9.484549303702492
+      ]
+    },
+    {
+      "site_id": 1277,
+      "visits": 27,
+      "endpoint_counts": [
+        4,
+        4
+      ],
+      "items_per_strip_means": [
+        39.851851851851855,
+        39.910319466559514,
+        39.96005377082779
+      ]
+    },
+    {
+      "site_id": 1291,
+      "visits": 13,
+      "endpoint_counts": [
+        1,
+        2
+      ],
+      "items_per_strip_means": [
+        7.788461538461538,
+        7.643909457730402,
+        7.640171955466779
+      ]
+    },
+    {
+      "site_id": 1297,
+      "visits": 38,
+      "endpoint_counts": [
+        3,
+        11
+      ],
+      "items_per_strip_means": [
+        37.25,
+        38.2269446781553,
+        38.3530045232129
+      ]
+    },
+    {
+      "site_id": 1316,
+      "visits": 36,
+      "endpoint_counts": [
+        3,
+        7
+      ],
+      "items_per_strip_means": [
+        15.73611111111111,
+        15.692193230239623,
+        15.706050626514799
+      ]
+    },
+    {
+      "site_id": 1339,
+      "visits": 33,
+      "endpoint_counts": [
+        1,
+        6
+      ],
+      "items_per_strip_means": [
+        3.8863636363636362,
+        3.845008386688922,
+        3.845798560156789
+      ]
+    },
+    {
+      "site_id": 1406,
+      "visits": 20,
+      "endpoint_counts": [
+        4,
+        4
+      ],
+      "items_per_strip_means": [
+        2.725,
+        2.7283652090211494,
+        2.731711366148119
+      ]
+    },
+    {
+      "site_id": 1459,
+      "visits": 10,
+      "endpoint_counts": [
+        1,
+        4
+      ],
+      "items_per_strip_means": [
+        25.2,
+        25.576802655607633,
+        25.637571286859234
+      ]
+    },
+    {
+      "site_id": 1476,
+      "visits": 12,
+      "endpoint_counts": [
+        3,
+        0
+      ],
+      "items_per_strip_means": [
+        11.791666666666666,
+        11.919188609314418,
+        11.943413980737683
+      ]
+    },
+    {
+      "site_id": 1488,
+      "visits": 8,
+      "endpoint_counts": [
+        0,
+        1
+      ],
+      "items_per_strip_means": [
+        8.96875,
+        8.714457577297793,
+        8.702575606361975
+      ]
+    },
+    {
+      "site_id": 1666,
+      "visits": 9,
+      "endpoint_counts": [
+        0,
+        0
+      ],
+      "items_per_strip_means": [
+        4.111111111111111,
+        3.963650920736589,
+        3.9555387317148893
+      ]
+    },
+    {
+      "site_id": 2112,
+      "visits": 16,
+      "endpoint_counts": [
+        2,
+        3
+      ],
+      "items_per_strip_means": [
+        21.640625,
+        21.614283927141713,
+        21.63627912178664
+      ]
+    },
+    {
+      "site_id": 346,
+      "visits": 3,
+      "endpoint_counts": [
+        0,
+        0
+      ],
+      "items_per_strip_means": [
+        1.4166666666666667,
+        1.3658526821457166,
+        1.3630572656585092
+      ]
+    },
+    {
+      "site_id": 64,
+      "visits": 4,
+      "endpoint_counts": [
+        1,
+        0
+      ],
+      "items_per_strip_means": [
+        8.6875,
+        8.746617856082619,
+        8.761460526412378
+      ]
+    },
+    {
+      "site_id": 75,
+      "visits": 45,
+      "endpoint_counts": [
+        4,
+        12
+      ],
+      "items_per_strip_means": [
+        6.294444444444444,
+        6.24242588077953,
+        6.244996481837162
+      ]
+    }
+  ],
+  "length_90_110": [
+    {
+      "site_id": 1165,
+      "visits": 23,
+      "endpoint_counts": [
+        2,
+        1
+      ],
+      "items_per_strip_means": [
+        47.56521739130435,
+        46.77933901591229,
+        46.76487562748096
+      ]
+    },
+    {
+      "site_id": 1173,
+      "visits": 22,
+      "endpoint_counts": [
+        5,
+        3
+      ],
+      "items_per_strip_means": [
+        29.772727272727273,
+        30.414452665298736,
+        30.50320584283481
+      ]
+    },
+    {
+      "site_id": 1277,
+      "visits": 27,
+      "endpoint_counts": [
+        4,
+        4
+      ],
+      "items_per_strip_means": [
+        39.851851851851855,
+        39.910319466559514,
+        39.96005377082779
+      ]
+    },
+    {
+      "site_id": 1291,
+      "visits": 13,
+      "endpoint_counts": [
+        1,
+        2
+      ],
+      "items_per_strip_means": [
+        7.788461538461538,
+        7.643909457730402,
+        7.640171955466779
+      ]
+    },
+    {
+      "site_id": 1297,
+      "visits": 38,
+      "endpoint_counts": [
+        3,
+        11
+      ],
+      "items_per_strip_means": [
+        37.25,
+        38.2269446781553,
+        38.3530045232129
+      ]
+    },
+    {
+      "site_id": 1459,
+      "visits": 10,
+      "endpoint_counts": [
+        1,
+        4
+      ],
+      "items_per_strip_means": [
+        25.2,
+        25.576802655607633,
+        25.637571286859234
+      ]
+    },
+    {
+      "site_id": 1488,
+      "visits": 8,
+      "endpoint_counts": [
+        0,
+        1
+      ],
+      "items_per_strip_means": [
+        8.96875,
+        8.714457577297793,
+        8.702575606361975
+      ]
+    },
+    {
+      "site_id": 1666,
+      "visits": 9,
+      "endpoint_counts": [
+        0,
+        0
+      ],
+      "items_per_strip_means": [
+        4.111111111111111,
+        3.963650920736589,
+        3.9555387317148893
+      ]
+    },
+    {
+      "site_id": 64,
+      "visits": 4,
+      "endpoint_counts": [
+        1,
+        0
+      ],
+      "items_per_strip_means": [
+        8.6875,
+        8.746617856082619,
+        8.761460526412378
+      ]
+    },
+    {
+      "site_id": 75,
+      "visits": 45,
+      "endpoint_counts": [
+        4,
+        12
+      ],
+      "items_per_strip_means": [
+        6.294444444444444,
+        6.24242588077953,
+        6.244996481837162
+      ]
+    }
+  ],
+  "design_endpoint_probs": {
+    "whole": "89/669",
+    "sequential": "257570377/1993493502"
+  }
+}

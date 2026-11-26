@@ -14,6 +14,10 @@ Hsu and Xu asked how much value dimension is needed to classify symmetric Boolea
 
 A two-bit distribution disproves the support-ordering conjecture of He, Rojas and Tao (ICLR 2026, Conjecture E.1) and the limiting-support conclusion of Proposition 3.3(2). We also prove a finite-alphabet theorem identifying which outputs survive strong guidance, a subset recurrence computing their decay exponents and coefficients, and a product construction in which arbitrarily rare class overlap becomes nearly certain. The English manuscript and formal proofs are available for independent review. External peer review is pending. [Research paper](studies/masked-guidance/paper.pdf) · [Study and reproducibility](studies/masked-guidance/README.md) · [ICLR source](https://proceedings.iclr.cc/paper_files/paper/2026/hash/a14193e9d9fb0b03af0b717de1cac8ac-Abstract-Conference.html)
 
+## How transect selection affects shoreline litter surveys
+
+One spreadsheet option in NOAA's 2021 field guide gives each end strip of a beach a 12.92% or 13.30% chance of selection under two ways of redrawing duplicates. Uniform selection gives 20%. A single four-strip visit without a record of the selection procedure cannot yield an estimator unbiased for all count patterns under all three designs. In two disjoint samples of eligible US sites, the site-weighted frequencies of observing an end strip were 17.2% and 12.6%. The public records identify neither the drawing procedure nor how much litter selection may have missed. This exploratory methods report has not undergone external peer review. [English manuscript](studies/shoreline-transects/paper.pdf) · [Statistical and formal reproduction](studies/shoreline-transects/VERIFY.md) · [Sources and prior work](studies/shoreline-transects/PRIOR-ART.md)
+
 ## Earlier graph catalogue study
 
 This earlier publication addresses a machine-generated inequality. It is archived and contributes zero to the programme for human-posed open research problems. The files below describe that publication. [Archived v1.0.0 release](https://github.com/yoshi0703/ProofRush/releases/tag/v1.0.0)

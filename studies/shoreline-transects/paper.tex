@@ -1,0 +1,121 @@
+\documentclass[10pt]{article}
+\usepackage[hmargin=.76in,vmargin=.70in]{geometry}
+\usepackage{fontspec,amsmath,amssymb,amsthm,booktabs,microtype}
+\usepackage[hidelinks]{hyperref}
+\IfFontExistsTF{Noto Sans CJK JP}{\newfontfamily\namefont{Noto Sans CJK JP}}{\IfFontExistsTF{Hiragino Sans}{\newfontfamily\namefont{Hiragino Sans}}{\newfontfamily\namefont{HaranoAjiMincho-Regular.otf}}}
+\newtheorem{theorem}{Theorem}
+\newcommand{\E}{\mathbb E}
+\title{Endpoint inclusion and repeated transects\\ in shoreline litter monitoring}
+\author{ProofRush research team\\[-1pt]\small Project initiated by {\namefont 大束良明}}
+\date{26 November 2026 UTC \quad$\cdot$\quad Unreviewed working paper}
+\makeatletter
+\renewcommand{\maketitle}{\begin{center}{\LARGE\@title\par}\vspace{5pt}{\large\@author\par}\vspace{3pt}{\small\@date\par}\end{center}}
+\makeatother
+\begin{document}
+\maketitle
+\begin{abstract}
+Rotating strip surveys inform coastal litter monitoring. We audited a selection formula in the 2021 NOAA Marine Debris Monitoring and Assessment Project field guide and examined what can be inferred when selection metadata are missing. The two end strips each have inclusion probability 13.30\% or 12.92\%, depending on how duplicate draws are repeated. Simple random sampling gives 20\%. We give a finite-population criterion for a single-visit mean estimator to be unbiased simultaneously under several unrecorded mechanisms and show that such an estimator does not exist for these three schemes. A pilot with prespecified site selection yielded 263 qualifying visits at 18 US sites. Site-weighted endpoint inclusion was 17.19\%. An independent, disjoint validation cohort yielded 359 visits at 18 sites and 12.56\% inclusion. Across the three proposed selection schemes, estimates of mean litter abundance spanned 0.222 items per strip in the pilot and 0.069 in validation. All eleven exact four-strip repeats among 151 consecutive monthly pilot pairs occurred at one site. These results identify an audit opportunity and delimit what records of strip positions and counts alone say about previous cleanup.
+\end{abstract}
+
+\section{The field question}
+Beach monitoring measures the litter visible when a team arrives. Smith and Markic found lower observed daily accumulation with longer intervals at an Australian beach \cite{smith}. Repeated removal and marking experiments distinguish arrivals and departures more directly \cite{willis,haarr}. Field trials have also quantified imperfect detection within sampled strips \cite{detection}. A 2026 US nationwide design addresses the choice of sites and revisit intervals across regions \cite{nationwide}. The 2021 NOAA field guide explicitly identifies the potential influence of removal on future counts and requests that observers record its extent \cite{guide}. The program covers litter items 2.5~cm and larger. The current protocol permits removal, including cleanup outside the surveyed strips after measurement. Earlier standing-stock and accumulation protocols treated removal differently \cite{sanctuary}. We ask how an observed previous strip assignment is associated with the next count and whether the recorded assignments can be treated as independent, uniform four-strip samples.
+
+NOAA specifies a 100~m site divided into twenty 5~m strips at starts $0,5,\ldots,95$~m. The technical memorandum offers a spreadsheet procedure, \texttt{MROUND(RANDBETWEEN(0,95),5)}, alongside a supplied list of random values, and asks surveyors to retry duplicates until four distinct strips are obtained \cite{guide}. The educator guide also recommends drawing integers 0 through 19 and multiplying by five \cite{edu}. This gives uniform raw draws. The educator page leaves duplicate handling unspecified. Completing independent uniform draws to four distinct positions gives the uniform four-set law under either redraw interpretation. We have no information on the generator of NOAA's supplied lists. Selection mode is absent from the export.
+
+\section{Exact selection laws}
+Each interior output of the spreadsheet function has five integer preimages. Each endpoint has three. Write $U$ for simple random sampling, $W$ for whole-batch rejection, and $S$ for retrying collisions one at a time. Let $J$ count the selected endpoints. Under independent draws followed by whole-batch rejection of duplicates, each unordered four-set has probability proportional to the product of its label weights. Thus
+\[
+ \Pr_W(J=j)\propto {2\choose j}{18\choose 4-j}3^j5^{4-j},\qquad j=0,1,2.
+\]
+If accepted labels are retained and only duplicate draws are retried, then after $t$ accepted labels with $j$ endpoints, the next new label is an endpoint with probability
+\[
+ \frac{3(2-j)}{3(2-j)+5(18-t+j)}.
+\]
+These are established rejective and successive sampling schemes. The product form is classical, and Yu compares the two inclusion laws for arbitrary drawing probabilities \cite{chen,yu,fog}. Table~\ref{tab:design} gives the resulting probabilities. In every row, individual endpoint inclusion equals $\E J/2$, and interior inclusion equals $(4-\E J)/18$. If all debris occurred in the two end strips, the expected count per sampled strip under the two rounded designs would be 66.52\% and 64.60\% of the true 20-strip mean. This example gives no field estimate of the actual bias.
+
+\begin{table}[ht]\centering\small
+\begin{tabular}{lrrrrr}\toprule
+Selection rule & $\Pr(J=0)$ & $\Pr(J=1)$ & $\Pr(J=2)$ & endpoint & interior\\\midrule
+Uniform & $12/19$ & $32/95$ & $3/95$ & .20000 & .20000\\
+Whole batch & $500/669$ & $160/669$ & $3/223$ & .13303 & .20744\\
+Duplicate only & .75425 & .23308 & .01266 & .12921 & .20787\\\bottomrule
+\end{tabular}
+\caption{A single strip's probability of being observed is given by the last two columns. The archive computes each entry as a rational number.}\label{tab:design}
+\end{table}
+
+\section{What one survey identifies}
+Consider a family of selection mechanisms that each draw the same fixed number $n$ of distinct labels from the population of $N$ and are invariant under permutations within a nonempty endpoint stratum $E$ and within its complement. Suppose each survey includes at least one interior strip. The observations consist only of the unordered selected labels and their counts, without a marker for the generator. Outcomes are fixed for the visit and counting one selected strip does not change a second strip's outcome at that visit. Form $M_{rj}=\Pr_r(J=j)$ for candidate mechanisms $r$ and positive $j$.
+
+\begin{theorem}
+There exists a single estimator of the finite-site mean that is unbiased for all candidate designs on every nonnegative strip-count configuration if and only if $\mathbf1$ is in the column space of $M$.
+\end{theorem}
+\begin{proof}
+If $Mh=\mathbf1$, estimate the endpoint mean by $h_J$ times the observed endpoint mean when $J>0$, and by zero otherwise. Estimate the interior mean by the sample interior mean. Conditional on $J$, the sample is uniform within both strata. Weight the two estimates by population shares. Conversely, compare the all-zero population with the population having one item at each endpoint and zero in the interior. For any estimator and attainable $j>0$, let $h_j$ be the mean output difference over all samples with $J=j$, divided by $|E|/N$. The conditional distribution of the labels is independent of the design. The difference at $j=0$ vanishes since the observations coincide. Unbiasedness therefore implies $Mh=\mathbf1$. This implication applies also to randomized and nonlinear estimators.
+\end{proof}
+
+A related finite-design identity drops exchangeability and permits variable sample size. Let $I$ be a finite population, $S$ a finite set of possible observations of the sampling pattern, $O(s)\subseteq I$ the labels observed at $s$, and $p_r(s)$ the probability of $s$ under design $r$. The observer sees $s$ and its counts but no design identifier. For all nonnegative integer count vectors, one estimator is unbiased for $\sum_i a_i y_i$ under every design if and only if real weights satisfy
+\[
+  \sum_{s:\,i\in O(s)}p_r(s)w_{i,s}=a_i \qquad\text{for all }r,i.
+\]
+For necessity subtract an estimator's response on an all-zero population from its response to the unit impulse at $i$, sample by sample. This difference vanishes whenever $i\notin O(s)$, leaving exactly the displayed constraint. Conversely, $\sum_{i\in O(s)}w_{i,s}y_i$ has the required expectation by interchanging finite sums. Such sample-dependent linear weights are classical in survey sampling \cite{godambe}; the equations require the same weights to work under all candidate designs.
+
+For the three specified rules, let $d$ be the cross product of the two columns. Its entries satisfy
+\[ d^{\mathsf{T}}\mathbf{1}=-\frac{46517920}{1407738661329}. \]
+This nonzero sum rules out a common unbiased estimator even though each design has full support. When its design is known, the usual inverse-inclusion estimator is unbiased \cite{ht}.
+
+For endpoint corrections of the form used above, a uniform relative-bias bound over the designs is exactly $\|Mh-\mathbf1\|_\infty$. Since $d^\mathsf{T}(Mh-\mathbf1)=-d^\mathsf{T}\mathbf1$, its sharp signed minimum is $|d^\mathsf{T}\mathbf1|/\|d\|_1\approx0.005310$. Matching residual signs attains equality since $M$ has rank two. The attaining weights are about $6.079$ and $-33.346$, risking large sampling error. For nonnegative weights, the minimum is $0.182054$ to six places. Indeed the ratio between uniform and successive probabilities is larger for $J=2$ than for $J=1$. The smallest possible multiplicative separation of their expected component estimates is attained by putting all weight on $J=1$. Scaling that weight to equalize the two extreme errors gives equality, and the third design is intermediate.
+
+The nonnegative lower bound covers arbitrary finite nonnegative estimators as well. Put count $L$ at each endpoint and zero in the interior. Conditional on $J=j$, write $h_j(L)$ for the expected estimate divided by the true total $2L$ (or scale the mean estimator by $N$ first). These nonnegative coefficients are common to the three laws. Since all observed counts are zero at $J=0$, $h_0(L)\to0$ as $L\to\infty$. Put $c=\Pr_S(J=1)/\Pr_U(J=1)$. For $j=1,2$, $\Pr_S(J=j)\le c\Pr_U(J=j)$. A common absolute relative-bias bound $B$ therefore implies $1-B\le c(1+B)$ in the limit, giving $B\ge0.182054$ up to rounding. The linear estimator above attains the exact bound. If the aggregate endpoint weight must be nondecreasing from one observed endpoint to two, the optimal bound among those linear estimators is 19.97\%. These worst cases use concentrated populations and say nothing about the size of the actual field bias in Table~\ref{tab:data}.
+
+\section{Two samples of monitored US sites}
+The frozen public NOAA site index contained 152 verified US sites with at least eight indexed survey entries. We sorted SHA-256 hashes of a fixed string and site ID. The pilot used ranks 1--24. A second analyst used the next 24, in a separate implementation, after freezing the eligibility criteria. The 24-site pilot selection preceded its endpoint analysis. The endpoint outcome was specified before the held-out data were requested. Records came from the main-beach file, including zero-count strips. Eligible site-dates had one survey ID, exactly four distinct valid positions, 5~m widths, a complete count and the 2.0 protocol. Table~\ref{tab:data} distinguishes visit and site weighting. The bootstrap resampled sites and describes variation in these cohorts.
+
+\begin{table}[ht]\centering\small
+\begin{tabular}{lrr}\toprule
+ & Pilot & Held out\\\midrule
+Raw strip rows / survey visits & 1,888 / 527 & 2,182 / 664\\
+Qualifying visits / contributing sites & 263 / 18 & 359 / 18\\
+Number of selections at 0 m / 95 m & 59 / 41 & 40 / 61\\
+Per-endpoint inclusion, site-weighted & 17.19\% & 12.56\%\\
+Descriptive site bootstrap, 95\% & 12.02--22.97\% & 9.61--15.48\%\\
+Per-endpoint inclusion, visit-weighted & 19.01\% & 14.07\%\\
+Items/strip, ordinary mean (sites weighted equally) & 14.590 & 15.977\\
+Items/strip, whole-batch inclusion weights & 14.779 & 16.024\\
+Items/strip, successive inclusion weights & 14.812 & 16.046\\\bottomrule
+\end{tabular}
+\caption{Modern main-beach surveys. The alternative inverse-inclusion estimates are sensitivities under stipulated designs.}\label{tab:data}
+\end{table}
+
+The pilot interval contains the uniform reference value of 20\%; the held-out cohort has a lower interval. In the pilot, 20,210 items were counted. The reported site lengths, derived from site metadata, spanned 91--174~m despite the 100~m protocol. Restricting to 90--110~m leaves 216 pilot visits at 14 sites (16.04\% site-weighted endpoint inclusion) and 199 held-out visits at 10 sites (13.10\%). Counts cannot distinguish several real selection mechanisms including accessibility constraints. The statistical population consists of participating sites and dates, with no sampling frame for all US coastlines.
+
+\section{A within-visit diagnostic for carryover}
+Let $A$ and $B$ be the previous and current selected sets, $p=m/N$, $Z_i=1\{i\in A\}$, and $Y_i(A)$ the current outcome, allowing spillover within a shoreline. For uniform independent draws of sizes $m$ and $n$ consider
+\[
+ D=\frac{N-1}{N(n-1)p(1-p)}
+   \sum_{i\in B}(Z_i-\bar Z_B)(Y_i-\bar Y_B).
+\]
+The sample cross product equals $n^{-1}\sum_{i<j\in B}(Z_i-Z_j)(Y_i-Y_j)$. Each pair has inclusion probability $n(n-1)/[N(N-1)]$, hence conditional expectation over $B$ gives the full-population difference between the assigned and unassigned means. Averaging over $A$ yields $\E[Y_i(K\cup\{i\})-Y_i(K\cup\{j\})]$ with a uniform ordered pair $i\ne j$ and a uniform $(m-1)$-set $K$ avoiding both. Under the candidate rounded designs one may weight $D$ by the ratio of uniform to actual assignment probabilities for the two observed sets to reproduce this uniform-design expectation, assuming genuine independent draws. Four positions provide little direct information about the mechanism.
+
+The pilot had 151 consecutive eligible pairs 21--42 days apart at 17 sites. The site-average $D$ was $-1.60$ items per strip (descriptive 95\% site-bootstrap interval $-4.33$ to $1.02$). Using the next visit's strip indicators on current counts gave $+1.79$ ($-0.85$ to $5.11$). Eleven pairs repeated all four strips, all in the records for site ID 1283. Independent uniform selection would give a reference expectation of $151/{20\choose4}\approx0.0312$ such pairs. Under either rounded mechanism the expectation remains below 0.04. This benchmark assumes that observed schedules and inclusion do not select on the draw. A repeated local schedule or recording practice is possible. Site-level cleanup can reach unselected strips, previous selection can affect detection, and storms or beach access can govern visits. The archive cannot support a causal estimate of the influence of removal from these aggregates alone.
+
+\section{Scope, resources and scientific follow-up}
+The exact sample-design discrepancy is verifiable directly from the printed formula. The genuine data archive exhibits irregularities but does not disclose which generator a site used. A discriminating field study would prerecord the generator and selected positions, log between-visit cleanups, document out-of-strip removal, and use blinded independent duplicate counts. The procedure in the educator guide can already sample starts uniformly. These findings concern observation of stranded litter and do not identify a global marine mass balance.
+
+The human project initiator directed the research theme. Codex agents using the existing subscription selected and investigated the field question, derived the formulas, and separately analyzed the pilot and held-out data on one local Apple M3 Pro. The work used public NOAA and partner data, downloaded anonymously, and Python standard-library calculations. Lean 4 checks the rounding multiplicities, endpoint-count probabilities, concrete impossibility for arbitrary response rules on labelled samples, and sharp component-bias bounds under the three mathematical laws. Exact enumeration over all 4,845 four-sets and their 24 orderings independently checks the probability calculations. The Rust \texttt{nanoda} checker independently verified eight shoreline-specific Lean targets and, in a separate export, the general finite-design calibration identity. The two-stratum column-space reduction and extension to randomized rules are proved in this paper. Field assignment, source provenance and scientific novelty require other forms of evidence. No additional paid API, field intervention, conference submission or external peer review occurred. The accompanying research log gives the chronology and agency attribution.
+
+\begin{thebibliography}{13}\small\setlength{\itemsep}{0pt}
+\bibitem{smith} S.~D.~A. Smith and A. Markic. \href{https://doi.org/10.1371/journal.pone.0083694}{Estimates of marine debris accumulation on beaches are strongly affected by the temporal scale of sampling}. \emph{PLOS ONE} 8, e83694 (2013).
+\bibitem{willis} E. Brennan, C. Wilcox and B.~D. Hardesty. \href{https://doi.org/10.1016/j.scitotenv.2018.06.352}{Connecting flux, deposition and resuspension in coastal debris surveys}. \emph{Science of the Total Environment} 644, 1019--1026 (2018).
+\bibitem{haarr} M.~L. Haarr et al. \href{https://doi.org/10.1016/j.marpolbul.2024.116720}{Beach litter deposition and turnover, effects of tides and weather, and implications for cleanup strategies: A case study in the Lofoten archipelago, Norway}. \emph{Marine Pollution Bulletin} 206, 116720 (2024).
+\bibitem{detection} H.~K. Burgess et al. \href{https://doi.org/10.1016/j.marpolbul.2023.115905}{How we count counts: Examining influences on detection during shoreline surveys of marine debris}. \emph{Marine Pollution Bulletin} 198, 115905 (2024).
+\bibitem{nationwide} A.~V. Uhrin and H.~K. Burgess. \href{https://doi.org/10.1016/j.marpolbul.2026.119549}{Progress toward meaningful marine debris shoreline monitoring: Confronting the challenges of survey design in the United States}. \emph{Marine Pollution Bulletin} 228, 119549 (2026).
+\bibitem{sanctuary} A.~V. Uhrin et al. \href{https://doi.org/10.3389/fenvs.2020.604927}{Temporal trends and potential drivers of stranded marine debris on beaches within two US National Marine Sanctuaries using citizen science data}. \emph{Frontiers in Environmental Science} (2020).
+\bibitem{guide} H.~K. Burgess, C.~E. Herring, S. Lippiatt, S. Lowe and A.~V. Uhrin. \href{https://repository.library.noaa.gov/view/noaa/33282/noaa_33282_DS1.pdf}{NOAA Marine Debris Monitoring and Assessment Project Shoreline Survey Guide}. NOAA Technical Memorandum NOS OR\&R 56 (2021), printed pp.~8, 17--19.
+\bibitem{edu} NOAA Marine Debris Program. \href{https://marinedebris.noaa.gov/before-every-survey-safety-tips-and-transect-selection}{Before Every Survey: Safety Tips and Transect Selection}. \href{https://mdmap.orr.noaa.gov/}{Marine Debris Monitoring and Assessment Project Data}, accessed 26 November 2026.
+\bibitem{chen} X.-H. Chen, A.~P. Dempster and J.~S. Liu. \href{https://doi.org/10.1093/biomet/81.3.457}{Weighted finite population sampling to maximize entropy}. \emph{Biometrika} 81, 457--469 (1994).
+\bibitem{yu} Y. Yu. \href{https://doi.org/10.3150/10-BEJ337}{On the inclusion probabilities in some unequal probability sampling plans without replacement}. \emph{Bernoulli} 18, 279--289 (2012).
+\bibitem{fog} A. Fog. \href{https://doi.org/10.1080/03610910701790236}{Sampling methods for Wallenius' and Fisher's noncentral hypergeometric distributions}. \emph{Communications in Statistics---Simulation and Computation} 37, 241--257 (2008).
+\bibitem{godambe} V.~P. Godambe. \href{https://academic.oup.com/jrsssb/article/17/2/269/7026727}{A unified theory of sampling from finite populations}. \emph{JRSS Series B} 17, 269--278 (1955).
+\bibitem{ht} D.~G. Horvitz and D.~J. Thompson. \href{https://doi.org/10.1080/01621459.1952.10483446}{A generalization of sampling without replacement from a finite universe}. \emph{JASA} 47, 663--685 (1952).
+\end{thebibliography}
+\end{document}

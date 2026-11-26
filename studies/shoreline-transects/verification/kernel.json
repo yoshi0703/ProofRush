@@ -1,0 +1,27 @@
+{
+  "lean": "Lean (version 4.36.0, arm64-apple-darwin24.6.0, commit 611c117bfaf7b7ae1cfcf246ce6fba31e8f509e9, Release)",
+  "mathlib": "fc4f59e577feb1a4956671bc04ac18aaaf8cd842",
+  "targets": [
+    "Shoreline.rounding_multiplicities",
+    "Shoreline.probabilities",
+    "Shoreline.no_common_unbiased",
+    "Shoreline.endpoint_probabilities",
+    "Shoreline.signed_lower",
+    "Shoreline.nonnegative_lower",
+    "Shoreline.monotone_lower",
+    "Shoreline.sharp_calibrations"
+  ],
+  "sources_sha256": {
+    "Shoreline.lean": "0bb3ecc48501b36570dcd47ef3d5483a0ac29be476790ed09b673cc958fdfb96",
+    "EndpointBias.lean": "b1989c7d6661a9fa791d5a0821b8b68a7599add5112456fdfcb7d4bfb4542991"
+  },
+  "export_sha256": "d3d48f16fc1cc50371121c036ad1cbe9dc470f2348bee9b9def7761207fac80e",
+  "exported_axioms": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "nanoda_sha256": "44ba1e3472937ddfc56c9e132a8d227be46694e4a970af8cd2699d09e2acaf10",
+  "isolation": "macOS Seatbelt",
+  "independent_verdict": "Checked 9157 declarations with no errors"
+}

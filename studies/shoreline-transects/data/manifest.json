@@ -1,0 +1,156 @@
+{
+  "source": "NOAA Marine Debris Monitoring and Assessment Project public export",
+  "export_date_utc": "2026-11-26",
+  "site_index_endpoint": "https://portal.diver.orr.noaa.gov/pentaho/mdmap/sites",
+  "read_only_archive_export_endpoint": "https://portal.diver.orr.noaa.gov/pentaho/mdmap/sites/export",
+  "selection_hash_prefix": "proofrush-environment-20261126:",
+  "eligibility": "Verified United States site with at least eight surveys listed in the frozen index",
+  "eligible_site_count": 152,
+  "site_index_sha256": "1710d1ab192914eb90d88857635b818ac8743e6b43aee206f745f6867841741b",
+  "cohorts": {
+    "pilot": {
+      "one_based_ranks": [
+        1,
+        24
+      ],
+      "batches": [
+        {
+          "file": "pilot-0.zip",
+          "site_ids": [
+            1456,
+            74,
+            1202,
+            1174
+          ],
+          "sha256": "2fb912f8f78cd9b7494dcb623ab5e080ac044bcefd5d55f9ff5bda64d658b391"
+        },
+        {
+          "file": "pilot-1.zip",
+          "site_ids": [
+            1188,
+            2113,
+            1249,
+            97
+          ],
+          "sha256": "8a8c4ccd3b45dab2932044f816bdc412470a648b52292d2d4a5fadc769124925"
+        },
+        {
+          "file": "pilot-2.zip",
+          "site_ids": [
+            1178,
+            1170,
+            94,
+            1498
+          ],
+          "sha256": "696961ad0c3bb0b6f67bc40bc591b82628eecbc19410d7df4fac5fac4d307d06"
+        },
+        {
+          "file": "pilot-3.zip",
+          "site_ids": [
+            1138,
+            1454,
+            81,
+            1431
+          ],
+          "sha256": "105962a11b0aed9119f293d248761b57d76c06be3e9dfb3f5769bbdfe8452033"
+        },
+        {
+          "file": "pilot-4.zip",
+          "site_ids": [
+            1247,
+            92,
+            1787,
+            1253
+          ],
+          "sha256": "2fdb4a6e689323384357a7c3fe397b6d7de548e74beb1e71505ccc529a362e41"
+        },
+        {
+          "file": "pilot-5.zip",
+          "site_ids": [
+            14,
+            246,
+            1283,
+            1172
+          ],
+          "sha256": "11de087cf96ec769dda671ae1c2307d917daacbfec7fbb2d06f9e45a3a7d8f5d"
+        }
+      ]
+    },
+    "holdout": {
+      "one_based_ranks": [
+        25,
+        48
+      ],
+      "batches": [
+        {
+          "file": "holdout-0.zip",
+          "site_ids": [
+            1233,
+            89,
+            64,
+            1406
+          ],
+          "sha256": "fe545d80388cd1807f7603e72810e30f8dcb26c55e5b2d2cf08e02d785959a4f"
+        },
+        {
+          "file": "holdout-1.zip",
+          "site_ids": [
+            1291,
+            75,
+            1316,
+            1339
+          ],
+          "sha256": "1458823823c1eed5658df407ae70a7f747cd14f88c14e8f465a8ffebc4fe4e8a"
+        },
+        {
+          "file": "holdout-2.zip",
+          "site_ids": [
+            1488,
+            29,
+            1266,
+            168
+          ],
+          "sha256": "8454f4496a90fcede7f137513665847ef6bb0ea10a61a4a7aea4f36b61898f0e"
+        },
+        {
+          "file": "holdout-3.zip",
+          "site_ids": [
+            346,
+            1173,
+            1476,
+            1165
+          ],
+          "sha256": "c070c4973868a7ba2f3935e880c1b375321b4e434b2e5a7541637afadf246f62"
+        },
+        {
+          "file": "holdout-4.zip",
+          "site_ids": [
+            13,
+            1459,
+            1277,
+            90
+          ],
+          "sha256": "a3b2daad2b83a561d064471af2abad43fe35ea9c85526cef357126d81370b7ca"
+        },
+        {
+          "file": "holdout-5.zip",
+          "site_ids": [
+            1297,
+            1666,
+            2112,
+            96
+          ],
+          "sha256": "d6e9a95587bf8084eb582a61611386e165e7716397e512ff436e9252250a0f7f"
+        }
+      ]
+    }
+  },
+  "original_report_sha256": {
+    "pilot": "9755f6663f16fc8c3d91f874e8d8efa5f5b2456c56870dddf27052e5e5ecb2bb",
+    "holdout": "a5cedcce465a734a9459d538e90e46042de07eede5af72352310ccb0241907d3"
+  },
+  "frozen_file_sha256": {
+    "pilot.json": "031033d32eaefe140adaea8d1f7cedc170fce2f8644a67f68a0d599a0f1e9761",
+    "holdout.json": "591206738b5f4cfea76738659b6403461165ecc8699734c136be3a00de90bdf6"
+  }
+}

@@ -51,6 +51,14 @@ jobs:
           python3 studies/attention-value-dimension/check_bounds.py
           python3 studies/attention-value-dimension/rank_example.py
 
+      - name: Reproduce the shoreline survey statistics and exact sampling calculations
+        run: |
+          python3 studies/shoreline-transects/replay/reproduce.py
+          python3 studies/shoreline-transects/replay/rounding.py
+          python3 studies/shoreline-transects/replay/finite_design.py
+          python3 studies/shoreline-transects/replay/identification.py
+          python3 studies/shoreline-transects/replay/robust.py --exact
+
       - name: Install the pinned Lean release
         shell: bash
         run: |
@@ -72,7 +80,7 @@ jobs:
           cd "$mathlib"
           mapfile -t study_modules < <(
             awk '$1 == "import" && $2 ~ /^Mathlib[.]/ {print $2}' \
-              "$GITHUB_WORKSPACE"/studies/{masked-guidance,string-identified-bpe,attention-value-dimension}/lean/*.lean | sort -u
+              "$GITHUB_WORKSPACE"/studies/{masked-guidance,string-identified-bpe,attention-value-dimension,shoreline-transects}/lean/*.lean | sort -u
           )
           lake exe cache get Mathlib.Combinatorics.SimpleGraph.Coloring.Vertex \
             Mathlib.Combinatorics.SimpleGraph.Diam Mathlib.Data.Fin.VecNotation "${study_modules[@]}"
@@ -141,3 +149,15 @@ jobs:
             --nanoda "$RUNNER_TEMP/nanoda/target/release/nanoda_bin" \
             --docker-image "$CHECK_IMAGE" --run-dir "$RUNNER_TEMP/attention-value-dimension"
           cat "$RUNNER_TEMP/attention-value-dimension/nanoda.txt" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Check the shoreline sampling impossibility and sharp bias bounds independently
+        shell: bash
+        run: |
+          set -euo pipefail
+          umask 022
+          python3 studies/shoreline-transects/verify.py --mathlib "$RUNNER_TEMP/mathlib" \
+            --nanoda "$RUNNER_TEMP/nanoda/target/release/nanoda_bin" \
+            --docker-image "$CHECK_IMAGE" --run-dir "$RUNNER_TEMP/shoreline-transects"
+          for verdict in "$RUNNER_TEMP"/shoreline-transects/*/nanoda.txt; do
+            tail -n 1 "$verdict" >> "$GITHUB_STEP_SUMMARY"
+          done

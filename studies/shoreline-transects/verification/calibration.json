@@ -1,0 +1,19 @@
+{
+  "lean": "Lean (version 4.36.0, arm64-apple-darwin24.6.0, commit 611c117bfaf7b7ae1cfcf246ce6fba31e8f509e9, Release)",
+  "mathlib": "fc4f59e577feb1a4956671bc04ac18aaaf8cd842",
+  "targets": [
+    "LinearEstimator.simultaneous_calibration"
+  ],
+  "sources_sha256": {
+    "LinearEstimator.lean": "f55f6a4da2620979a2515e749a845ca2c2d925c975a785fbf072e2deefa171d0"
+  },
+  "export_sha256": "fd2666eacfc8ad2a27204a0282bb954b4bab6c07d135e8a5f6a29b6c501bb3f7",
+  "exported_axioms": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "nanoda_sha256": "44ba1e3472937ddfc56c9e132a8d227be46694e4a970af8cd2699d09e2acaf10",
+  "isolation": "macOS Seatbelt",
+  "independent_verdict": "Checked 7300 declarations with no errors"
+}

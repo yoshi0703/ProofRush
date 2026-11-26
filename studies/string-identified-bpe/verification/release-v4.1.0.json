@@ -1,0 +1,11 @@
+{
+  "revision": "7697acfd114604b59a14d97359e412dd8588052d",
+  "url": "https://github.com/yoshi0703/ProofRush/releases/tag/v4.1.0",
+  "published_at": "2026-11-26T21:09:57Z",
+  "public_pdf": "https://github.com/yoshi0703/ProofRush/releases/download/v4.1.0/paper.pdf",
+  "pdf_bytes": 97923,
+  "pdf_sha256": "aa31a54c6b9ad7f3cdef13ef5e2d00bce129a68308dbee1997bc39e780af64a2",
+  "release_verification": "https://github.com/yoshi0703/ProofRush/actions/runs/45896199458",
+  "main_verification": "https://github.com/yoshi0703/ProofRush/actions/runs/45896160063",
+  "both_workflow_conclusions": "success"
+}
