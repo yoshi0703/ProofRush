@@ -1,0 +1,90 @@
+{
+  "tag": "v1.0.0",
+  "release_commit": "fa11e3a87520d1dfad6dcb8499b74bd0fe2ddf6c",
+  "release": "https://github.com/yoshi0703/ProofRush/releases/tag/v1.0.0",
+  "published_at": "2026-11-26T17:35:19Z",
+  "initial_request": "2026-11-26T17:00:14.410Z",
+  "first_witness": "2026-11-26T17:14:03.919Z",
+  "elapsed_seconds_at_release": 2104.59,
+  "release_clock_precision_seconds": 1,
+  "pdf": {
+    "url": "https://github.com/yoshi0703/ProofRush/releases/download/v1.0.0/paper.pdf",
+    "sha256": "59ba4a29d61b2d288e663793219b2ed717162be8040676ce185bfdea17ef4d3a",
+    "bytes": 53032
+  },
+  "hosted_checks": {
+    "main": {
+      "conclusion": "success",
+      "createdAt": "2026-11-26T17:34:53Z",
+      "headSha": "fa11e3a87520d1dfad6dcb8499b74bd0fe2ddf6c",
+      "updatedAt": "2026-11-26T17:36:28Z",
+      "url": "https://github.com/yoshi0703/ProofRush/actions/runs/45868938622",
+      "export_sha256": "8b1bcdd0e1bc75413ea3e61f7595faa2a5a8c66c2eafe098d970099a87f19c95",
+      "independent_verdict": "Checked 7184 declarations with no errors"
+    },
+    "tag": {
+      "conclusion": "success",
+      "createdAt": "2026-11-26T17:35:21Z",
+      "headSha": "fa11e3a87520d1dfad6dcb8499b74bd0fe2ddf6c",
+      "updatedAt": "2026-11-26T17:36:55Z",
+      "url": "https://github.com/yoshi0703/ProofRush/actions/runs/45869007902",
+      "export_sha256": "8b1bcdd0e1bc75413ea3e61f7595faa2a5a8c66c2eafe098d970099a87f19c95",
+      "independent_verdict": "Checked 7184 declarations with no errors"
+    }
+  },
+  "usage_through_release": {
+    "cutoff_utc": "2026-11-26T17:35:19.000Z",
+    "model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "accounting": "Per-response recorded usage, including cached input. Reasoning output is part of output.",
+    "additional_paid_api_calls": 0,
+    "attributable_inference_cost": null,
+    "cost_note": "No per-response subscription invoice or attributable price was available.",
+    "sessions": {
+      "graphs": {
+        "completed_responses": 129,
+        "input_tokens": 18714141,
+        "cached_input_tokens": 18476032,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 63185,
+        "reasoning_output_tokens": 15087,
+        "total_tokens": 18777326
+      },
+      "sequences": {
+        "completed_responses": 114,
+        "input_tokens": 16904991,
+        "cached_input_tokens": 16648704,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 65448,
+        "reasoning_output_tokens": 20674,
+        "total_tokens": 16970439
+      },
+      "coordinator": {
+        "completed_responses": 100,
+        "input_tokens": 13185461,
+        "cached_input_tokens": 12869248,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 69991,
+        "reasoning_output_tokens": 14344,
+        "total_tokens": 13255452
+      },
+      "lean": {
+        "completed_responses": 116,
+        "input_tokens": 13964223,
+        "cached_input_tokens": 13876480,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 49940,
+        "reasoning_output_tokens": 17954,
+        "total_tokens": 14014163
+      }
+    },
+    "total": {
+      "completed_responses": 459,
+      "input_tokens": 62768816,
+      "cached_input_tokens": 61870464,
+      "output_tokens": 248564,
+      "reasoning_output_tokens": 68059,
+      "total_tokens": 63017380
+    }
+  }
+}
