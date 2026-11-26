@@ -1,0 +1,72 @@
+{
+  "window_start_utc": "2026-11-26T17:42:15.318000+00:00",
+  "window_end_utc": "2026-11-26T18:26:17.911870+00:00",
+  "utc_seconds": 2642.594,
+  "method": "Deduplicated completed response identifiers within the 100-problem campaign and these four sessions. Includes concurrent second-problem scouting. Cached input is included in input tokens, and reasoning tokens are included in output. The counters do not delimit GPU time or inference charges.",
+  "model_effort_by_role": {
+    "coordinator": [
+      "gpt-6.2-astra",
+      "max"
+    ],
+    "scout225_ai": [
+      "gpt-6.2-sol",
+      "high"
+    ],
+    "scout225_graph": [
+      "gpt-6.2-sol",
+      "medium"
+    ],
+    "scout225_oeis": [
+      "gpt-6.1-terra",
+      "medium"
+    ]
+  },
+  "per_role": {
+    "coordinator": {
+      "completed_responses": 150,
+      "input_tokens": 23478886,
+      "cached_input_tokens": 23287040,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 80013,
+      "reasoning_output_tokens": 21488,
+      "total_tokens": 23558899
+    },
+    "scout225_ai": {
+      "completed_responses": 165,
+      "input_tokens": 43182344,
+      "cached_input_tokens": 42782976,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 95913,
+      "reasoning_output_tokens": 39419,
+      "total_tokens": 43278257
+    },
+    "scout225_graph": {
+      "completed_responses": 146,
+      "input_tokens": 30148439,
+      "cached_input_tokens": 29480448,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 87721,
+      "reasoning_output_tokens": 25686,
+      "total_tokens": 30236160
+    },
+    "scout225_oeis": {
+      "completed_responses": 327,
+      "input_tokens": 67056289,
+      "cached_input_tokens": 66740096,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 65234,
+      "reasoning_output_tokens": 17929,
+      "total_tokens": 67121523
+    }
+  },
+  "total": {
+    "completed_responses": 788,
+    "input_tokens": 163865958,
+    "cached_input_tokens": 162290560,
+    "output_tokens": 328881,
+    "reasoning_output_tokens": 104522,
+    "total_tokens": 164194839
+  },
+  "additional_paid_api_calls": 0,
+  "attributable_monetary_cost": null
+}

@@ -1,0 +1,45 @@
+'CFGRare.normalized_classes' depends on axioms: [propext, Classical.choice, Quot.sound]
+'CFGRare.class_nonnegative' depends on axioms: [propext, Classical.choice, Quot.sound]
+'CFGRare.raw_marginals' depends on axioms: [propext, Classical.choice, Quot.sound]
+'CFGRare.rare_finite_witness' depends on axioms: [propext, Classical.choice, Quot.sound]
+'CFGRare.rare_initial' depends on axioms: [propext, Classical.choice, Quot.sound]
+'CFGRare.normalized_first_jump_limit' depends on axioms: [propext, Classical.choice, Quot.sound]
+'CFGRare.normalized_marker_limit' depends on axioms: [propext, Classical.choice, Quot.sound]
+'CFGRare.raw_ratio_bridge' depends on axioms: [propext, Classical.choice, Quot.sound]
+'CFGRare.raw_multiplier_bridge' depends on axioms: [propext, Classical.choice, Quot.sound]
+'CFGRare.marker_is_shared' depends on axioms: [propext, Classical.choice, Quot.sound]
+'CFGRare.guided_rate_ratio' depends on axioms: [propext, Classical.choice, Quot.sound]
+'CFGRare.real_first_marker_limit' depends on axioms: [propext, Classical.choice, Quot.sound]
+CFGRare.normalized_classes (s : ℝ) : ∑ x, CFGRare.target s x = 1 ∧ ∑ x, CFGRare.other s x = 1
+'CFGRare.normalized_classes' depends on axioms: [propext, Classical.choice, Quot.sound]
+CFGRare.class_nonnegative (s : ℝ) (hs0 : 0 ≤ s) (hs1 : s ≤ 1) (x : CFGRare.Word) :
+  0 ≤ CFGRare.target s x ∧ 0 ≤ CFGRare.other s x
+'CFGRare.class_nonnegative' depends on axioms: [propext, Classical.choice, Quot.sound]
+CFGRare.rare_initial_witness : CFGRare.overlap (1 / 100) = 29701 / 1000000
+'CFGRare.rare_initial_witness' depends on axioms: [propext, Classical.choice, Quot.sound]
+CFGRare.real_first_marker_limit (s : ℝ) (hs0 : 0 < s) (hs1 : s < 1) :
+  Filter.Tendsto (CFGRare.realFirstMarker s) Filter.atTop (nhds 1)
+'CFGRare.real_first_marker_limit' depends on axioms: [propext, Classical.choice, Quot.sound]
+CFGRareEvent.support_shared (s : ℝ) (hs0 : 0 < s) (hs1 : s < 1) (x : CFGRare.Word) :
+  0 < CFGRare.target s x ∧ 0 < CFGRare.other s x ↔ x ≠ (false, false, false)
+'CFGRareEvent.support_shared' depends on axioms: [propext, Classical.choice, Quot.sound]
+CFGRareEvent.rare_terminal_finite (k : CFGRareEvent.Completion) :
+  99 / 100 < CFGRareEvent.terminalShare (CFGRareEvent.firstChoice (1 / 100) 50) k
+'CFGRareEvent.rare_terminal_finite' depends on axioms: [propext, Classical.choice, Quot.sound]
+CFGRareEvent.rare_amplification (ε : ℝ) (hε : 0 < ε) :
+  ∃ s,
+    0 < s ∧
+      s < 1 ∧
+        CFGRare.overlap s < ε ∧
+          ∀ (k : ℝ → CFGRareEvent.Completion),
+            Filter.Tendsto (fun w => CFGRareEvent.terminalShare (CFGRareEvent.firstChoice s w) (k w)) Filter.atTop
+              (nhds 1)
+'CFGRareEvent.rare_amplification' depends on axioms: [propext, Classical.choice, Quot.sound]
+
+axiom propext {a b : Prop} : Iff a b → Eq a b
+
+axiom Quot.sound.{u} {α : Sort u} {r : α → α → Prop} {a b : α} : r a b → Eq (Quot.mk r a) (Quot.mk r b)
+
+axiom Classical.choice.{u} {α : Sort u} : Nonempty α → α
+
+Checked 18266 declarations with no errors

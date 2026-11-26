@@ -1,0 +1,17 @@
+CFGLimit2.not_proposition33_overlap_vanishes : ¬CFGLimit2.Proposition33OverlapVanishes
+'CFGLimit2.not_proposition33_overlap_vanishes' depends on axioms: [propext, Classical.choice, Quot.sound]
+CFGLimit2.terminal_exact (w : ℝ) :
+  CFGLimit2.terminalProbability CFGLimit2.target CFGLimit2.rival w CFGLimit2.sharedWord = 3 / ((17 / 21) ^ w + 3)
+'CFGLimit2.terminal_exact' depends on axioms: [propext, Classical.choice, Quot.sound]
+CFGLimit2.shared_mass_tends_to_one :
+  Filter.Tendsto (fun w => CFGLimit2.terminalProbability CFGLimit2.target CFGLimit2.rival w CFGLimit2.sharedWord)
+    Filter.atTop (nhds 1)
+'CFGLimit2.shared_mass_tends_to_one' depends on axioms: [propext, Classical.choice, Quot.sound]
+
+axiom propext {a b : Prop} : Iff a b → Eq a b
+
+axiom Quot.sound.{u} {α : Sort u} {r : α → α → Prop} {a b : α} : r a b → Eq (Quot.mk r a) (Quot.mk r b)
+
+axiom Classical.choice.{u} {α : Sort u} : Nonempty α → α
+
+Checked 18435 declarations with no errors

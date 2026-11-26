@@ -1,0 +1,44 @@
+CFGSelection.tendsto_normalized_rpow.{u_1} {ι : Type u_1} (labels : Finset ι) (base ratio : ι → ℝ) (best : ℝ)
+  (base_pos : ∀ e ∈ labels, 0 < base e) (ratio_pos : ∀ e ∈ labels, 0 < ratio e) (upper : ∀ e ∈ labels, ratio e ≤ best)
+  (attained : ∃ e ∈ labels, ratio e = best) {e : ι} (he : e ∈ labels) :
+  Filter.Tendsto (fun w => base e * ratio e ^ w / ∑ j ∈ labels, base j * ratio j ^ w) Filter.atTop
+    (nhds (if ratio e = best then base e / ∑ j ∈ labels, if ratio j = best then base j else 0 else 0))
+'CFGSelection.tendsto_normalized_rpow' depends on axioms: [propext, Classical.choice, Quot.sound]
+CFGSelection.endpoint_limit.{u_1, u_2} {ι : Type u_1} {n : ℕ} {ω : Type u_2} (paths : Finset ω)
+  (path : ω → CFGSelection.RevealPath n ι) (nonempty : paths.Nonempty) :
+  have minimum := CFGSelection.minimumCost paths path nonempty;
+  Filter.Tendsto (CFGSelection.endpointMass paths path) Filter.atTop
+    (nhds (if minimum = 0 then CFGSelection.endpointCoefficient paths path minimum else 0))
+'CFGSelection.endpoint_limit' depends on axioms: [propext, Classical.choice, Quot.sound]
+CFGSelection.minimumCost_eq_zero_iff.{u_1, u_2} {ι : Type u_1} {n : ℕ} {ω : Type u_2} (paths : Finset ω)
+  (path : ω → CFGSelection.RevealPath n ι) (nonempty : paths.Nonempty) :
+  CFGSelection.minimumCost paths path nonempty = 0 ↔
+    ∃ a ∈ paths, ∀ (k : Fin n), ((path a).outgoing k).gap ((path a).edge k) = 0
+'CFGSelection.minimumCost_eq_zero_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+CFGSelection.reveal_order_leakage.{u_3} {n : ℕ} {Token : Type u_3}
+  (outgoing : (Fin n → Option Token) → CFGSelection.Outgoing (Fin n × Token)) (word : Fin n → Token)
+  (feasible :
+    ∀ (order : Equiv.Perm (Fin n)) (step : Fin n),
+      (order step, word (order step)) ∈ (outgoing (CFGSelection.stateBefore word order step)).labels) :
+  let paths := CFGSelection.revealOrders n;
+  have path := CFGSelection.orderPath outgoing word feasible;
+  have minimum := CFGSelection.minimumCost paths path ⋯;
+  Filter.Tendsto (fun w => Real.exp (w * minimum) * CFGSelection.endpointMass paths path w) Filter.atTop
+      (nhds (CFGSelection.endpointCoefficient paths path minimum)) ∧
+    0 < CFGSelection.endpointCoefficient paths path minimum ∧
+      Filter.Tendsto (fun w => -Real.log (CFGSelection.endpointMass paths path w) / w) Filter.atTop (nhds minimum)
+'CFGSelection.reveal_order_leakage' depends on axioms: [propext, Classical.choice, Quot.sound]
+CFGConstruct.subset_step.{u_1} {ι : Type u_1} (out : CFGSelection.Outgoing ι) (J : Finset ι) (child : ι → ℝ → ℝ)
+  (cost coeff : ι → ℝ) (m : ℝ) (below : ∀ e ∈ J, m ≤ out.gap e + cost e)
+  (known : ∀ e ∈ J, Filter.Tendsto (fun w => Real.exp (w * cost e) * child e w) Filter.atTop (nhds (coeff e))) :
+  Filter.Tendsto (fun w => Real.exp (w * m) * ∑ e ∈ J, out.probability w e * child e w) Filter.atTop
+    (nhds (∑ e ∈ J, if out.gap e + cost e = m then out.base e * coeff e / out.maxWeight else 0))
+'CFGConstruct.subset_step' depends on axioms: [propext, Classical.choice, Quot.sound]
+
+axiom propext {a b : Prop} : Iff a b → Eq a b
+
+axiom Quot.sound.{u} {α : Sort u} {r : α → α → Prop} {a b : α} : r a b → Eq (Quot.mk r a) (Quot.mk r b)
+
+axiom Classical.choice.{u} {α : Sort u} : Nonempty α → α
+
+Checked 17776 declarations with no errors

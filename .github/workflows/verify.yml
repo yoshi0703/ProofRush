@@ -27,6 +27,11 @@ jobs:
       - name: Check the graph witness
         run: python3 experiments/counterexample.py
 
+      - name: Check masked guidance with exact rational arithmetic
+        run: |
+          python3 studies/masked-guidance/experiment.py
+          python3 studies/masked-guidance/leading_terms.py
+
       - name: Install the pinned Lean release
         shell: bash
         run: |
@@ -46,8 +51,12 @@ jobs:
           git clone --quiet --depth 1 --branch v4.36.0 https://github.com/leanprover-community/mathlib4.git "$mathlib"
           test "$(git -C "$mathlib" rev-parse HEAD)" = "$MATHLIB_REV"
           cd "$mathlib"
+          mapfile -t guidance_modules < <(
+            awk '$1 == "import" && $2 ~ /^Mathlib[.]/ {print $2}' \
+              "$GITHUB_WORKSPACE"/studies/masked-guidance/lean/*.lean | sort -u
+          )
           lake exe cache get Mathlib.Combinatorics.SimpleGraph.Coloring.Vertex \
-            Mathlib.Combinatorics.SimpleGraph.Diam Mathlib.Data.Fin.VecNotation
+            Mathlib.Combinatorics.SimpleGraph.Diam Mathlib.Data.Fin.VecNotation "${guidance_modules[@]}"
 
       - name: Build the independent Rust kernel
         shell: bash
@@ -79,3 +88,15 @@ jobs:
             cat "$RUNNER_TEMP/checked-proof/report.json"
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Check the masked-guidance theorem bundles independently
+        shell: bash
+        run: |
+          set -euo pipefail
+          umask 022
+          python3 studies/masked-guidance/verify.py --mathlib "$RUNNER_TEMP/mathlib" \
+            --nanoda "$RUNNER_TEMP/nanoda/target/release/nanoda_bin" \
+            --docker-image "$CHECK_IMAGE" --run-dir "$RUNNER_TEMP/masked-guidance"
+          for report in "$RUNNER_TEMP"/masked-guidance/*/report.json; do
+            python3 -c 'import json,sys; j=json.load(open(sys.argv[1])); print(j["independent_verdict"], j["targets"][-1])' "$report"
+          done

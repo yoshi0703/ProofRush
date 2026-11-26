@@ -1,0 +1,159 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,booktabs,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\TV}{\operatorname{TV}}
+\newcommand{\bern}{\operatorname{Bern}}
+\newcommand{\unif}{\operatorname{Unif}}
+\newcommand{\mask}{\mathord{*}}
+\newcommand{\cfg}{q_w}
+\title{When classifier-free guidance favors shared outputs\\in masked discrete diffusion}
+\author{ProofRush}
+\date{26 November 2026 (UTC)\\\small Research note prepared with AI assistance. External peer review is pending.}
+\begin{document}
+\maketitle
+\begin{abstract}
+He, Rojas and Tao conjectured that classifier-free guidance in masked discrete diffusion gives greater relative weight to more class-private regions. We construct a two-bit mixture in which all proper projections are shared, yet guidance transfers mass from the sole private word to the shared word at every positive strength. The shared mass is \(63/80\) at strength one and tends to one as the strength increases. This also contradicts the limiting-support assertion of their Proposition~3.3(2). The reversal can be arbitrarily severe for a target with independent coordinates: a shared event with arbitrarily small target probability has guided probability tending to one. For any finite alphabet and fixed dimension, we give the limiting law and the exact leading asymptotic of every positive-target endpoint. Survival depends on the class posterior along the sequence of partial reveals. Explicit counterexamples, the clock calculation, and the finite-path asymptotics are accompanied by Lean proofs and exact rational experiments.
+\end{abstract}
+
+\section{Question and model}
+He, Rojas and Tao~\cite{he} study exact continuous-time classifier-free guidance (CFG) for a generator that repeatedly unmasks one token. In Appendix~E, Conjecture~E.1 of their ICLR paper (Conjecture~D.1 in the 2025 preprint), they propose an ordering of the relative weights assigned to regions of different class exclusivity for every dimension \(d\ge2\). For \(d=2\) they specify two regions. A word in \(R_3\) occurs only in the target class but both of its individual tokens occur in another class at the corresponding positions. A word in \(R_4\) occurs in both classes. The proposed ordering assigns at least as large a multiplier of target probability to the first region, and Proposition~3.3(2) concludes that shared support receives zero limiting mass. Our examples have both types of words. Each of the two regions in the first example contains exactly one word, so pointwise and region-mass comparisons agree. Throughout this note, privacy means exclusivity of class support.
+
+Let \(\mathcal A\) be a finite data alphabet. The separate token \(\mask\) denotes a mask. The class-conditioned law on \(\mathcal A^d\) is \(\mu\), the target class prior is \(\alpha>0\), and \(m\) is the mixture of all class laws including \(\alpha\mu\). For a partial assignment \(s\), write \(\mu(s)\) and \(m(s)\) for the probabilities of its cylinder. A state is feasible if \(\mu(s)>0\). Its target posterior is \(r(s)=\alpha\mu(s)/m(s)\). An edge \(e=(j,b)\) reveals token \(b\) at a masked coordinate \(j\). Write \(se\) for its child, \(E(s)\) for the edges satisfying \(\mu(se)>0\), and \(a_e=\mu(se)/\mu(s)\). Infeasible extensions have guided rate zero. The reverse process starts fully masked and has physical horizon \(T>0\), as in~\cite[Eq.~(5)]{he}.
+
+\begin{lemma}\label{lem:race}
+At every incomplete feasible state the exact next jump has probability
+\[
+ P_w(e\mid s)=\frac{a_e\,r(se)^w}{\sum_{f\in E(s)}a_f\,r(sf)^w},\qquad e\in E(s).
+\]
+The endpoint at time \(T\) is the state reached after \(d\) such jumps.
+\end{lemma}
+\begin{proof}
+At forward time \(v\), each data coordinate survives with probability \(p=e^{-v}\). The forward probability of a state with \(k\) revealed coordinates is \(p^k(1-p)^{d-k}\mu(s)\) in the target class, and the same expression with \(m(s)\) for the mixture. The forward transition from a child to its parent has rate one. At reverse time \(t\), the conditional reverse score is \(h_T(t)a_e\), where \(h_T(t)=e^{t-T}/(1-e^{t-T})\). For the unconditional score, replace \(a_e\) with \(m(se)/m(s)\). Applying the CFG rate in~\cite[Eq.~(9)]{he} gives
+\[
+ h_T(t)\,a_e\!\left(\frac{\mu(se)/\mu(s)}{m(se)/m(s)}\right)^w
+ =h_T(t)\,a_e\!\left(\frac{r(se)}{r(s)}\right)^w .
+\]
+Only the first factor depends on time. The clock \(u(t)=\log((1-e^{-T})/(1-e^{t-T}))\) starts at zero and tends to infinity as \(t\uparrow T\), with inverse \(t=T+\log(1-(1-e^{-T})e^{-u})\). In this clock a marked edge of rate \(c_e\) with total exit rate \(L>0\) has exit density \(c_e e^{-Lv}\) at waiting time \(v\). Its integral is \(c_e/L\), giving the stated law. Each incomplete feasible state has a feasible child, and each jump reveals exactly one coordinate. The \(d\) finite holding times therefore fit before the physical endpoint almost surely.
+\end{proof}
+
+\section{Reversal in two bits and higher dimensions}
+\begin{theorem}\label{thm:diagonal}
+For every \(d\ge2\) there are two equally likely classes, each with a private word, such that the guided mass of the only shared target word strictly increases from \(3/4\) at \(w=0\) to one as \(w\to\infty\). For \(d=2\) it equals
+\[
+ q_w(11)=\frac{3(21/17)^w}{1+3(21/17)^w}.
+\]
+\end{theorem}
+\begin{proof}
+On binary words set \(\mu(0^d)=1/4,\ \mu(1^d)=3/4\), and put the remaining target probabilities at zero. Let the competing class be uniform on all words except \(0^d\). Both classes have proper support even in the unmasked data cube. Every proper projection of either target word occurs in the other class: for \(0^d\), set any omitted bit to one; \(1^d\) itself is shared. In dimension two the private and shared words belong to \(R_3\) and \(R_4\), respectively.
+
+Put \(H=2^{d-1}\). For any coordinate the competitor has \(H-1\) words displaying zero and \(H\) displaying one, out of \(2H-1\). The posteriors after a first zero and one are therefore
+\[
+ r_0=\frac{2H-1}{6H-5},\qquad r_1=\frac{3(2H-1)}{10H-3}.
+\]
+Since \(H\ge2\), \(r_1>r_0\). After the first reveal every remaining target bit is determined. Lemma~\ref{lem:race} gives \(q_w(1^d)=3(r_1/r_0)^w/(1+3(r_1/r_0)^w)\). Substitution in dimensions two and three yields the table.
+\end{proof}
+\begin{center}
+\begin{tabular}{lcccc}
+\toprule
+dimension & \(r_0\) & \(r_1\) & \(q_1(0^d)\) & \(q_1(1^d)\)\\
+\midrule
+2 & \(3/7\) & \(9/17\) & \(17/80\) & \(63/80\)\\
+3 & \(7/19\) & \(21/37\) & \(37/208\) & \(171/208\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+At \(d=2,w=1\), the relative weights of the private and shared words are \(17/20\) and \(21/20\). At infinite strength the private word has mass zero. This contradicts the two-dimensional instance of Conjecture~E.1 and the limiting-support conclusion of Proposition~3.3(2). The higher-dimensional construction addresses the suggested extension even if one reserves the word ``conjecture'' for \(d>2\).
+
+The exact endpoint expression in~\cite[Eqs.~(12), (15)]{he} independently gives the same result. Conditional on the first revealed coordinate and token, the second token is drawn from the normalized tilted distribution in that fiber. In the diagonal example this fiber has exactly one positive target weight. Its normalization cancels the full-word tilt. Retaining a separate full-word overlap penalty in the relative regional weights leads to the incorrect support prediction.
+
+\section{A rare shared event under a product target}
+\begin{theorem}\label{thm:rare}
+For each \(0<\varepsilon<1\) a three-bit product target can have a private word of positive mass and a shared event \(A\) such that
+\[ \mu(A)<\varepsilon,\qquad \lim_{w\to\infty}q_w(A)=1. \]
+Consequently a finite strength gives \(q_w(A)>1-\varepsilon\).
+\end{theorem}
+\begin{proof}
+Take \(\mu=\bern(s)^{\otimes3}\), \(0<s<1\), with equal class priors. Define
+\[
+ \nu=(1-s/4)\unif\{010,001\}+(s/4)\unif\bigl(\{0,1\}^3\setminus\{000\}\bigr).
+\]
+Thus \(A=\{0,1\}^3\setminus\{000\}\), and \(\mu(A)=1-(1-s)^3\). The target is supported strictly inside the paper's state space, which also includes masks. A variant below makes both supports proper in the data cube as well. At the fully masked state, the reveal \(e_*=(1,1)\) (positions numbered from one) has target marginal \(s\) and competitor marginal \(s/7\). Its likelihood ratio is seven and its target posterior is \(7/8\). In the other two coordinates \(\nu(X_j=1)=1/2+s/56\); all three zero marginals are at least \(3/7\). Thus every other likelihood ratio is at most \(7/3\), and every other posterior is at most \(7/10\). The six target conditional edge weights sum to three; the favored one has weight \(s\). Any completion after this reveal belongs to \(A\). Lemma~\ref{lem:race} gives the finite bound
+\[
+ q_w(A)\ \ge\ P_w(e_*\mid\mask^3)\ \ge\
+       \frac{1}{1+((3-s)/s)(4/5)^w}.
+\]
+For example take \(s=\varepsilon/4\) to make \(\mu(A)<\varepsilon\); for each fixed \(s>0\) the displayed lower bound tends to one. At \(s=1/100\) the baseline is \(29701/10^6\); at \(w=50\) the lower bound exceeds \(0.9957\). Exact summation of all paths gives \(0.999790\le q_{50}(A)<0.999791\). In particular \(\TV(q_w,\mu)\ge q_w(A)-\mu(A)\) can approach one.
+\end{proof}
+
+A two-coordinate variant allows each class to have private words even relative to the full unmasked data alphabet. On \(\{0,1,2\}^2\) take \(\mu=\bern(s)^{\otimes2}\) on the binary square, and
+\[
+ \nu=(1-s/4)\unif\{02,20\}+(s/4)\unif\bigl(\{0,1,2\}^2\setminus\{00\}\bigr).
+\]
+The likelihood ratio on either first single-token reveal of value one is \(32/3\). The competing marginal for a zero is \(1/2-s/16\ge7/16\); its likelihood ratio is at most \(16/7\). Value two has zero target weight. The posterior of a zero divided by that of a one is therefore at most \(35/46\). Every supported completion after revealing one is shared. Its shared probability is at least \([1+((1-s)/s)(35/46)^w]^{-1}\), while the target shared probability is \(1-(1-s)^2\). At \(s=1/100,w=50\), exact enumeration puts guided shared mass in \([0.999988,0.999989)\), starting from \(0.0199\). This variant also has a full-support mixture on the ternary square.
+
+\section{Which endpoints survive strong guidance?}
+\begin{theorem}\label{thm:path}
+Fix the original finite alphabet, dimension, and mixture. At every reachable incomplete state \(s\), let \(M_s=\max_{e\in E(s)}r(se)\), \(g_{s,e}=\log(M_s/r(se))\), and \(B_s=\sum_{e:r(se)=M_s}a_e\). For each word \(x\) with \(\mu(x)>0\), let \(\pi\) range over its coordinate reveal orders, and put
+\[
+ G_\pi=\sum_{(s,e)\in\pi} g_{s,e},\qquad
+ G(x)=\min_\pi G_\pi,\qquad
+ C(x)=\sum_{\pi:G_\pi=G(x)}\ \prod_{(s,e)\in\pi}\frac{a_e}{B_s}.
+\]
+Then \(C(x)>0\) and \(q_w(x)\sim C(x)e^{-wG(x)}\). In particular
+\(-\log q_w(x)/w\to G(x)\). The limit law is the law of the reveal chain which, at each state, retains precisely the posterior-maximizing feasible edges and chooses among these in proportion to \(a_e\). An endpoint has positive limiting mass exactly when it can be reached by one of these reveal orders.
+\end{theorem}
+\begin{proof}
+Divide numerator and denominator in Lemma~\ref{lem:race} by \(M_s^w\):
+\[
+ P_w(e\mid s)=\frac{a_e e^{-wg_{s,e}}}{D_s(w)},\qquad
+ D_s(w)=\sum_{f\in E(s)} a_f e^{-wg_{s,f}}\longrightarrow B_s>0 .
+\]
+Each compatible order of a positive-target word is feasible. The path events are disjoint and exhaust the ways to produce \(x\). Its order-\(\pi\) probability is \(e^{-wG_\pi}\prod_\pi a_e/D_s(w)\). Multiply their sum by \(e^{wG(x)}\). There are only finitely many orders. The terms of higher cost tend to zero, while every minimum-cost order contributes its strictly positive coefficient. This proves the asymptotic and, by taking logarithms, the log rate. All gaps are nonnegative. Zero total cost is therefore equivalent to selecting a maximizing edge at every step. The formula for \(P_w\) gives the stated tie probabilities.
+\end{proof}
+\paragraph{An exact construction on coordinate subsets.}
+Theorem~\ref{thm:path} gives a dynamic program that avoids enumerating \(d!\) orders. Fix an endpoint \(x\) and identify a subset \(S\) with the partial word \(x_S\). For the full set, initialize \(K_S=C_S=1\). In decreasing order of subset size use \(e_j=(j,x_j)\) and set
+\[
+ k_j=\frac{r(x_{S\cup\{j\}})}{M_{x_S}}K_{S\cup\{j\}},\qquad
+ K_S=\max_{j\notin S} k_j,\qquad
+ C_S=\sum_{\substack{j\notin S\\ k_j=K_S}}
+       \frac{a_{e_j}}{B_{x_S}} C_{S\cup\{j\}} .
+\]
+Indeed, partition each path according to its first reveal. Exponential bases multiply under concatenation, and the leading coefficients of equally fast terms add. Induction gives \(K_\varnothing=e^{-G(x)}\) and \(C_\varnothing=C(x)\). Computing \(M\) and \(B\) requires inspecting \emph{all} feasible next tokens, including tokens that disagree with \(x\). With a cylinder-mass oracle this uses \(O(d|\mathcal A|2^d)\) queries and arithmetic operations for one endpoint; bit complexity depends on the input. Rational class weights and priors allow all comparisons and coefficients to be computed exactly without logarithms. In the square example the private mass is asymptotic to \((1/3)(17/21)^w\). Our reference implementation checks the recurrence against enumeration, including different-cost orders leading to the same endpoint.
+
+An immediate positive case of the original intuition is worth recording. If a target token at some single coordinate occurs in no other class, the root maximum posterior is one. Every root maximizer then rules out all other classes, and all its completions are target-exclusive. The strong-guidance limit in that case does give zero mass to every shared output. A private \emph{word} alone need not supply such a first reveal.
+
+\section{Related work, verification and scope}
+Discrete rate guidance and the use of ratios of conditional and unconditional rates precede this note~\cite{nisonoff,schiff}. Rojas et al.~\cite{rojas} examine schedules and the speed of reveals. This helps distinguish the effect of the common clock from the effect of the relative outgoing rates. The survey of Yuan et al.~\cite{yuan} discusses the support-suppression interpretation. The contribution here is its counterexample for the exact process of~\cite{he}, including arbitrarily large overlap amplification for a product target, and the identification of the posterior-path cost governing each endpoint. The finite exponential-sum calculation in Theorem~\ref{thm:path} uses standard limiting arguments.
+
+The repository gives raw probability tables, an exact rational path enumerator, and Lean~4 sources. The finite checks start from class weights and calculate marginals, both levels of normalization and terminal probabilities. Formal statements distinguish the explicitly defined two-dimensional ordering and limiting-support assertions from the qualitative higher-dimensional wording in the source. The clock proof verifies the forward-score ratios, time change and integrated race probabilities. The reveal-order proof treats finite lists of feasible successors, with the identification of its path sum with the original sampler proved in Lemma~\ref{lem:race}. The verification register identifies the scope of each artifact, including the parts of the written proof and the additional ternary check. No sampling is used in the numerical results.
+
+The setting is continuous time with exact scores, constant guidance and a fully masked start. A learned score function, time-varying guidance, parallel block updates or a modified normalized generator can lead to a different endpoint law. These examples measure the probability of sharing support with another class. They do not measure image quality, prompt alignment, privacy leakage about a training set or the performance of deployed systems.
+
+\paragraph{Contributions and reproducibility.}
+The human requester specified the research question selection, standards for originality and verification, and permitted release. Codex agents selected the source, constructed and challenged the examples, developed the proofs and wrote the code and note. The repository records roles, model identifiers, checks, citations searched, and reproduction commands. The project has not obtained independent human peer review. The public record of our searches supports a limited claim about prior art; an unindexed equivalent may exist.
+
+\begin{thebibliography}{9}
+\bibitem{he} Y.~He, K.~Rojas and M.~Tao.
+\href{https://proceedings.iclr.cc/paper_files/paper/2026/hash/a14193e9d9fb0b03af0b717de1cac8ac-Abstract-Conference.html}{What Exactly Does Guidance Do in Masked Discrete Diffusion Models}.
+ICLR 2026. Preprint \href{https://arxiv.org/abs/2506.10971}{arXiv:2506.10971}, June 2025.
+\bibitem{nisonoff} H.~Nisonoff et al.
+\href{https://arxiv.org/abs/2406.01572}{Unlocking Guidance for Discrete State-Space Diffusion and Flow Models}.
+arXiv:2406.01572, 2024.
+\bibitem{schiff} Y.~Schiff et al.
+\href{https://arxiv.org/abs/2412.10193}{Simple Guidance Mechanisms for Discrete Diffusion Models}.
+arXiv:2412.10193, 2024.
+\bibitem{rojas} K.~Rojas, Y.~He, C.-H.~Lai, Y.~Takida, Y.~Mitsufuji and M.~Tao.
+\href{https://arxiv.org/abs/2507.08965}{Improving Classifier-Free Guidance in Masked Diffusion: Low-Dim Theoretical Insights with High-Dim Impact}.
+ICLR 2026.
+\bibitem{yuan} Y.~Yuan et al.
+\href{https://arxiv.org/abs/2607.13431}{Discrete Diffusion Models: A Unified Framework from Tokenization to Generation}.
+arXiv:2607.13431v2, August 2026.
+\end{thebibliography}
+\end{document}

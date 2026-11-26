@@ -1,4 +1,14 @@
-# A cubic counterexample to AutoGraphForge conjecture 5ed263d5
+# ProofRush
+
+## Masked discrete diffusion
+
+A two-bit distribution disproves the support-ordering conjecture of He, Rojas and Tao (ICLR 2026, Conjecture E.1) and the limiting-support conclusion of Proposition 3.3(2). We also prove a finite-alphabet theorem identifying which outputs survive strong guidance, a subset recurrence computing their decay exponents and coefficients, and a product construction in which arbitrarily rare class overlap becomes nearly certain. The English manuscript and formal proofs are available for independent review. External peer review is pending. [Research paper](studies/masked-guidance/paper.pdf) · [Study and reproducibility](studies/masked-guidance/README.md) · [ICLR source](https://proceedings.iclr.cc/paper_files/paper/2026/hash/a14193e9d9fb0b03af0b717de1cac8ac-Abstract-Conference.html)
+
+## Earlier graph catalogue study
+
+This earlier publication addresses a machine-generated inequality. It is archived and contributes zero to the programme for human-posed open research problems. The files below describe that publication. [Archived v1.0.0 release](https://github.com/yoshi0703/ProofRush/releases/tag/v1.0.0)
+
+### A cubic counterexample to AutoGraphForge conjecture 5ed263d5
 
 A connected 14-vertex graph with degree three at every vertex has diameter **8** and vertex clique cover number **6**. Pastorek's 2026 candidate would require its diameter to be at most **7**. The witness disproves the universal inequality. [Original candidate, line 2530](https://github.com/JanPastorek/AutoGraphForge/blob/4d1a8afc99447cacd2328cca20e47b6493e8dbc5/results/survivors_by_touch_normalised.txt#L2530) · [Catalogue paper](https://arxiv.org/abs/2609.03478)
 

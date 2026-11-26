@@ -1,0 +1,36 @@
+CFGOrdering.refutes_private_weight_ordering : ¬CFGOrdering.PrivateWeightOrdering
+'CFGOrdering.refutes_private_weight_ordering' depends on axioms: [propext, Classical.choice, Quot.sound]
+CFGOrdering.integrated_terminal {d : ℕ} (rates : CFGFinite.State d → Fin d → Bool → ℚ) (x : CFGFinite.Word d) (n : ℕ)
+  (s : CFGFinite.State d) : CFGOrdering.integrated rates x n s = ↑(CFGOrdering.terminal rates x n s)
+'CFGOrdering.integrated_terminal' depends on axioms: [propext, Classical.choice, Quot.sound]
+CFGClock.guided_score {T t ma mb : ℝ} (ht : t < T) (ha : 0 < ma) (hb : 0 < mb) (ca cb w : ℝ) (k m : ℕ) :
+  have p := Real.exp (t - T);
+  have a := CFGClock.forwardMass p ca (k + 1) m / CFGClock.forwardMass p ma k (m + 1);
+  have b := CFGClock.forwardMass p cb (k + 1) m / CFGClock.forwardMass p mb k (m + 1);
+  a * (a / b) ^ w = CFGClock.clockRate T t * (ca / ma * (ca / ma / (cb / mb)) ^ w)
+'CFGClock.guided_score' depends on axioms: [propext, Classical.choice, Quot.sound]
+CFGClock.chart_rate_product {T u : ℝ} (hT : 0 < T) (hu : 0 ≤ u) :
+  CFGClock.clockRate T (CFGClock.chart T u) * deriv (CFGClock.chart T) u = 1
+'CFGClock.chart_rate_product' depends on axioms: [propext, Classical.choice, Quot.sound]
+CFGClock.chart_tendsto (T : ℝ) : Filter.Tendsto (CFGClock.chart T) Filter.atTop (nhds T)
+'CFGClock.chart_tendsto' depends on axioms: [propext, Classical.choice, Quot.sound]
+CFGClock.chart_toOperational {T t : ℝ} (hT : 0 < T) (ht : t < T) : CFGClock.chart T (CFGClock.toOperational T t) = t
+'CFGClock.chart_toOperational' depends on axioms: [propext, Classical.choice, Quot.sound]
+CFGClock.terminal2_shared : CFGClock.sharedByIntegration CFGFinite.rate2 2 (CFGFinite.masked 2) = 63 / 80
+'CFGClock.terminal2_shared' depends on axioms: [propext, Classical.choice, Quot.sound]
+CFGClock.terminal3_shared : CFGClock.sharedByIntegration CFGFinite.rate3 3 (CFGFinite.masked 3) = 171 / 208
+'CFGClock.terminal3_shared' depends on axioms: [propext, Classical.choice, Quot.sound]
+CFGFinite.rate2_progress (s : CFGFinite.State 2) (j : Fin 2) (b : Bool) :
+  0 < CFGFinite.rate2 s j b → CFGFinite.masksRemaining (CFGFinite.reveal s j b) + 1 = CFGFinite.masksRemaining s
+'CFGFinite.rate2_progress' depends on axioms: [propext, Classical.choice, Quot.sound]
+CFGFinite.rate3_progress (s : CFGFinite.State 3) (j : Fin 3) (b : Bool) :
+  0 < CFGFinite.rate3 s j b → CFGFinite.masksRemaining (CFGFinite.reveal s j b) + 1 = CFGFinite.masksRemaining s
+'CFGFinite.rate3_progress' depends on axioms: [propext, Classical.choice, Quot.sound]
+
+axiom propext {a b : Prop} : Iff a b → Eq a b
+
+axiom Quot.sound.{u} {α : Sort u} {r : α → α → Prop} {a b : α} : r a b → Eq (Quot.mk r a) (Quot.mk r b)
+
+axiom Classical.choice.{u} {α : Sort u} : Nonempty α → α
+
+Checked 44884 declarations with no errors

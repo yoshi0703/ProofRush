@@ -1,0 +1,24 @@
+{
+  "lean": "Lean (version 4.36.0, arm64-apple-darwin24.6.0, commit 611c117bfaf7b7ae1cfcf246ce6fba31e8f509e9, Release)",
+  "mathlib": "fc4f59e577feb1a4956671bc04ac18aaaf8cd842",
+  "targets": [
+    "CFGSelection.tendsto_normalized_rpow",
+    "CFGSelection.endpoint_limit",
+    "CFGSelection.minimumCost_eq_zero_iff",
+    "CFGSelection.reveal_order_leakage",
+    "CFGConstruct.subset_step"
+  ],
+  "sources_sha256": {
+    "CFGSelection.lean": "cb2727c84bc30b5e04c571692083e598f148c12eaf4883b9ac34384f9a0964a6",
+    "CFGConstruct.lean": "2e3e8983c6da2416922181a1de42998619d875439ee58e8c7a17f10dda678acb"
+  },
+  "export_sha256": "fb7ddf4ad85530e464b02aa951a0fabb32c11d79882820bd8740cff34562ee96",
+  "exported_axioms": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "nanoda_sha256": "44ba1e3472937ddfc56c9e132a8d227be46694e4a970af8cd2699d09e2acaf10",
+  "isolation": "macOS Seatbelt",
+  "independent_verdict": "Checked 17776 declarations with no errors"
+}
