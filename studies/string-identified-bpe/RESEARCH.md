@@ -38,3 +38,5 @@ The human research brief requested a human-posed open problem, a construction ex
 - The two independent family checkers originally disagreed about how to increment different-pair counts next to a run of equal symbols. The first version of the secondary checker skipped such a boundary. It was repaired and retested on the word with lengths 1, 1, 2. All 465 parameter checks still passed. The finite witness, primary checker, and proof were unchanged.
 
 The programme does not count the archived machine-generated graph question. This study and the earlier masked-diffusion study answer two distinct human-posed questions. [Masked-diffusion release](https://github.com/yoshi0703/ProofRush/releases/tag/v2.0.0)
+
+GitHub published v3.0.0 at 19:44:38 UTC on 26 November 2026, 2 hours 2 minutes 22.682 seconds after the campaign started. Both hosted workflows passed. An unauthenticated download matched the 67,510-byte manuscript. A subsequent scope check reran the underlying 64 letters under character initialization and two library trainers. [Release and usage record](verification/release.json) · [Scope and executable comparison](SCOPE.md)

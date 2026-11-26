@@ -1,0 +1,19 @@
+{
+  "revision": "049f3818e308366809092c3c2b860dbab75b4fde",
+  "url": "https://github.com/yoshi0703/ProofRush/releases/tag/v3.0.0",
+  "public_pdf": "https://github.com/yoshi0703/ProofRush/releases/download/v3.0.0/paper.pdf",
+  "published_at": "2026-11-26T19:44:38Z",
+  "pdf_sha256": "d321ac49c6940900bfd7aabb9f7faa40fc4bcbf3cf085c868bf38a14605e53ef",
+  "pdf_bytes": 67510,
+  "release_verification": "https://github.com/yoshi0703/ProofRush/actions/runs/45885243033",
+  "publication_elapsed_seconds_from_campaign": 7342.682,
+  "main_verification": "https://github.com/yoshi0703/ProofRush/actions/runs/45885242878",
+  "campaign_totals_at_publication": {
+    "completed_responses": 2279,
+    "input_tokens": 500780211,
+    "cached_input_tokens": 497688448,
+    "output_tokens": 993840,
+    "reasoning_output_tokens": 339896,
+    "total_tokens": 501774051
+  }
+}

@@ -37,6 +37,7 @@ jobs:
           python3 studies/string-identified-bpe/verify_witness.py
           python3 studies/string-identified-bpe/verify_unique_greedy.py
           python3 studies/string-identified-bpe/check_family.py
+          python3 studies/string-identified-bpe/check_scope.py
 
       - name: Install the pinned Lean release
         shell: bash

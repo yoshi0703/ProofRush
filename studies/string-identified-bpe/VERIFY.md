@@ -8,9 +8,12 @@ Use Python 3.10 or later. These commands run from the repository root and use on
 python3 studies/string-identified-bpe/verify_witness.py
 python3 studies/string-identified-bpe/verify_unique_greedy.py
 python3 studies/string-identified-bpe/check_family.py
+python3 studies/string-identified-bpe/check_scope.py
 ```
 
 The first script computes maximum full and partial utility independently for all budgets from zero through four. It obtains 0, 1, 3, 6 and 10, and checks every greedy choice in the two displayed histories. The second verifies a single unweighted input with a unique maximizing pair at each step, with greedy utility 170 against a comparator of 404. The third checks both the maximizing pair types and the doubling comparator for 465 pairs of parameters with budgets through 30. [Finite witness](verification/independent-replay.txt) · [Unique greedy run](verification/unique-greedy-replay.txt) · [General family experiment](verification/family.txt)
+
+The fourth command isolates initialization and ranking on the same 64 characters. [Practical scope and library replays](SCOPE.md)
 
 The source authors' independent implementation accepts the same token sequence. The following optional replay checks the downloaded supplement against its expected SHA-256 digest before invoking its original partial-merge optimizer.
 

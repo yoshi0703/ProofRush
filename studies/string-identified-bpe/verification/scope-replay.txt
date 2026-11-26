@@ -1,0 +1,8 @@
+Compound tokens, overlap ranking: first maximum 2 at [(4, 4), (8, 8)]; (8, 4) scores 1.
+On the 14-token input every four-step overlap-greedy history saves 5; the exact partial optimum is 10.
+64 initial characters, replacement ranking: gains [32, 16, 8, 4], final length 4.
+64 initial characters, overlap ranking: gains [32, 16, 8, 4], final length 4.
+Four-merge optimum from 64 single characters: 60 tokens saved.
+Hugging Face tokenizers 0.21.0, no pre-tokenizer or boundary marker: [64, 32, 16, 8, 4]
+Hugging Face tokenizers 0.23.3, no pre-tokenizer or boundary marker: [64, 32, 16, 8, 4]
+subword-nmt 0.3.8, library end-of-word handling: [64, 33, 18, 11, 8]

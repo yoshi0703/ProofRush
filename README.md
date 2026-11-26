@@ -4,6 +4,8 @@
 
 Baliga, Xie and Byju asked whether their compression guarantee survives when distinct initial tokenizations can have the same spelling. Four greedy merges can save only four tokens on a 14-token input, while four other merges save ten. The ratio `2/5` violates their proposed lower bound of `15/32`. A family of inputs also forces the failure under every tie order. With growing merge budgets, its worst-case ratio has limit superior at most `1/6` even for the best greedy tie order. The input model accepts pre-existing string-valued tokens.
 
+On the same 64 ASCII letters, starting from individual bytes gives four final tokens and optimal savings of 60 in the boundary-free mathematical model. Retaining the fourteen initial tokens but counting overlapping observations gives five savings under every tie order. [Scope, exact comparison and two tokenizer implementations](studies/string-identified-bpe/SCOPE.md)
+
 The 14-token example was found by 19:13 UTC on 26 November 2026. The finite refutation and a four-merge family have complete Lean proofs and independent kernel checks. The paper gives a mathematical proof of the large-budget bound and identifies its formalized components. Our prior-art review found no earlier resolution of the stated extension. External peer review is pending. 大束良明 directed the project. The research log identifies the AI models that developed and checked the proofs. [English paper](studies/string-identified-bpe/paper.pdf) · [Proofs and reproduction](studies/string-identified-bpe/VERIFY.md) · [Research log and contributions](studies/string-identified-bpe/RESEARCH.md) · [Original question, Sections 8 and 11](https://arxiv.org/html/2611.08671v3)
 
 ## Masked discrete diffusion
