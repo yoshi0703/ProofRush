@@ -1,0 +1,98 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{fontspec,amssymb,amsmath,amsthm,microtype}
+\usepackage[hidelinks]{hyperref}
+\IfFontExistsTF{Noto Sans CJK JP}{\newfontfamily\namefont{Noto Sans CJK JP}}{\IfFontExistsTF{Hiragino Sans}{\newfontfamily\namefont{Hiragino Sans}}{\newfontfamily\namefont{HaranoAjiMincho-Regular.otf}}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\ds}{d_\ast}
+\title{Value dimension for symmetric Boolean functions in one softmax attention layer}
+\author{ProofRush\\[2pt]\small Research initiated and directed by {\namefont 大束良明}}
+\date{26 November 2026 UTC}
+\begin{document}
+\maketitle
+\begin{abstract}
+Hsu and Xu ask how far one can reduce the value-vector dimension in their representation theorem for symmetric Boolean functions. With $H$ attention heads and polynomial readout of degree $D$, let $r$ be the first positive integer satisfying $\binom{D+r}{r}\ge HD+1$. We show that the worst-case value dimension has order $\min(D,r)$, uniformly in $H,D$. If $D\ge3$ and $H\ge4^D$, dimension $D-2$ fails on some symmetric target of finite input length, whereas dimension $D$ suffices. A parameter count bounds how many sign profiles can arise on the grid of Hamming weights. An alternative algebraic proof uses a polynomial relation on coefficient vectors and disjoint root intervals. The model allows arbitrary real parameters, a fixed query, no positional information, and the sum of the head outputs.
+\end{abstract}
+
+\section{Model and statement}
+For a binary word of positive length $n$ let $t$ be its fraction of ones. The $d$-dimensional output of $H$ softmax heads at a fixed query is
+\[
+ z(t)=\sum_{h=1}^H\frac{(1-t)v_{0h}+t r_h v_{1h}}{(1-t)+t r_h},\qquad
+ r_h>0,\quad v_{0h},v_{1h}\in\R^d.
+\]
+The positive ratio $r_h$ is the exponential of the difference of the two query--key scores, so every positive real ratio is available. The classifier takes the sign of $g(z(t))$ for a real polynomial $g$ of total degree at most $D$. On each finite input grid an adjustable constant lets us use strict signs under either convention at zero.
+
+A Boolean function has threshold degree $T$ if $T$ is the smallest total degree of a real polynomial whose sign agrees with it on the cube. For positive integers $H,D$, define $\ds(H,D)$ as the least positive $d$ that represents every symmetric Boolean function of threshold degree at most $HD$, for every input length. The heads and readout may depend on the target and input length. Hsu and Xu prove that $HD\ge T$ is necessary, and construct representations with $d\le\min(D,2\max(1,\lceil\log_2 H\rceil)+2)$. They ask immediately after Theorem 3 whether smaller dimensions work for intermediate $D$ \cite{hsuxu}.
+
+Write $B_j=\binom{D+j}{j}$, and let $r=\min\{j\ge1:B_j\ge HD+1\}$.
+\begin{theorem}\label{main}
+For all positive integers $H,D$,
+\[
+ \frac{1}{3}\min(D,r)\le\ds(H,D)\le \min\{D,32r\}.
+\]
+For $H\ge4^D$ and $D\ge3$, one has $D-1\le\ds(H,D)\le D$.
+\end{theorem}
+In particular, at $H=4^D$ there is no uniform improvement to $o(\min(D,\log H))$. The joint formula also describes regimes where a smaller dimension suffices. The lower bound permits all parameters to be selected for the individual task. It asserts existence of a hard symmetric target and does not identify parity as such a target.
+
+\section{A lower bound from profiles on the Hamming grid}
+Write $T=HD$. The common denominator $Q(t)=\prod_h(1-t+t r_h)$ is positive on $[0,1]$ and $Q(0)=1$. There are univariate polynomials $P_i$ of degree at most $H$ with $z_i=P_i/Q$. Allow all such numerators and denominators. Writing $g(z)=\sum_{|a|\le D}c_a z^a$ gives the cleared polynomial
+\[
+ p(t)=\sum_{|a|\le D}c_a Q(t)^{D-|a|}\prod_{i=1}^d P_i(t)^{a_i},\qquad \deg p\le T .
+\]
+At any fixed $t$ this is a polynomial of degree at most $D+1$ in
+\[
+ m=H+d(H+1)+B_d
+\]
+real parameters. The formula counts all readout monomials, including the constant.
+
+For a fixed $n\ge T$, there are $\binom nT$ target profiles starting with the positive sign and changing sign in exactly $T$ chosen gaps of the grid $0,1/n,\ldots,1$. A product of $T$ linear factors, one with a root in each chosen gap, realizes every profile. Composing with the linear map from bits to their normalized sum gives a degree-$T$ polynomial threshold. Conversely any multivariate threshold of lower degree can be multilinearized on the cube and averaged over coordinate permutations. On each Hamming level all signed values have the prescribed strict sign, so the average keeps that sign. Each averaged square-free monomial of degree $j$ is $\binom{|x|}j/\binom nj$, a univariate polynomial of degree $j$. The intermediate value theorem forces at least one root for every sign change. Thus the targets have threshold degree exactly $T$.
+
+Warren's bound gives at most $O_{H,D,d}(n^m)$ strict sign profiles of $p$ at the $n+1$ grid points \cite{warren}. If the original readout attains zero, a sufficiently small change to its constant coefficient makes its profile strict without changing any nonzero sign on the finite grid. For $m<T$, the bound contradicts $\binom nT=\Omega_T(n^T)$ for all sufficiently large $n$. Hence universal representation requires $m\ge HD$.
+
+\paragraph{An algebraic proof.}
+The formal proof permits the slightly larger parameter count $m'=(d+1)(H+1)+B_d$, freeing the constant coefficient of $Q$. Suppose $m'<T$. Given the polynomials $a_0,\ldots,a_T$ in the parameters specifying the coefficients of $p$, the monic coefficients $a_0/a_T,\ldots,a_{T-1}/a_T$ satisfy a nonzero polynomial relation wherever $a_T\ne0$. Indeed $T$ rational functions in $m'$ variables are algebraically dependent. Equivalently, after clearing a common denominator, the number of distinct formal monomials of degree at most $E$ in $T$ variables grows faster than the dimension of polynomials of degree $O(E)$ in $m'$ parameters.
+
+Monic polynomials with $T$ distinct roots in $(0,1)$ contain a nonempty open set of coefficient vectors. The relation cannot vanish throughout that set. Choose a polynomial outside its zero set and choose small disjoint rational intervals about its roots. By continuity of the elementary symmetric functions, any monic polynomial with one root in each interval still lies outside the zero set. Take a common rational grid containing all the endpoints and prescribe a polynomial threshold with one sign change in each interval and no zero on the grid. A representing polynomial of degree at most $T$ must have exactly one root in each of the $T$ intervals. Its degree is then $T$, so normalization gives a monic vector that must both satisfy and violate the relation. This proof constructs a finite separating grid for every underparameterized chart.
+
+\section{Turning parameter counts into dimension bounds}
+Even the enlarged necessary inequality $HD\le (d+1)(H+1)+B_d$ implies $\min(D,r)\le3d$. To see this, $B_j\ge1+Dj$ by counting the constant and the pure powers in $j$ variables. Hence $r\le H$. For $H\le3$ this suffices. Assume $H\ge4$. If $D<2(d+1)$ then $D\le 2d+1\le3d$. Otherwise $B_d\ge HD/2-(d+1)$, and
+\[
+ B_{d+1}=\frac{D+d+1}{d+1} B_d\ge3B_d\ge HD+1.
+\]
+The last inequality uses $HD\ge8(d+1)$. Thus $r\le d+1$.
+
+For the logarithmic regime, if $d\le D-2$ then $B_d\le2^{D+d}\le 4^D/4$. The enlarged chart has at most $(D-1)(H+1)+H/4$ parameters, strictly less than $HD$ for $D\ge3$ and $H\ge4^D$. The lower obstruction applies. The upper dimension $D$ is the factor construction of Hsu and Xu.
+
+\section{A shared upper construction}
+Hsu and Xu construct a dimension-$D$ representation by splitting the sign-changing roots of a symmetric target into $D$ groups of at most $H$. They also realize a set of monomial features $t^a/Q(t)$ simultaneously using $H$ heads whenever all exponents are in $[0,H]$. Here one may take $Q(t)=\prod_{h=1}^H(t+h)$. Partial fractions expand each feature into a constant and $H$ simple poles; the $h$th head realizes the constant share and the multiple of $1/(t+h)$ simultaneously in all value coordinates. A set of exponents with every $0\le j\le HD$ expressible as a sum of exactly $D$ exponents represents every degree-$HD$ polynomial after multiplication by $Q^D$. The same heads work for all these targets, with a different homogeneous readout for each. Their additive-basis argument in Lemmas 13--14 supplies a set with at most $2p+2$ elements if $b^p\ge H$ and $2p(b-1)\le D+2$ \cite{hsuxu}.
+
+We choose $p,b$ as functions of the binomial threshold. For any $q\ge1$ with $D\le qr$, comparing factors gives
+\[
+ \binom{D+r}{r}=\prod_{j=1}^r\frac{D+j}{j}
+ \le q^r\binom{2r}{r}\le(4q)^r.
+\]
+For $D<32r$ use the $d\le D$ construction. Otherwise put $b=1+\lfloor D/(8r)\rfloor\ge5$ and $p=4r$. We have $D\le8br$, hence $H\le B_r\le(32b)^r\le b^{4r}$. We also have $2p(b-1)\le D$ and $2p+2\le10r$. This proves the upper bound in Theorem~\ref{main}.
+
+\paragraph{A sharper geometric upper bound.}
+For $H\ge3$ take $s=\max(3,r)\le H$. The genus-zero maximal-rank theorem \cite{ballico,larson} states that the degree-$D$ restriction map for a general degree-$H$ embedding of $\mathbb P^1$ in $\mathbb P^s$ has maximal rank. Since $B_s\ge HD+1$, products of degree $D$ in its $s+1$ binary forms span all binary forms of degree $HD$. A maximal determinant is a nonzero polynomial with integer coefficients in the input forms. Choose the first dehomogenized form $Q$ of degree $H$ with $H$ simple negative real roots and positive leading coefficient. This condition defines a nonempty Euclidean open set of form tuples. The nonzero determinant cannot vanish throughout it. Thus one can choose rational coefficients there for which the forms $Q,P_1,\ldots,P_s$ still give a surjective restriction map.
+
+The $H$ heads realize $P_i/Q$ simultaneously, using the $H$ negative poles of $Q$ in the partial-fraction construction above. For every target $F$ of degree at most $HD$, dehomogenization gives $F=\Phi(Q,P_1,\ldots,P_s)$ with $\Phi$ homogeneous of degree $D$. Set $g(z)=\Phi(1,z)$. Then $g(P_1/Q,\ldots,P_s/Q)=F/Q^D$, with the correct sign throughout $[0,1]$. This gives $\ds\le\min(D,\max(3,r))$. For $H=1,2$, the forms $Q,1,t,\ldots,t^{H-1}$ span every degree-$H$ numerator, and their degree-$D$ products span all degrees through $HD$. The elementary proof of Theorem~\ref{main} is independent of the geometric theorem.
+
+\section{Verification and scope}
+The Lean proof of Theorem~\ref{main} defines the least positive sufficient dimension for actual Boolean inputs. It proves the degree-preserving average over each Hamming level, constructs a shared softmax layer for the upper bound, and checks the algebraic obstruction for the lower bound. The classifier can represent a strict sign under either convention at zero because its constant coefficient is free. The archive includes the formal statements, proof sources and an independent kernel replay. The alternative proofs using Warren's theorem and the genus-zero maximal-rank theorem are given on paper. A finite exact matrix example has full rank $181$ at $H=30$, $D=6$, using four value coordinates in addition to the constant.
+
+Rajaraman, Sundaram and Tesfaye use Warren's bound to study the number of heads needed by linear readouts \cite{rajaraman}; the sign-counting technique predates this application. Viswanathan and coauthors also study head complexity with affine readout \cite{viswanathan}. Here the variable of interest is the value dimension with arbitrary degree-$D$ polynomial readout. The lower target may depend on $H,D,d$. The exact integer dimension, a parity-specific lower bound of this order, and the behavior of deeper architectures remain open in this study.
+
+{\namefont 大束良明} initiated and directed the research program. The ProofRush AI agents developed the bounds, assembled and tested the constructions, searched prior work and produced this manuscript. External scholarly peer review is pending.
+
+\begin{thebibliography}{9}
+\bibitem{hsuxu} D. Hsu and M. Xu. \emph{Attention-based representations for multi-task computation}. 4 August 2026. \url{https://arxiv.org/abs/2608.04243}.
+\bibitem{rajaraman} R. Rajaraman, R. Sundaram, and A. Tesfaye. \emph{The Head Complexity of Boolean Functions in Single-Layer Attention}. \url{https://arxiv.org/abs/2609.04046}.
+\bibitem{viswanathan} K. Viswanathan, P. Dimitrov, S. Rocca, and S. Sirikonda. \emph{Formally Verified Autoresearch for Analyzing the Expressivity of Multi-Head Attention}. \url{https://arxiv.org/abs/2610.25341}.
+\bibitem{warren} H. E. Warren. Lower bounds for approximation by nonlinear manifolds. \emph{Trans. Amer. Math. Soc.} 133 (1968), 167--178. \url{https://doi.org/10.1090/S0002-9947-1968-0226281-1}.
+\bibitem{ballico} E. Ballico and P. Ellia. On the hypersurfaces containing a general projective curve. \emph{Compositio Math.} 60 (1986), 85--95. \url{https://www.numdam.org/item/CM_1986__60_1_85_0/}.
+\bibitem{larson} E. Larson. The maximal rank conjecture. \url{https://arxiv.org/abs/1711.04906}.
+\end{thebibliography}
+\end{document}

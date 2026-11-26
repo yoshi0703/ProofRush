@@ -1,0 +1,1 @@
+H=30 D=6 value_channels=4 modulus=1000000007 columns=210 rows=181 rank=181

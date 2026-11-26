@@ -1,0 +1,45 @@
+{
+  "lean": "Lean (version 4.36.0, arm64-apple-darwin24.6.0, commit 611c117bfaf7b7ae1cfcf246ce6fba31e8f509e9, Release)",
+  "mathlib": "fc4f59e577feb1a4956671bc04ac18aaaf8cd842",
+  "targets": [
+    "AttentionJoint.joint_dimension",
+    "AttentionJoint.logarithmic_dimension",
+    "AttentionJoint.universal_exists",
+    "AttentionWindows.insufficient_dimension",
+    "AttentionSymmetry.exists_grid_sign",
+    "AttentionProfileRoots.threshold_attention",
+    "AttentionUpper.radix_shared_attention_bits"
+  ],
+  "sources_sha256": {
+    "Dimension.lean": "3db8ca4f196339d2e276b0e6765a0f5db6fa7ace841b3508126bde2b8b6da2d2",
+    "GridSigns.lean": "6c09d5c7963793b3464c98315fb5ffc91fbfeaf8d701253b1da69e31429f4e33",
+    "Softmax.lean": "31d7b65f4d44a09dc44982e5c7ccc6de0147c6a3d9765f52c46d597592e877b6",
+    "Chart.lean": "7f4f5526f53ab36bbfd47528da0a46d541950001090ec11b5a84f2bc98201858",
+    "Enumeration.lean": "f23272f0f378c0cacd851514e0ed632ec922c2480e1bf73e5c21b62b8ad73a24",
+    "Bridge.lean": "7dc7195fcdac7a72d840cb46afa0e2d86602bdbcebadb809f1e05071456e7bb4",
+    "RootWindows.lean": "3db21d8ee4557c1e94fe744f570c620e98c04d7de35adecb8406132779050c3d",
+    "RationalWindows.lean": "ab0d74aa9cfc2bd289d1840aa153a99beb36218f8b5d1157794ee90d69afd17d",
+    "ChartWindows.lean": "35d34e897b03e0642f24dd7e6267efff5c1787c530aa138801ce6215f7a71b11",
+    "GridBarrier.lean": "1b86d07a121e4c74722ac973f74f9c8190582fd6f28d5dcbde295f2a7cfabd5f",
+    "ReadoutBarrier.lean": "03e11f082016b0069c7dcacdc36c3c34cdb0cc9b0999cda3d0c0854c24248e79",
+    "AttentionLower.lean": "6b70f572eae92c7f1eba3b608cb61bc814af5a502978a1f563009bc341ce1792",
+    "ParameterBounds.lean": "48a5439695460391777766636f0c521b5c9806bf10d70e685bfd31cea485bf43",
+    "HeadInterpolation.lean": "308b2f7c7d1efc271528174fc3824a4cc910686bb600116d7e42850df7757ebf",
+    "Readout.lean": "bc68a66d843561e13b9ce7d374d75322a8302235432512ab06ea74c1b4c75544",
+    "Radix.lean": "659d7b11d7327c8a8ead78bd87021f4928c296fe4f296a013ceda1c0d055a790",
+    "ConstructiveUpper.lean": "6de18385ae4de3630f9ccc68441aa924eaaaf11347a3520083633b17d556d299",
+    "GroupedRoots.lean": "452608d17878de01bdea7029cbf02abd385aeb618b6794e99d141c3d3ea43c11",
+    "ProfileRoots.lean": "3aae6c6482463d3304e357ab885f3e54239d8837dc0979937ab636daef949982",
+    "Symmetry.lean": "284a05f3bf76d6af7610d2ae9431c97154543c40aaaef398a6a350acf43ef999",
+    "JointDimension.lean": "2f0d20963c0ff02d7342e41a3b6613dc9e53aa94305d12046851ded18ee0f5cf"
+  },
+  "export_sha256": "35c57d3d19a4809c6aa32669d0c4d020eb62a57a236ddc2a02c46a1bbf71f0b0",
+  "exported_axioms": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "nanoda_sha256": "44ba1e3472937ddfc56c9e132a8d227be46694e4a970af8cd2699d09e2acaf10",
+  "isolation": "macOS Seatbelt",
+  "independent_verdict": "Checked 27142 declarations with no errors"
+}

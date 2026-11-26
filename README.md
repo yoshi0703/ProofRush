@@ -1,5 +1,9 @@
 # ProofRush
 
+## Value dimension in one softmax attention layer
+
+Hsu and Xu asked how much value dimension is needed to classify symmetric Boolean functions with one fixed-query attention layer. With \(H\) heads and readout degree \(D\), let \(r\) be the least positive integer with \(\binom{D+r}{r}\ge HD+1\). The least universal dimension satisfies \(\min(D,r)/3\le d_*(H,D)\le\min(D,32r)\). In particular, when \(D\ge3\) and \(H\ge4^D\), some target requires at least \(D-1\) channels, and \(D\) always suffice. The joint theorem has a complete Lean proof on bit vectors, independently replayed in the Rust kernel nanoda. External peer review is pending. [English paper](studies/attention-value-dimension/paper.pdf) · [Formal theorem](studies/attention-value-dimension/lean/JointDimension.lean) · [Research record](studies/attention-value-dimension/RESEARCH.md) · [Reproduction](studies/attention-value-dimension/VERIFY.md) · [Original question](https://arxiv.org/html/2608.04243v1#S3.SS2)
+
 ## Spelling identity in byte-pair encoding
 
 Baliga, Xie and Byju asked whether their greedy BPE guarantee extends to inputs with ambiguous initial token spellings. A 14-token example gives a negative answer at four merges. A second construction proves the exact worst-case limit is zero as the merge budget grows, even when each input receives its best greedy tie order. The result holds for both disjoint replacement counts and raw overlapping counts. At 338 merges every greedy run saves 4,732 tokens, while an explicit 338-rule comparator saves 30,758. The initial dictionary may contain arbitrary compound spellings. [English paper](studies/string-identified-bpe/paper.pdf) · [Limit theorems in Lean](studies/string-identified-bpe/lean/DiamondResult.lean) · [Independent checks and reproduction](studies/string-identified-bpe/VERIFY.md)

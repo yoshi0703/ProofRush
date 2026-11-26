@@ -1,0 +1,11 @@
+D=3 H=64 d=1 m=133 T=192 gap=59
+D=4 H=256 d=2 m=785 T=1024 gap=239
+D=5 H=1024 d=3 m=4155 T=5120 gap=965
+D=6 H=4096 d=4 m=20694 T=24576 gap=3882
+D=7 H=16384 d=5 m=99101 T=114688 gap=15587
+D=8 H=65536 d=6 m=461761 T=524288 gap=62527
+D=9 H=262144 d=7 m=2108599 T=2359296 gap=250697
+D=10 H=1048576 d=8 m=9480950 T=10485760 gap=1004810
+example H=64, D=3, d=1, n=10^8: log lower 2527.33, log Warren upper 2393.48
+exact integer check: binomial lower bound > Warren upper bound
+comparison audit: H=4..200, D=2..100 passed

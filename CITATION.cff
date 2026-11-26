@@ -1,11 +1,11 @@
 cff-version: 1.2.0
 message: "Please cite the technical note and its versioned proof archive."
-title: "Ambiguous initial spellings break the approximation guarantee for greedy byte-pair encoding"
+title: "Value dimension for symmetric Boolean functions in one softmax attention layer"
 type: software
 authors:
   - name: "ProofRush"
-version: "3.1.0"
+version: "4.0.0"
 date-released: 2026-11-26
 license: MIT
 repository-code: "https://github.com/yoshi0703/ProofRush"
-url: "https://github.com/yoshi0703/ProofRush/releases/tag/v3.1.0"
+url: "https://github.com/yoshi0703/ProofRush/releases/tag/v4.0.0"

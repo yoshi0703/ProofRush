@@ -43,6 +43,11 @@ jobs:
           python3 studies/string-identified-bpe/check_unary_diamond.py --m 13
           python3 studies/string-identified-bpe/byte-replay/replay.py
 
+      - name: Check attention parameters and the finite-rank example
+        run: |
+          python3 studies/attention-value-dimension/check_bounds.py
+          python3 studies/attention-value-dimension/rank_example.py
+
       - name: Install the pinned Lean release
         shell: bash
         run: |
@@ -64,7 +69,7 @@ jobs:
           cd "$mathlib"
           mapfile -t study_modules < <(
             awk '$1 == "import" && $2 ~ /^Mathlib[.]/ {print $2}' \
-              "$GITHUB_WORKSPACE"/studies/{masked-guidance,string-identified-bpe}/lean/*.lean | sort -u
+              "$GITHUB_WORKSPACE"/studies/{masked-guidance,string-identified-bpe,attention-value-dimension}/lean/*.lean | sort -u
           )
           lake exe cache get Mathlib.Combinatorics.SimpleGraph.Coloring.Vertex \
             Mathlib.Combinatorics.SimpleGraph.Diam Mathlib.Data.Fin.VecNotation "${study_modules[@]}"
@@ -123,3 +128,13 @@ jobs:
           for report in "$RUNNER_TEMP"/string-identified-bpe/*/report.json; do
             python3 -c 'import json,sys; j=json.load(open(sys.argv[1])); print(j["independent_verdict"], j["targets"][-1])' "$report" | tee -a "$GITHUB_STEP_SUMMARY"
           done
+
+      - name: Check the joint attention dimension theorem independently
+        shell: bash
+        run: |
+          set -euo pipefail
+          umask 022
+          python3 studies/attention-value-dimension/verify.py --mathlib "$RUNNER_TEMP/mathlib" \
+            --nanoda "$RUNNER_TEMP/nanoda/target/release/nanoda_bin" \
+            --docker-image "$CHECK_IMAGE" --run-dir "$RUNNER_TEMP/attention-value-dimension"
+          cat "$RUNNER_TEMP/attention-value-dimension/nanoda.txt" >> "$GITHUB_STEP_SUMMARY"
