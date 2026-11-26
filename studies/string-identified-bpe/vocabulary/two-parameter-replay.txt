@@ -1,0 +1,57 @@
+k=   2 m= 1 L=   1 initial_types=  10 guards=  4 initial_tokens=15
+k=   7 m= 1 L=   3 initial_types=  20 guards=  7 initial_tokens=49
+k=   8 m= 1 L=   4 initial_types=  20 guards=  7 initial_tokens=57
+k=   8 m= 2 L=   2 initial_types=  21 guards=  5 initial_tokens=111
+k=  18 m= 1 L=   9 initial_types=  29 guards= 11 initial_tokens=127
+k=  18 m= 3 L=   3 initial_types=  38 guards=  8 initial_tokens=377
+k=  27 m= 1 L=  13 initial_types=  38 guards= 16 initial_tokens=189
+k=  27 m= 3 L=   4 initial_types=  43 guards= 11 initial_tokens=539
+k=  32 m= 1 L=  16 initial_types=  39 guards= 16 initial_tokens=225
+k=  32 m= 2 L=   8 initial_types=  41 guards= 11 initial_tokens=423
+k=  32 m= 4 L=   4 initial_types=  50 guards= 10 initial_tokens=927
+k=  48 m= 1 L=  24 initial_types=  44 guards= 17 initial_tokens=337
+k=  48 m= 2 L=  12 initial_types=  49 guards= 13 initial_tokens=631
+k=  48 m= 4 L=   6 initial_types=  61 guards= 11 initial_tokens=1423
+k=  50 m= 1 L=  25 initial_types=  47 guards= 19 initial_tokens=351
+k=  50 m= 2 L=  12 initial_types=  52 guards= 15 initial_tokens=649
+k=  50 m= 5 L=   5 initial_types=  72 guards= 12 initial_tokens=1899
+k=  71 m= 1 L=  35 initial_types=  55 guards= 23 initial_tokens=497
+k=  71 m= 2 L=  17 initial_types=  61 guards= 18 initial_tokens=918
+k=  71 m= 5 L=   7 initial_types=  76 guards= 14 initial_tokens=2777
+k=  72 m= 1 L=  36 initial_types=  55 guards= 23 initial_tokens=505
+k=  72 m= 3 L=  12 initial_types=  65 guards= 15 initial_tokens=1511
+k=  72 m= 6 L=   6 initial_types=  85 guards= 14 initial_tokens=3455
+k=  95 m= 1 L=  47 initial_types=  64 guards= 27 initial_tokens=665
+k=  95 m= 3 L=  15 initial_types=  71 guards= 18 initial_tokens=1949
+k=  95 m= 6 L=   7 initial_types=  89 guards= 15 initial_tokens=4370
+k=  98 m= 1 L=  49 initial_types=  65 guards= 28 initial_tokens=687
+k=  98 m= 3 L=  16 initial_types=  73 guards= 20 initial_tokens=2039
+k=  98 m= 7 L=   7 initial_types=  99 guards= 16 initial_tokens=5781
+k= 128 m= 1 L=  64 initial_types=  74 guards= 32 initial_tokens=897
+k= 128 m= 4 L=  16 initial_types=  87 guards= 20 initial_tokens=3903
+k= 128 m= 8 L=   8 initial_types= 113 guards= 18 initial_tokens=9087
+k= 162 m= 1 L=  81 initial_types=  80 guards= 33 initial_tokens=1135
+k= 162 m= 4 L=  20 initial_types=  99 guards= 21 initial_tokens=4925
+k= 162 m= 9 L=   9 initial_types= 126 guards= 19 initial_tokens=13607
+k= 200 m= 1 L= 100 initial_types=  91 guards= 39 initial_tokens=1401
+k= 200 m= 5 L=  20 initial_types= 118 guards= 24 initial_tokens=8349
+k= 200 m=10 L=  10 initial_types= 160 guards= 21 initial_tokens=19599
+k= 242 m= 1 L= 121 initial_types=  98 guards= 41 initial_tokens=1695
+k= 242 m= 5 L=  24 initial_types= 122 guards= 25 initial_tokens=10105
+k= 242 m=11 L=  11 initial_types= 176 guards= 23 initial_tokens=27345
+k= 288 m= 1 L= 144 initial_types= 107 guards= 46 initial_tokens=2017
+k= 288 m= 6 L=  24 initial_types= 140 guards= 28 initial_tokens=15767
+k= 288 m=12 L=  12 initial_types= 192 guards= 26 initial_tokens=37151
+k= 337 m= 1 L= 168 initial_types= 119 guards= 53 initial_tokens=2359
+k= 337 m= 6 L=  28 initial_types= 158 guards= 31 initial_tokens=18524
+k= 337 m=12 L=  14 initial_types= 198 guards= 29 initial_tokens=45974
+k= 512 m= 1 L= 256 initial_types= 143 guards= 62 initial_tokens=3585
+k= 512 m= 8 L=  32 initial_types= 201 guards= 35 initial_tokens=44031
+k= 512 m=16 L=  16 initial_types= 256 guards= 34 initial_tokens=103935
+k=1024 m= 1 L= 512 initial_types= 203 guards= 90 initial_tokens=7169
+k=1024 m=11 L=  46 initial_types= 300 guards= 49 initial_tokens=148667
+k=1024 m=22 L=  23 initial_types= 397 guards= 47 initial_tokens=358151
+k=2500 m= 1 L=1250 initial_types= 309 guards=134 initial_tokens=17501
+k=2500 m=17 L=  73 initial_types= 527 guards= 70 initial_tokens=783515
+k=2500 m=35 L=  35 initial_types= 695 guards= 70 initial_tokens=1899249
+Replayed 47 complete comparator and greedy histories.

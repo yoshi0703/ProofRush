@@ -42,6 +42,9 @@ jobs:
           python3 studies/string-identified-bpe/check_unary_diamond.py --m 2 --literal --all-subsets
           python3 studies/string-identified-bpe/check_unary_diamond.py --m 13
           python3 studies/string-identified-bpe/byte-replay/replay.py
+          python3 studies/string-identified-bpe/check_forest.py
+          python3 studies/string-identified-bpe/check_vocabulary.py
+          python3 studies/string-identified-bpe/vocabulary/check_joint_vocabulary.py
 
       - name: Check attention parameters and the finite-rank example
         run: |

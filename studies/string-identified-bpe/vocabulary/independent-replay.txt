@@ -1,0 +1,1 @@
+passed 180 cases and all 256 k=8 history states; last L,q,guard_types,all_types,core_rows,comparator: (9, 4, 16, 81, 125, 1750)

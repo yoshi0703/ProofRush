@@ -41,6 +41,20 @@ BUNDLES = {
          'CombComparator.twice_doubling_table', 'CombComparator.twice_doubling_augmented_lower']),
 }
 
+BUNDLES['rate-and-vocabulary'] = (
+    BUNDLES['diamond'][0] + [
+        'Matching', 'ForestTypes', 'MergeForest', 'ForestCounts', 'ForestGaps', 'ForestLabels',
+        'ForestPaths', 'ForestArithmetic', 'ForestMass', 'ForestChronology', 'ForestEdges',
+        'ForestChronoCount', 'ForestShortMass', 'WorstRate', 'UniversalRate',
+        'BoundedInitial', 'Isolation', 'FinitePairs', 'ShortCount', 'SingleWord', 'Uniform',
+        'SourceGreedy', 'Approximation',
+    ],
+    ['SpellingApproximation.sharp_rates', 'SpellingUniversalRate.replacement_run_bound',
+     'SpellingUniversalRate.overlapping_run_bound', 'BoundedInitial.uniform_source_approximation',
+     'BoundedInitial.uniform_approximation', 'BoundedInitial.bounded_initial_replacement_greedy',
+     'BoundedInitial.bounded_initial_raw_greedy'],
+)
+
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)

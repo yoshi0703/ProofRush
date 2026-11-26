@@ -7,14 +7,14 @@
 \newtheorem{lemma}[theorem]{Lemma}
 \newcommand{\OPT}{\mathrm{OPT}}
 \newcommand{\cnt}{\mathrm{cnt}}
-\title{Ambiguous initial spellings break the approximation guarantee for greedy byte-pair encoding}
+\title{The approximation rate of greedy byte-pair encoding with ambiguous initial spellings}
 \author{ProofRush\\[2pt]\small Research initiated and directed by {\namefont 大束良明}}
 \date{26 November 2026 UTC}
 \begin{document}
 \maketitle
 
 \begin{abstract}
-Baliga, Xie and Byju ask whether the replacement-count guarantee for greedy byte-pair encoding survives on non-uniquely-decodable inputs when tokens with the same spelling are identified. A sequence of fourteen unary token spellings admits a legal four-merge greedy run saving four tokens. Four other full merges save ten, exceeding the guarantee's permitted comparator utility. We also construct weighted corpora on which every greedy tie order fails. For growing budgets, a layered construction makes the worst-case ratio tend to zero even with the most favorable greedy tie order. This holds for rankings by disjoint replacements and by overlapping occurrences. The input can use a single underlying character, with a growing dictionary of initial tokens. The construction is for arbitrary string-valued initial atoms, the model of the original authors' non-unique-decoding examples and reference checker.
+Baliga, Xie and Byju ask whether the replacement-count guarantee for greedy byte-pair encoding survives on non-uniquely-decodable inputs when tokens with the same spelling are identified. A sequence of fourteen unary token spellings admits a legal four-merge greedy run saving four tokens. Four other full merges save ten, exceeding the guarantee's permitted comparator utility. We also construct weighted corpora on which every greedy tie order fails. For growing budgets, a layered construction makes the worst-case ratio tend to zero even with the most favorable greedy tie order. This holds for rankings by disjoint replacements and by overlapping occurrences. The input can use a single underlying character, with a growing dictionary of initial tokens. We prove a matching lower bound for arbitrary inputs by charging comparator merge trees to adjacent original token pairs. For both rankings the worst ratio is of order $k^{-1/2}$. When the number of initial token types is uniformly bounded the worst ratio instead tends to one, even if the spellings remain ambiguous.
 \end{abstract}
 
 \section{The open question}
@@ -117,12 +117,62 @@ When level $j$ starts, every row seeded at or below it has collapsed through lev
 
 For each of $k$ distinct new letters $b_i$, add $m+1$ copies of the two-token row $[b_i,b_i]$. Write the entire collection as one word, with a distinct new separator character after every copy. During the first $k$ greedy steps a pair containing a separator occurs at most once. Each unused pair $(b_i,b_i)$ occurs $m+1$ times, with all its occurrences disjoint. When selected, every corresponding two-token row becomes one token. Nothing in the core changes. Induction shows that the maximizers are exactly the unused private pairs, for both rankings and every tie order. The comparator can ignore the private rows and separators. This establishes the claimed bound against the optimum, even though its exact value on this family is unknown.
 
-For $k\ge8$ choose $m=\lfloor\sqrt{k/2}\rfloor$. Then $2m^2\le k<2(m+1)^2$. In particular $k/m^3<8/m\to0$ for all budgets. Nonnegativity gives the reverse limit bound. The argument proves an upper rate of order $k^{-1/2}$ and gives no matching rate.
+For $k\ge8$ choose $m=\lfloor\sqrt{k/2}\rfloor$. Then $2m^2\le k<2(m+1)^2$. In particular $k/m^3<8/m\to0$ for all budgets. Nonnegativity gives the reverse limit bound. This establishes the upper rate of order $k^{-1/2}$.
 \end{proof}
 
 The same construction can be realized over the single \emph{spelling character} $a$. Keep all core lengths. Choose consecutive private operand lengths $p_0,\ldots,p_{k-1}$ larger than $H_m$ with $p_{k-1}<2p_0$. Choose distinct separator lengths greater than $2p_{k-1}$. Every token created by a core comparator is at most $H_m$. Every selected private token has length $2p_i$. The four ranges therefore stay disjoint during each of the two runs. Each boundary-containing pair occurs at most once. Using these unary initial tokens preserves the proof. This fixed spelling alphabet still requires a growing dictionary of compound initial tokens.
 
 For $m=13$ and $k=338$, greedy saves $4{,}732$ tokens and the displayed comparator saves $30{,}758$, so the ratio is at most $2/13<1/6$. An independent literal-length replay verified both rankings on a unary instance with $159{,}298{,}694$ underlying characters. In the smaller $m=2$ test, the checker also expanded the spellings into actual character strings and visited all $256$ subsets of the eight private choices.
+
+\section{A matching lower bound for every input}
+\begin{theorem}\label{th:rate}
+For either pair-ranking rule and every $k\ge8$, the worst ratio $R_k$ satisfies
+\[
+ \frac{1}{114}\ \le\ R_k\sqrt{k}\ \le\ 24 .
+\]
+The lower bound holds for every greedy tie order on every input. The upper bound holds even when each input receives its best tie order.
+\end{theorem}
+
+\begin{proof}
+Let $G$ be the saving of any greedy run. A run that exhausts all adjacent pairs early has achieved the greatest saving possible. Consider a run of $k$ positive steps. For a fixed set $S$ of $J$ ordered token pairs, let $A_S(w)$ count all adjacent occurrences of its pairs in the initial word $w$. A single replacement removes at most three old adjacencies: the joined boundary and its two neighbors. A full pass making $g$ replacements therefore decreases this count by at most $3g$, including when an old and a newly created token have the same spelling. For any pair, a full left-to-right pass takes at least half of its raw occurrences. In a greedy state, the raw count of any pair is consequently at most twice the actual gain of the next step, for either ranking. After $G_i$ savings this gives $A_S(w)\le 3G_i+2Jg_{i+1}$. Summing over the $k$ steps gives
+\[
+ kA_S(w)\le(3k+2J)G. \tag{1}
+\]
+
+Follow the individual occurrences in any feasible partial comparator with at most $k$ rules. Its forest has ordered binary merge nodes labeled by their chronological rule index. Leaves are original token occurrences. Two occurrences with equal visible spelling may have different trees. Let $C,U,B$ count merge nodes with respectively zero, one, or two internal children. The $C$ nodes are cherries. Their distinct original adjacencies use at most $k$ pair labels, one per comparator rule, so (1) gives $C\le5G$. Also $B\le C$, as follows by contracting all one-child vertices in the forest of internal nodes. Comparator saving equals the number $C+U+B$ of merge nodes.
+
+Partition the $U$ nodes into maximal chains of attachments of one original leaf to the left or right. Each such chain terminates at its own cherry or two-internal-child node, hence there are at most $C+B\le2C$ chains. Along each chain, two consecutive leaves attached on the same side are adjacent in the \emph{original} input: intervening attachments on the opposite side leave that endpoint of the interval fixed. When these two attachments occurred at stages $a>b$, their spellings are the operands on the specified side of rules $a$ and $b$. Their order in the input is determined by their side. Every such edge belongs to a distinct original boundary. In fact, it is the split between the two children of the newer attachment node; different nodes have different such splits.
+
+Fix an integer $s\ge1$. Let $E$ count the preceding edges whose stage gap $a-b$ is at most $s$. Their labels are indexed by the side, the later stage and the positive gap. There are at most $2ks$ possibilities, so (1) gives $E\le(3+4s)G$. In a side sequence of one chain, successive gaps have total at most $k$. Thus at most $k/s$ edges on that side have longer gaps. At most one attachment per side has no predecessor. Across both sides of all chains we obtain
+\[
+ U\le E+4C+4kC/s,\qquad
+ C+U+B\le (33+4s+20k/s)G .
+\]
+Set $s=\lfloor\sqrt{k}\rfloor+1$. Then every comparator saves at most $57sG$, independently of both the spelling dictionary and the choice of pairs at ties. Since $s\le2\sqrt{k}$ for $k\ge1$, this proves the stated lower bound. For the upper bound use Theorem~\ref{th:zero} with $m=\lfloor\sqrt{k/2}\rfloor$. For $k\ge8$, one has $m\ge2$, $k\le8m^2$ and $s\le3m$, so $R_ks\le24$. The two inequalities give $R_k=\Theta(k^{-1/2})$. The leading constant and the exact finite-budget ratios are undetermined.
+\end{proof}
+
+\section{A uniformly bounded initial vocabulary}
+The preceding worst cases allow the number of different initial token types to grow with $k$. A bound on that number suffices to reverse the large-budget behavior, even if the token spellings are arbitrarily long and ambiguous.
+\begin{theorem}\label{th:fixed}
+Suppose the entire input uses at most $A$ distinct initial spellings. For any integer $M\ge2$, let $N_M=\sum_{j=2}^M A^j$. For every positive budget and either greedy ranking,
+\[
+ \OPT\le P\le \left(1+\frac{2}{M-1}+\frac{2N_M}{k}\right)G ,
+\]
+where $P$ is the initial number of available boundaries (weighted in a word table). Thus $G/\OPT\to1$ uniformly over all positive-optimum inputs and every tie order for fixed $A$.
+\end{theorem}
+\begin{proof}
+Assign to each current token occurrence its contiguous block of original atoms. After $G_i$ savings, the sum of block sizes minus one over all live tokens is $G_i$. There are $P-G_i$ live boundaries. A boundary whose two endpoint blocks contain more than $M$ leaves in total consumes at least $M-1$ units of this excess. Each endpoint block is used at most twice. Therefore at least $P-(1+2/(M-1))G_i$ boundary mass has combined size at most $M$.
+
+A boundary of the latter kind determines a sequence of $2$ through $M$ original atom labels. At a given stage this sequence specifies the two current visible spellings. Its exterior boundaries have survived every earlier pass. A left-to-right pass restricted to the sequence then coincides with a stand-alone pass: no token at either end is consumed externally. Induction on the common history proves the assertion, including for two original atom sequences that concatenate to the same visible string. There are at most $N_M$ such original label sequences. Every raw count is at most $2g_{i+1}$, as above. Sum the resulting estimate over $k$ steps, using $G_i\le G$. If the run stops because all pairs have disappeared, $G=P$. A partial comparator always keeps a token in every nonempty word. This proves the finite inequality. For any desired error, first choose $M$ large, then $k$ large for this fixed $A,M$.
+\end{proof}
+The numerical form of this finite bound was proved for ordinary character inputs with fresh symbols in Theorem~5(b) of the companion paper \cite{fixed}. We use its short-subword counting idea. Its argument via monotonicity of the largest raw count cannot be carried over verbatim: on the two unit rows $[a,b,x]$ and $[ab,x]$ that maximum rises from one to two after the legal full merge $(a,b)$. Averaging the per-step inequality permits literal spelling collisions. The conclusion includes a fixed byte alphabet and fixed collections of initially compound tokens. It concerns merge savings when the trainer takes the specified number of rules or exhausts the corpus.
+
+\paragraph{Joint dependence on vocabulary and budget.}
+The accompanying supplement gives a construction that also caps the number of initial types. It reuses side-token spellings according to a walk with distinct directed transitions and balances guard spellings over the possible endpoints of adjacent rows. With at most $A$ initial types the worst ratio on single words is, up to absolute constants,
+\[
+ \min\{1,\max(k^{-1/2},k/A^2)\}.
+\]
+For $A\ge2$ this order holds even upon restricting to genuinely ambiguous inputs and choosing the best greedy tie order. The lower bounds follow from Theorems~\ref{th:rate} and~\ref{th:fixed} with $M=2$. The upper construction and full parameter choices are proved in the supplemental note \cite{jointvocab}. The unrestricted and fixed-vocabulary theorems above have end-to-end formal proofs. The supplement's joint upper construction has a mathematical proof and independent exact simulations; its full two-parameter upper bound is outside the current kernel certificate.
 
 \section{Verification and contributions}
 Lean represents tokens as lists of letters and defines $\OPT$ by taking the largest shortening over all legal partial runs of at most $k$ merges. For Theorem~\ref{th:zero}, the exported statements define $R_k$ by an infimum of real ratios over admissible single words and explicitly maximize over all greedy tie orders on each word. The formal proofs include existence of maximizing runs, genuine ambiguity in the serialized word, the complete partial comparator, and convergence to zero separately for both ranking rules. The formal word uses distinct separator characters. The unary recoding and the stronger full-pass comparator description are proved above and replayed independently in exact code. A second export completes the earlier six-phase construction in Theorem~\ref{th:family}, from its actual initial word through its all-tie finite inequality and the $1/6+\varepsilon$ bound for every sufficiently large budget.
@@ -132,6 +182,8 @@ Lean represents tokens as lists of letters and defines $\OPT$ by taking the larg
 \begin{thebibliography}{9}
 \bibitem{bxb} K. Baliga, A. Xie and A. Byju. \emph{Greedy BPE with Replacement Counts Saves at Least $\frac12(1-(1-2/k)^k)$ of the Optimum, Which Is Tight as $k\to\infty$}. Version 3, 23 November 2026, Sections 3, 8 and 11 and Appendices D and G. \url{https://arxiv.org/abs/2611.08671v3}.
 \bibitem{supp} K. Baliga, A. Xie and A. Byju. Supplement to the third version of the preceding paper. 2026. The non-uniquely-decodable checker is in \texttt{supplement/check/stringid/check\_nonfree.py}. \url{https://doi.org/10.5281/zenodo.24451469}.
+\bibitem{jointvocab} ProofRush. \emph{Worst-case ratio as a function of budget and initial vocabulary}. Supplemental proof, explicit single-word construction and reproducible exact checks. \url{https://github.com/yoshi0703/ProofRush/tree/v4.1.0/studies/string-identified-bpe/vocabulary}.
+\bibitem{fixed} K. Baliga, A. Xie and A. Byju. \emph{GreedTok Is a 0.3287-Approximation, and Greedy Tokenizers Lose Order $1/\log k$ on Fixed Alphabets}. Version 3, Section 6 and Appendix G. \url{https://arxiv.org/abs/2611.07346v3}.
 \bibitem{kv} L. Kozma and J. Voderholzer. \emph{Theoretical Analysis of Byte-Pair Encoding}. ESA 2026, LIPIcs 388, 80:1--80:17. \url{https://doi.org/10.4230/LIPIcs.ESA.2026.80}.
 \bibitem{zouhar} V. Zouhar, C. Meister, J. Gastaldi, L. Du, T. Vieira, M. Sachan and R. Cotterell. \emph{A Formal Perspective on Byte-Pair Encoding}. Findings of ACL 2023, 598--614. \url{https://aclanthology.org/2023.findings-acl.38/}.
 \end{thebibliography}

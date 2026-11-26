@@ -1,5 +1,22 @@
 # Reproducing the spelling-identified BPE result
 
+## Sharp rate and bounded initial vocabulary
+
+The version 4.1 rate bundle proves an inequality for every actual greedy run against the attained optimum over partial comparator rules. It also takes the best tie choice on each admissible input and the infimum across inputs. For both ranking rules and every \(k\ge8\), the result is \(1/114\le R_k\sqrt{k}\le24\). The fixed-vocabulary theorem quantifies over all words whose initial token spellings belong to a list of size at most \(A\). For every positive error there is a single budget threshold that works for every such word and every allowed greedy choice. [Unrestricted rates](lean/UniversalRate.lean) · [Uniform fixed-vocabulary theorem](lean/SourceGreedy.lean) · [Independent record for the combined bundle](verification/rate-and-vocabulary.json)
+
+Use the repository's pinned Lean, Mathlib and independent verifier as described below. Select `--bundle rate-and-vocabulary` to rebuild just this complete bundle. The release-source export checked 14,617 declarations in nanoda. The numerical certificate for the original \(1/6\) family remains a separately reproducible full single-word proof. [Original family](lean/OriginalSix.lean) · [Its kernel record](verification/six-phase.json)
+
+The following checks use Python's standard library.
+
+```sh
+python3 studies/string-identified-bpe/check_forest.py
+python3 studies/string-identified-bpe/check_vocabulary.py
+python3 studies/string-identified-bpe/vocabulary/check_joint_vocabulary.py
+python3 studies/string-identified-bpe/vocabulary/vocabulary_exponent.py
+```
+
+The first checks the physical positions and chronological labels of comparator adjacencies on 10,000 random merge forests. The second tracks actual token blocks in weighted corpora and checks 1,900 pairs of traces. The last two independently construct and replay examples for the sharper joint dependence on both growing parameters. The general joint upper construction has a mathematical proof in the supplement. The two-parameter statement is outside the combined kernel export. [Supplement and coverage](vocabulary/two-parameter.md) · [Independent experiment](vocabulary/independent-replay.txt)
+
 ## The finite witness
 
 Use Python 3.10 or later. These commands run from the repository root and use only the standard library.
