@@ -26,6 +26,10 @@ One spreadsheet option in NOAA's 2021 field guide gives each end strip of a beac
 
 We classify exactly the starts where the second player can force a win on the second move. Four infinite families suffice, beginning at 7, 29, 57 and 227. Two inverse constructions propagate finite losing strategies. They generate a self-similar set of 2-adic limits, including limits of losses in every prescribed residue class modulo a power of three. The dyadic closures of both the forced wins and the forced losses within each such class have Hausdorff dimension at least 0.57969. Althöfer's €500 problem of proving finite optimal play from every odd start remains open. This preprint awaits external peer review. [English paper](studies/althofer-game/paper.pdf) · [Proofs and reproduction](studies/althofer-game/VERIFY.md) · [Research history](studies/althofer-game/RESEARCH.md) · [Sponsor](https://althofer.de/collatz-prizes.html)
 
+## Hankel matrices in Shallit's four-integer sequence
+
+Jeffrey Shallit asked whether every shifted Hankel determinant of a particular four-integer sequence is nonzero. We prove that at every starting position and above every positive order R there is a nonsingular order at most 13R. Lean and the independent Rust kernel checked this result. A separate mathematical proof with two exact implementations shows that the rational rank of every order-n matrix is greater than 13n/43. All shifts are nonsingular through order 4,096. The original all-orders question remains open, and the work awaits external peer review. [English paper](studies/shallit-hankel/paper.pdf) · [Verification and reproduction](studies/shallit-hankel/VERIFY.md) · [Research record](studies/shallit-hankel/RESEARCH.md) · [2014 question and £50 offer](https://cs.uwaterloo.ca/~shallit/Talks/bc4.pdf#page=35)
+
 ## Earlier graph catalogue study
 
 This earlier publication addresses a machine-generated inequality. It is archived and contributes zero to the programme for human-posed open research problems. The files below describe that publication. [Archived v1.0.0 release](https://github.com/yoshi0703/ProofRush/releases/tag/v1.0.0)

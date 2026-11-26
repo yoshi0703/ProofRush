@@ -30,6 +30,21 @@ jobs:
       - name: Compare the identity-testing functionals in exact arithmetic
         run: python3 -B studies/canonne-functional-comparison/check.py
 
+      - name: Reproduce the shifted Hankel determinants and rational-rank certificates
+        shell: bash
+        run: |
+          set -euo pipefail
+          replay="studies/shallit-hankel/replay"
+          binary="$RUNNER_TEMP/shallit-hankel"
+          c++ -O3 -std=c++17 -Wall -Wextra -Werror "$replay/hankel.cpp" -o "$binary"
+          python3 -B "$replay/cross_check.py" --hankel "$binary"
+          python3 -B "$replay/rank_bounds.py"
+          python3 -B "$replay/independent_rank.py"
+          python3 -B "$replay/independent_small.py"
+          observed=$("$binary" 204800)
+          echo "$observed"
+          test "$observed" = "length=204800 count=10485862400 checksum=320903234180241819 modulus=2305843009213693951"
+
       - name: Check masked guidance with exact rational arithmetic
         run: |
           python3 studies/masked-guidance/experiment.py
@@ -89,7 +104,7 @@ jobs:
           cd "$mathlib"
           mapfile -t study_modules < <(
             awk '$1 == "import" && $2 ~ /^Mathlib[.]/ {print $2}' \
-              "$GITHUB_WORKSPACE"/studies/{masked-guidance,string-identified-bpe,attention-value-dimension,shoreline-transects,althofer-game,canonne-functional-comparison}/lean/*.lean | sort -u
+              "$GITHUB_WORKSPACE"/studies/{masked-guidance,string-identified-bpe,attention-value-dimension,shoreline-transects,althofer-game,canonne-functional-comparison,shallit-hankel}/lean/*.lean | sort -u
           )
           lake exe cache get Mathlib.Combinatorics.SimpleGraph.Coloring.Vertex \
             Mathlib.Combinatorics.SimpleGraph.Diam Mathlib.Data.Fin.VecNotation "${study_modules[@]}"
@@ -138,6 +153,16 @@ jobs:
               --docker-image "$CHECK_IMAGE" --run-dir "$output"
             tail -n 1 "$output/nanoda.txt" >> "$GITHUB_STEP_SUMMARY"
           done
+
+      - name: Check nonsingular orders in the Shallit word independently
+        shell: bash
+        run: |
+          set -euo pipefail
+          umask 022
+          python3 studies/shallit-hankel/verify.py --mathlib "$RUNNER_TEMP/mathlib" \
+            --nanoda "$RUNNER_TEMP/nanoda/target/release/nanoda_bin" \
+            --docker-image "$CHECK_IMAGE" --run-dir "$RUNNER_TEMP/shallit-interval"
+          tail -n 1 "$RUNNER_TEMP/shallit-interval/nanoda.txt" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Check the masked-guidance theorem bundles independently
         shell: bash

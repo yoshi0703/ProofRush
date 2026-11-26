@@ -1,0 +1,145 @@
+\documentclass[10pt]{article}
+\usepackage[hmargin=0.9in,vmargin=0.77in]{geometry}
+\usepackage{fontspec,amsmath,amssymb,amsthm}
+\usepackage[hidelinks,pdftitle={Hankel ranks and nonsingular orders for Shallit's four-integer word},pdfauthor={ProofRush Research Team}]{hyperref}
+\IfFileExists{fonts/ProofRushDirectorJP.otf}
+  {\newfontfamily\namefont[Path=fonts/]{ProofRushDirectorJP.otf}}
+  {\IfFontExistsTF{Noto Sans CJK JP}
+    {\newfontfamily\namefont{Noto Sans CJK JP}}
+    {\IfFontExistsTF{Hiragino Sans}
+      {\newfontfamily\namefont{Hiragino Sans}}
+      {\newfontfamily\namefont{HaranoAjiMincho-Regular.otf}}}}
+\newcommand{\director}{{\namefont 大束良明} (Yoshiaki Otsuka)}
+\newcommand{\rank}{\operatorname{rank}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\title{Hankel ranks and nonsingular orders\\ for Shallit's four-integer word}
+\author{ProofRush Research Team\\\small Research directed by \director}
+\date{27 November 2026 JST (26 November 2026 UTC)\\\small Preprint, version 1}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+For the fixed point of \(1\mapsto12,\ 2\mapsto23,\ 3\mapsto14,\ 4\mapsto32\), we prove a uniform rational rank bound \(43\operatorname{rank}H_n(s)>13n\) for its shifted Hankel matrices. The proof uses a finite certificate on substitution blocks. We separately verify nonvanishing for every order through \(4096\) at every shift. A third result, formalized in Lean and checked with an independent kernel, shows that for each shift and integer \(R\ge1\) there is a nonsingular order in \((R,13R]\). These conclusions give partial results for Shallit's 2014 Open Problem~9.
+\end{abstract}
+
+\section{Problem and results}
+Let \(a=\sigma^\omega(1)=1223231423141232\cdots\), with the substitution \(\sigma\) specified in the abstract. We index this word from \(0\) and put \(H_n(s)=(a_{s+i+j})_{0\le i,j<n}\). On slide 35 of his 2014 BCTCS talk, Shallit asked whether every one of these matrices is nonsingular over \(\mathbb Q\), reported checks up to length \(800\), and offered \pounds50 \cite{shallit}. His talks page distinguishes the 2026 solution to the three-real-value existence problem from the unresolved integer variant \cite{update,cavalcante}. The statement studied here fixes the four integer values and the substitution.
+
+\begin{theorem}\label{main}
+For every shift \(s\ge0\):
+\begin{enumerate}
+\item \(H_n(s)\) is nonsingular for every \(1\le n\le4096\).
+\item Over a field of characteristic zero or at least five, each integer \(R\ge1\) has an order \(q\in(R,13R]\) for which \(H_q(s)\) is nonsingular.
+\item Over \(\mathbb Q\), \(43\rank H_n(s)>13n\) for every \(n\ge1\).
+\end{enumerate}
+\end{theorem}
+
+\paragraph{Context.}
+Uniform linear rank growth follows qualitatively from classical linear recurrence of primitive aperiodic substitution words \cite[\S~7.1]{dhs}. Indeed, for each length \(d\) such a word has a factor with two distinct right extensions. Without one, the successor rule on length-\(d\) factors would eventually cycle. Linear recurrence puts both extensions in every sufficiently long factor of length \(O(d)\), where they obstruct any monic order-\(d\) recurrence. A first dependent Hankel column of index \(d\) supplies that recurrence on a factor of length \(n+d\). This gives \(\rank H_n(s)=\Omega(n)\) uniformly in shift. The substitution here is primitive, since every \(\sigma^5(c)\) contains all four letters, and aperiodicity follows from overlap-freeness below. Our bounds give explicit constants for this particular word. The underlying rank and recurrence mechanism goes back to Iohvidov \cite{ioh,bakan}. Number walls encode all these determinants and their zero patterns \cite{lunnon,adiceam}. Cavalcante's 2026 Dakota certificate uses a different word and a transcendental lift to three real values \cite{cavalcante}.
+
+\section{Factor coverage and small orders}
+The allowed adjacent pairs are
+\[
+\mathcal P=\{12,14,21,22,23,31,32,41,42\}.
+\]
+Each occurs in the first \(25\) letters. This set contains the four internal image pairs and is closed under the boundary rule \(xy\mapsto \sigma(x)_1\sigma(y)_0\), with \(0\)-based indexing within an image. Induction over the substitution proves that the list is complete. For \(W=2^h\) and \(L\le W\), every length-\(L\) factor is a substring of \(\sigma^h(xy)\) for some \(xy\in\mathcal P\), beginning at an offset less than \(W\). In particular every such factor occurs in the first \(25W\) letters.
+
+Write \(D_j(i)=\det H_j(i)\), with \(D_0(i)=1\). The Desnanot--Jacobi identity gives
+\[
+ D_j(i)D_{j-2}(i+2)
+   =D_{j-1}(i)D_{j-1}(i+2)-D_{j-1}(i+1)^2.
+\]
+The program \texttt{replay/hankel.cpp} computes the table modulo \(2^{61}-1\), proceeding only when each determinant in the previous rows is nonzero, so every division is valid. On the first \(204800=25\cdot8192\) letters it finds all \(10\,485\,862\,400\) contained matrices nonzero modulo this prime. The coverage proof with \(W=8192\) gives the first conclusion, since \(2\cdot4096-1\le8192\). The separate Python replay \texttt{replay/rank\_bounds.py} uses pair coverage and the same identity to verify all shifts for \(n\le81\), the only finite determinant range needed for the rank bound.
+
+\section{Nonsingular orders in multiplicative intervals}
+An overlap of period \(d>0\) means \(a_{i+j}=a_{i+d+j}\) for \(0\le j\le d\). The appendix proves that this word has no overlaps. Its length-\(d\) factor count \(P(d)\) satisfies
+\[
+ P(1),\ldots,P(9)=4,9,15,22,28,35,42,49,56.
+\]
+The counts follow by enumerating the complete cover above. Cropping substitution images at an even or odd start gives \(P(2j)\le P(j)+P(j+1)\) and \(P(2j+1)\le2P(j+1)\). Induction gives \(P(d)\le7(d-1)\) for \(d\ge5\).
+
+If a factor of length \(L\) followed a monic recurrence of order \(d\) and \(L-1\ge2P(d)\), then two of its first \(P(d)+1\) length-\(d\) windows would agree at starts \(u<v\le P(d)\). These windows fit because \(P(d)\ge d\) by overlap-freeness. The recurrence propagates equality forward to the end of the later window's remaining suffix. This gives agreement through position \(v+(v-u)\le L-1\) and thus an overlap. Every monic order-\(d\) recurrence therefore has agreement length at most \(2P(d)\). The argument applies over the stated fields because the four inputs remain distinct.
+
+Fix \(s\), and suppose \(D_k(s)\ne0\). The first \(k\) equations of a monic order-\(k\) recurrence determine its coefficients \(c_0,\ldots,c_{k-1}\) uniquely using \(H_k(s)\). Write
+\[
+ E_i=a_{s+i+k}+\sum_{\ell=0}^{k-1}c_\ell a_{s+i+\ell}.
+\]
+Let \(b\ge k\) be the first index with \(E_b\ne0\). Such an index exists, and the agreement bound gives \(b+k\le2P(k)\). In a Hankel matrix of order \(N\) with \(k<N\le b+1\), replace each row \(k+i\) by that row plus \(\sum_{\ell<k}c_\ell\) times the respective original rows \(i+\ell\). The simultaneous row operation is unit lower triangular. The resulting bottom-left block vanishes since its entries are \(E_{i+j}\) with \(i+j<b\). The bottom-right block is \((E_{i+k+j})\). At order \(b+1\) it vanishes before the anti-diagonal \(i+j=b-k\), on which the entries are \(E_b\). This block is invertible. At intermediate orders its first row vanishes. Hence \(q=b+1\) is the next nonsingular order. The bounds on \(P(k)\) imply \(q\le2P(k)-k+1\le13k\), including the four small cases. Since \(D_1(s)\ne0\), the nonsingular orders form an unbounded sequence. Taking its last index \(k\le R\) and then the successor proves the second conclusion.
+
+\section{A uniform quantitative rank bound}
+\paragraph{A longer recurrence from a rank defect.}
+Write \(r=\rank_{\mathbb Q} H_n(s)\) and assume \(r<n\). Let \(d\le r\) be the index of its first dependent column. As all entries are nonzero, \(d\ge1\). There is a monic relation with coefficients \(q_0,\ldots,q_d\), where \(q_d=1\), whose residuals
+\[
+ b_i=\sum_{j=0}^d q_j a_{s+i+j}
+\]
+vanish for \(0\le i<n\) and are defined for \(0\le i\le2n-2-d\). The leading \(d\)-square block is invertible: a dependence among its columns would propagate down all \(n\) rows using the same monic recurrence. In this propagation, for each column \(j<d\) and row \(i+d<n\), the recurrence uses \(b_{i+j}=0\). Thus such a dependence would contradict the choice of column \(d\).
+
+If all defined residuals vanish, the agreement length is \(2n-1\). Otherwise let \(t\ge n\) be the first nonzero residual. For \(t-n+1\le k\le n-1-d\), the vector \((b_{i+k})_{i=0}^{n-1}\) belongs to the column space. These vectors have pairwise distinct first nonzero entries below the first \(d\) rows. They are independent and their span meets the span of the first \(d\) columns trivially by invertibility of the leading block. Counting gives \(r\ge2n-1-t\). In either case the initial recurrence agreement has length at least \(2n-1-r+d\) and at least \(n+d\). If \(\ell\) is the first index with \(q_\ell\ne0\), delete the first \(\ell\) symbols and put \(D=d-\ell\). The remaining monic recurrence is reversible, meaning its constant coefficient is nonzero, and \(D>0\) since the digits are nonzero. Its agreement length \(L\) satisfies
+\begin{equation}\label{length}
+ L\ge2n-1-r+D,\qquad L\ge n+D.
+\end{equation}
+
+\paragraph{Obstructions in substitution blocks.}
+For every \(B=2^h\ge4\), the numeric vectors \(\sigma^h(1),\dots,\sigma^h(4)\) in \(\mathbb Q^B\) are independent. At \(B=4\) the four rows are \(1223,2314,1232,1423\), of determinant \(10\). In the doubling step, concatenation splits a putative relation into two old-scale relations. Their grouped coefficient vectors must vanish by induction. The kernels of the two grouping maps are generated by \(e_1-e_3\) and \(e_1-e_4\) respectively, with zero intersection.
+
+If an interval satisfying a reversible recurrence of order \(D\le uB\) contains an expanded factor \(\sigma^h(v)\), then each of the following tests on \(v\) contradicts that recurrence.
+\begin{enumerate}
+\item A length-\(u\) factor of \(v\) has two different successors or two different predecessors within \(v\). The expanded matching parts agree for \(uB\) entries, and the recurrence extends that equality through the neighboring block.
+\item The matrix whose rows are all consecutive \((u+1)\)-letter windows of \(v\), with each letter replaced by its four-coordinate indicator vector, has rank greater than \(3u+1\) over \(\mathbb F_2\).
+\item The same rank violation holds for the matrix of \((u+2)\)-letter windows.
+\end{enumerate}
+For the rank tests, a nonzero minor over \(\mathbb F_2\) gives a nonzero rational minor. Replacing each indicator block by its numeric codeword preserves rational rank by the block independence above. After expansion the extra block in test 2 is a fixed linear function of the first \(u\) blocks by forward recurrence. In test 3 the two end blocks are fixed linear functions of the middle \(u\) blocks by reversibility. The predictor part has rank at most \(3u+1\): its \(u\) indicator-block coordinate sums are equal, imposing \(u-1\) independent homogeneous constraints on \(4u\) columns. The fixed linear predictions preserve this bound for the whole matrix, a contradiction.
+
+\paragraph{Finite certificate and scaling.}
+For each \(u=21,\ldots,40\), every factor of length \(K(u)\) passes at least one test. The checked lengths are
+\[
+\begin{array}{c|rrrrrrrrrr}
+u &21\text{--}25&26\text{--}29&30&31\text{--}32&33&34&35&36&37\text{--}39&40\\
+\hline
+K(u)&129&137&139&145&166&167&168&169&177&257
+\end{array}
+\]
+To reproduce the certificate, take \(W\) the least power of two at least \(K(u)\), enumerate all \(W\) offsets in each \(\sigma^{\log_2 W}(xy)\) with \(xy\in\mathcal P\), and perform the tests on the length-\(K(u)\) window. The rank tests use binary Gaussian elimination. The Python checker performs \(48\,384\) pair-offset checks. The independent replay verifies the same factor cover using modular elimination over \(\mathbb F_3\). See \nolinkurl{replay/independent_rank.py}.
+
+If \(D\le80\), then \eqref{length} guarantees \(2D+1\) available symbols and \(D+1\) recurrence equations on them. The leading Hankel minor of order \(D+1\) in that factor would be singular, contrary to the finite check through order \(81\). If \(D\ge81\), choose \(B\) the largest power of two with \(20B<D\) and \(u=\lceil D/B\rceil\). Then \(B\ge4\) and \(21\le u\le40\). A factor of length at least \((K(u)+1)B-1\) contains \(K(u)\) complete aligned blocks, even if \(B-1\) initial symbols precede the first boundary. The certificate forbids such a factor in the recurrence interval. Using the displayed table and \((u-1)B<D\) gives
+\[
+ 2n-1-r+D\ \le L < (K(u)+1)B-1
+ \ \le\frac{86}{13}(u-1)B-1
+ \ <\frac{86}{13}D-1 .
+\]
+Hence \(2n<r+(73/13)D\le(86/13)r\) because \(D\le r\). Full-rank matrices satisfy the claimed strict inequality directly. This proves the third conclusion.
+
+\section{Verification and scope}
+The interval result is formalized in Lean 4.36.0 with Mathlib, including overlap-freeness, the factor bound and the residual-row argument. A separate Nanoda kernel checked \(9\,774\) declarations in its export without errors. The prefix computation and the stronger rational rank bound use exact finite arithmetic and the mathematical arguments above. The Lean export does not certify those two results. The work does not resolve whether every order is nonsingular. A limited literature search did not locate the same explicit rank bound for this exact word. No priority claim, external peer review, or prize claim is reported.
+
+\paragraph{Contributions.}
+\director\ directed the research. GPT-6.2-Sol at medium effort developed the initial determinant and interval results, formalized the recurrence and factor bounds, independently reviewed the stronger estimate, and drafted this manuscript. GPT-6.2-Sol at high effort developed the stronger rank bound and its checker and reviewed the initial results. GPT-6.1-Terra at medium effort formalized the word and overlap proof. GPT-6.2-Astra at maximum effort coordinated the research and independent kernel audit. The computations used a local Apple M3 Pro. No additional paid API was used.
+
+\appendix
+\section{Overlap-freeness}
+A relaxed overlap uses equality for \(1\le j<d\) and allows relations \(R,S\) on the letters at the left and right endpoints \(j=0,d\). Write \(E\) for equality and \(F_0,F_1\) for the first and second symbol maps of \(\sigma\). For even \(d=2e\) and a start of parity \(0\) or \(1\), comparison of complete images reduces the relaxed overlap to one of period \(e\). The interior source letters agree, since the images are all distinct. The new endpoint relations are respectively
+\[
+ (F_0^*R\cap F_1^*E,\ F_0^*S)
+ \qquad\text{or}\qquad
+ (F_1^*R,\ F_0^*E\cap F_1^*S),
+\]
+where \(F^*R\) is the inverse image of the relation under \(F\) on each coordinate. Starting from \((E,E)\), the four reachable states are \((E,E),(E,E_{13}),(E_{14},E),(E,E_{134})\), where \(E_I\) identifies precisely the letters in \(I\). Substitution in the displayed rules verifies that this set is closed.
+
+For odd \(d\ge5\), the matched interiors start at opposite parities and have length at least four. The first four letters on the aligned side give two genuine images. On the other side they would give two consecutive crossing pairs that are valid images. The parent pairs of such crossings are \(14,22\), by inspection of \(\mathcal P\). Two consecutive such parent pairs would require \(222\), which cannot occur because \(22\) starts only at odd positions. For \(d=3\) the only length-seven factor satisfying the two interior equalities is \(1232231\), with incompatible left endpoint pair \((1,2)\). At \(d=1\) none of the length-three factors
+\[
+ 122,\ 123,\ 141,\ 142,\ 212,\ 223,\ 231,\ 232,\ 312,\ 314,\ 321,\ 322,\ 323,\ 412,\ 423
+\]
+satisfies any of the four endpoint states on its two adjacent pairs. The length-three and length-seven lists are obtained by the complete cover with \(W=8\), as checked by \texttt{replay/overlap.py}. Repeated halving reaches an excluded odd period.
+
+\begin{thebibliography}{9}\small\setlength{\itemsep}{1pt}
+\bibitem{shallit} J.~Shallit, \emph{Open Problems in Automata Theory: An Idiosyncratic View}, 2014 BCTCS keynote, \href{https://cs.uwaterloo.ca/~shallit/Talks/bc4.pdf#page=35}{slide 35}.
+\bibitem{update} J.~Shallit, \emph{Recent talks}, \href{https://cs.uwaterloo.ca/~shallit/talks.html}{2014 BCTCS entry and 2026 updates}.
+\bibitem{dhs} F.~Durand, B.~Host and C.~Skau, \emph{Substitutional dynamical systems, Bratteli diagrams and dimension groups}, Ergodic Theory Dynam. Systems 19(4), 953--993, 1999. \href{https://doi.org/10.1017/S0143385799133947}{DOI}.
+\bibitem{ioh} I.~S.~Iokhvidov (Iohvidov), \emph{On Hankel matrices and forms}, Math. USSR-Sb. 9(2), 229--239, 1969. \href{https://doi.org/10.1070/SM1969v009n02ABEH001129}{DOI}.
+\bibitem{bakan} A.~Bakan and C.~Berg, \emph{Solvability of the Hankel determinant problem for real sequences}, in Frontiers in Orthogonal Polynomials and Q-series, World Scientific, 85--117, 2018. \href{https://doi.org/10.1142/9789813228887_0005}{DOI}.
+\bibitem{lunnon} W.~F.~Lunnon, \emph{The Number-Wall Algorithm: an LFSR Cookbook}, J. Integer Seq. 4, Article 01.1.1, 2001. \href{https://cs.uwaterloo.ca/journals/JIS/VOL4/LUNNON/numbwall10.html}{Journal record}.
+\bibitem{adiceam} F.~Adiceam, E.~Nesharim and F.~Lunnon, \emph{On the \(t\)-adic Littlewood Conjecture}, Duke Math. J. 170(10), 2371--2419, 2021. \href{https://doi.org/10.1215/00127094-2020-0077}{DOI}.
+\bibitem{cavalcante} C.~de Souza Cavalcante, \emph{A Verified Dakota Number-Wall Certificate for Nonvanishing Shifted Hankel Determinants}, preprint, 31 July 2026. \href{https://doi.org/10.5281/zenodo.21728308}{DOI}.
+\end{thebibliography}
+\end{document}

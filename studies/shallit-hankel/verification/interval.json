@@ -1,0 +1,24 @@
+{
+  "lean": "Lean (version 4.36.0, arm64-apple-darwin24.6.0, commit 611c117bfaf7b7ae1cfcf246ce6fba31e8f509e9, Release)",
+  "mathlib": "fc4f59e577feb1a4956671bc04ac18aaaf8cd842",
+  "targets": [
+    "ShallitWord.overlap_free",
+    "ShallitFactorCode.factorCode_linear",
+    "ShallitFactorCode.numeric_nonsingular_interval",
+    "ShallitFactorCode.rational_nonsingular_interval"
+  ],
+  "sources_sha256": {
+    "Word.lean": "b366dcb1cdd688b0975622405f2f2d2bf3f9002d1dee2ae62b1f2e56339d50e5",
+    "NormalIndex.lean": "02e1ff37c8e1ef7d86fc4adee05f3dadfa4c936cda780ac56fd11fc7378946b2",
+    "FactorCode.lean": "6de752608ec15175ce601f2e389c3a31e292c107b53e24a0820e47e4180bdcb4"
+  },
+  "export_sha256": "7b2e02a8a39e3a390ec73503b7f65f9970e71b62e5ac84cef921f4f034764878",
+  "exported_axioms": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "nanoda_sha256": "44ba1e3472937ddfc56c9e132a8d227be46694e4a970af8cd2699d09e2acaf10",
+  "isolation": "macOS Seatbelt",
+  "independent_verdict": "Checked 9774 declarations with no errors"
+}
