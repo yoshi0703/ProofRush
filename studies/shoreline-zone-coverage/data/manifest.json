@@ -1,0 +1,20 @@
+{
+  "cefas-data.csv": {
+    "url": "https://data-api.cefas.co.uk/api/export/11276?format=csv",
+    "sha256": "3bff081e2864704db2e355c72cb51391116dc41c9bfcef446b8977fe3f49604a",
+    "bytes": 4542744,
+    "license": "UK Open Government Licence v3.0"
+  },
+  "cefas-metadata.csv": {
+    "url": "https://data-api.cefas.co.uk/api/export/11275?format=csv",
+    "sha256": "2c5891f7f1aa8c16e135e47ff4de9cb1e183e9377d144245d761baaa87411c22",
+    "bytes": 29821,
+    "license": "UK Open Government Licence v3.0"
+  },
+  "water-17-02173.xml": {
+    "url": "https://mdpi-res.com/d_attachment/water/water-17-02173/article_deploy/water-17-02173.xml",
+    "sha256": "99cd55bd3d3397bec98e2e32297bab7e9d014b4747693f82ace8c74423ab9ecf",
+    "bytes": 355231,
+    "license": "Creative Commons Attribution 4.0"
+  }
+}

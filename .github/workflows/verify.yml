@@ -27,6 +27,9 @@ jobs:
       - name: Check the graph witness
         run: python3 experiments/counterexample.py
 
+      - name: Reproduce daily and seasonal beach litter counts and the bag audit
+        run: python3 -B studies/shoreline-zone-coverage/replay/check.py
+
       - name: Compare the identity-testing functionals in exact arithmetic
         run: python3 -B studies/canonne-functional-comparison/check.py
 
@@ -223,3 +226,13 @@ jobs:
               --docker-image "$CHECK_IMAGE" --run-dir "$output"
             tail -n 1 "$output/nanoda.txt" >> "$GITHUB_STEP_SUMMARY"
           done
+
+      - name: Check the shoreline correction and random-audit allocation independently
+        shell: bash
+        run: |
+          set -euo pipefail
+          umask 022
+          python3 studies/shoreline-zone-coverage/verify.py --mathlib "$RUNNER_TEMP/mathlib" \
+            --nanoda "$RUNNER_TEMP/nanoda/target/release/nanoda_bin" \
+            --docker-image "$CHECK_IMAGE" --run-dir "$RUNNER_TEMP/shoreline-zone-coverage"
+          tail -n 1 "$RUNNER_TEMP/shoreline-zone-coverage/nanoda.txt" >> "$GITHUB_STEP_SUMMARY"

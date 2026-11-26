@@ -1,0 +1,25 @@
+{
+  "lean": "Lean (version 4.36.0, arm64-apple-darwin24.6.0, commit 611c117bfaf7b7ae1cfcf246ce6fba31e8f509e9, Release)",
+  "mathlib": "fc4f59e577feb1a4956671bc04ac18aaaf8cd842",
+  "targets": [
+    "TideZoneAudit.number_of_picks",
+    "TideZoneAudit.exact_a",
+    "TideZoneAudit.exact_b",
+    "TideZoneAudit.threshold_nine",
+    "TideZoneAudit.multiplier_floor",
+    "TideZoneAudit.multiplier_attains",
+    "TideZoneAudit.spina_direction"
+  ],
+  "sources_sha256": {
+    "SurveyAudit.lean": "1590e011bc01d461a05ca9eb4550fccd88784ae619606423b40d4795e8c47338"
+  },
+  "export_sha256": "adf9974af040ee27d8e974bd80bc99382e5f1453333a71e5aedc0fccc0045f5f",
+  "exported_axioms": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "nanoda_sha256": "44ba1e3472937ddfc56c9e132a8d227be46694e4a970af8cd2699d09e2acaf10",
+  "isolation": "macOS Seatbelt",
+  "independent_verdict": "Checked 7414 declarations with no errors"
+}
