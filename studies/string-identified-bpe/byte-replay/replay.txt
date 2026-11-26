@@ -1,0 +1,2 @@
+892941 bytes, 122332 greedy savings, 283050 comparator savings, ratio at most 3598/8325.
+Hugging Face 0.21.0, one pretoken, 256 initial byte types, 60 merges, 122332 tokens saved.

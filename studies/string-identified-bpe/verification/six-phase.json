@@ -1,0 +1,38 @@
+{
+  "lean": "Lean (version 4.36.0, arm64-apple-darwin24.6.0, commit 611c117bfaf7b7ae1cfcf246ce6fba31e8f509e9, Release)",
+  "mathlib": "fc4f59e577feb1a4956671bc04ac18aaaf8cd842",
+  "targets": [
+    "OriginalSix.six_phase_ratio",
+    "OriginalSix.asymptotic_upper",
+    "OriginalSix.input_nonempty",
+    "OriginalSix.input_not_unique",
+    "OriginalSix.greedy_exists",
+    "OriginalSix.all_ties",
+    "OriginalSix.comparator_optimum"
+  ],
+  "sources_sha256": {
+    "SpellingBPE.lean": "c83ba02ccb10c384b66c4635fd43cbed89cce2d88c41e26fa9d0ad8b873e51f8",
+    "DecoyRows.lean": "e5d3f6f53d4b6ecce74eae00c1968b63f3d6fabad0e423cbde7512057fabb3eb",
+    "CombComparator.lean": "c7eb359ecfb10a5ba9c0f066d5fd5a8fa538522f4345f43d1a7addcb71ec3839",
+    "Phases.lean": "7aaadd1622ffa854c6a9a1a1aa09b73900dd157c1241fe20b59415cda6c247ea",
+    "Ratio.lean": "0ff05860ec6f698d3b14be779623eb9ee96e7df0a5ff96adfc2d0de3649d0b26",
+    "PairRoster.lean": "0c655c9c965f3f900c4455417e9e63d72c5127c7fc55df223ace37096ce9dd4a",
+    "Attachment.lean": "ca3673fe262869ec40ffbcf53fb1f3b4618e94542c035326551ee9b9fb77b72b",
+    "Incidence.lean": "ad131a8becd8df2f9a947467e0f05f7ef7cbcc1a265e4289f3d4fba48d757a97",
+    "IncidenceAggregate.lean": "af28de44e40c99b5b544c500c3ff2f084dcd26a0b6330cda750d710987ba330a",
+    "CoreTable.lean": "6a663061e9dcdd853194a9b523c70ac9b6adb46e150c4236512b6501468aacf5",
+    "Separators.lean": "9f655bd3614d2edf545c65a0fcae04ba837829c7ba5f42b72967ecc4100c0830",
+    "Forcing.lean": "13f85dc929ad6c149d204560c705bb5db93f1844938284a59a54ca5add23bb9a",
+    "Limit.lean": "de86b623a6422c44f1d41f7114e096c0ff20fbe5e5a1aee8ae9023ab509086d7",
+    "OriginalSix.lean": "c2918575591e80b1264789f3646645865ffa216f506374e9731a321bc8e362d8"
+  },
+  "export_sha256": "06ec6f4c5750eb78d6befe513a0dffbb736275e51908a670e4bd624f82ba4a16",
+  "exported_axioms": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "nanoda_sha256": "44ba1e3472937ddfc56c9e132a8d227be46694e4a970af8cd2699d09e2acaf10",
+  "isolation": "macOS Seatbelt",
+  "independent_verdict": "Checked 7497 declarations with no errors"
+}

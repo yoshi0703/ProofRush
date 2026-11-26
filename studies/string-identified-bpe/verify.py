@@ -7,6 +7,13 @@ import sys
 
 HERE = Path(__file__).resolve().parent
 BUNDLES = {
+    'six-phase': (
+        ['SpellingBPE', 'DecoyRows', 'CombComparator', 'Phases', 'Ratio', 'PairRoster',
+         'Attachment', 'Incidence', 'IncidenceAggregate', 'CoreTable', 'Separators', 'Forcing',
+         'Limit', 'OriginalSix'],
+        ['OriginalSix.six_phase_ratio', 'OriginalSix.asymptotic_upper', 'OriginalSix.input_nonempty',
+         'OriginalSix.input_not_unique', 'OriginalSix.greedy_exists', 'OriginalSix.all_ties',
+         'OriginalSix.comparator_optimum']),
     'diamond': (
         ['SpellingBPE', 'DecoyRows', 'CombComparator', 'PairRoster', 'Common', 'Separators',
          'Forcing', 'DiamondFamily', 'EdgeCases', 'EdgeCodes', 'DistinctRows', 'InitialDomain',
