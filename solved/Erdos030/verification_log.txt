@@ -59,3 +59,91 @@
 --- Verifying Erdos030.bose_3ap_free_superset_bound ---
 'Erdos030.bose_3ap_free_superset_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
 [PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+
+--- Verifying Erdos030.asymptotic_fractional_sdp1_barrier_explicit ---
+'Erdos030.asymptotic_fractional_sdp1_barrier_explicit' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.asymptotic_fractional_sdp1_barrier ---
+'Erdos030.asymptotic_fractional_sdp1_barrier' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.exists_lasserre2_achieving_h ---
+'Erdos030.exists_lasserre2_achieving_h' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.h_le_of_lasserre2_bound ---
+'Erdos030.h_le_of_lasserre2_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.lasserre2_implies_sdp1_with_cuts ---
+'Erdos030.lasserre2_implies_sdp1_with_cuts' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.lasserre2_dual_sos_bound ---
+'Erdos030.lasserre2_dual_sos_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.lasserre2_sub_094295 ---
+'Erdos030.lasserre2_sub_094295' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.h_11_eq_4 ---
+'Erdos030.h_11_eq_4' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.strict_separation_h11_lt_m3ap ---
+'Erdos030.strict_separation_h11_lt_m3ap' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.fractional_sidon_mod_q_equidistribution ---
+'Erdos030.fractional_sidon_mod_q_equidistribution' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.sdp1_mod_q_equidistribution ---
+'Erdos030.sdp1_mod_q_equidistribution' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.fractional_sidon_mod_q_support_collapse ---
+'Erdos030.fractional_sidon_mod_q_support_collapse' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.sdp1_mod_q_support_collapse ---
+'Erdos030.sdp1_mod_q_support_collapse' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.universal_3ap_free_superset_from_U ---
+'Erdos030.universal_3ap_free_superset_from_U' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.universal_3ap_free_superset_bound ---
+'Erdos030.universal_3ap_free_superset_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.m3ap_dense_support_card_bound ---
+'Erdos030.m3ap_dense_support_card_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.bose_sparse_background_cross_variance ---
+'Erdos030.bose_sparse_background_cross_variance' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.h_3_eq_2 ---
+'Erdos030.h_3_eq_2' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.binary_autocorr_counterexample_N3 ---
+'Erdos030.binary_autocorr_counterexample_N3' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.binary_autocorr_endpoint_rigidity ---
+'Erdos030.binary_autocorr_endpoint_rigidity' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.binary_autocorr_outermost_shell_rigidity ---
+'Erdos030.binary_autocorr_outermost_shell_rigidity' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.binary_autocorr_sidon_support_integral ---
+'Erdos030.binary_autocorr_sidon_support_integral' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.h_6_eq_3 ---
+'Erdos030.h_6_eq_3' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.lasserre2_bound_3_plus_4_P4 ---
+'Erdos030.lasserre2_bound_3_plus_4_P4' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.lasserre2_le_3_of_h_le_3 ---
+'Erdos030.lasserre2_le_3_of_h_le_3' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.lasserre2_6_le_3 ---
+'Erdos030.lasserre2_6_le_3' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.strict_separation_lasserre2_6_lt_fractional_sdp1 ---
+'Erdos030.strict_separation_lasserre2_6_lt_fractional_sdp1' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.smooth_fejer_sdp1_barrier_all_N ---
+'Erdos030.smooth_fejer_sdp1_barrier_all_N' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.smooth_fejer_sdp1_barrier_half ---
+'Erdos030.smooth_fejer_sdp1_barrier_half' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']

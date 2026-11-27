@@ -2,6 +2,7 @@
 /outputs/
 /state/
 /worktrees/
+/scratch_swarm/
 Formal/.lake/
 .DS_Store
 __pycache__/
