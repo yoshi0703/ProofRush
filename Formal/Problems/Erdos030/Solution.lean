@@ -1354,4 +1354,628 @@ theorem bose_lower_bound_theorem : BoseLowerBoundStatement := by
   calc p = A.card := hA_card.symm
     _ ≤ h (p ^ 2 - 1) := card_le_h hA_sub hA_sidon
 
+/-! ### Section 7: Asymmetric One-Sided Kernel Transfer & Lean-Verified Sub-0.94295 Bound -/
+
+/-- Asymmetric one-sided discrete smoothing master inequality (no kernel symmetry required!):
+using a left-boundary weight `w` (`w j = 1` for `j ≥ L * m`) and constant `1` on the right,
+any Sidon set `A ⊆ range N` with `L * (m * hh) ≤ N` satisfies
+`|A|^2 ≤ (N + b * H - 1) * (1 + a * (|A| - 1) / H)` with
+`a = m * ∑ p_i^2` and `b = 1 + (∑ w_j^2) / m - L`. -/
+lemma asymmetric_block_kernel_master_ineq {m L hh N : ℕ}
+    (hm : 1 ≤ m) (hL : 1 ≤ L) (hhh : 1 ≤ hh)
+    (hN_large : L * (m * hh) ≤ N)
+    {p w : ℕ → ℝ}
+    (hp_nonneg : ∀ i, i < m → 0 ≤ p i)
+    (hp_sum : ∑ i ∈ Finset.range m, p i = 1)
+    (hw_tail : ∀ j, L * m ≤ j → w j = 1)
+    (hcover : ∀ q, q ≤ L * m → 1 ≤ ∑ i ∈ Finset.range m, p i * w (q + i))
+    {A : Finset ℕ} (hA : A ⊆ Finset.range N) (hS : IsSidon (A : Set ℕ)) :
+    let H := m * hh
+    let a := (m : ℝ) * ∑ i ∈ Finset.range m, (p i) ^ 2
+    let b := 1 + ((∑ j ∈ Finset.range (L * m), (w j) ^ 2) / (m : ℝ) - (L : ℝ))
+    (A.card : ℝ) ^ 2 ≤
+      ((N : ℝ) + b * (H : ℝ) - 1) * (1 + ((A.card : ℝ) - 1) * (a / (H : ℝ))) := by
+  intro H a b
+  have hHpos : 1 ≤ H := Nat.mul_pos hm hhh
+  have hLH_pos : 1 ≤ L * H := Nat.mul_pos hL hHpos
+  have hN_ge_LH : L * H ≤ N := hN_large
+  have hNpos : 1 ≤ N := by omega
+  have hhh_pos : (0 : ℝ) < (hh : ℝ) := Nat.cast_pos.mpr hhh
+  have hm_pos : (0 : ℝ) < (m : ℝ) := Nat.cast_pos.mpr hm
+  have hH_pos : (0 : ℝ) < (H : ℝ) := Nat.cast_pos.mpr hHpos
+  let K : ℤ → ℝ := fun z => if 0 ≤ z ∧ z < (H : ℤ) then p (z.toNat / hh) / (hh : ℝ) else 0
+  have hK_nat : ∀ s, s < H → K (s : ℤ) = p (s / hh) / (hh : ℝ) := by
+    intro s hs; dsimp only [K]; rw [if_pos ⟨by omega, by omega⟩]; simp
+  have hK_nonneg : ∀ z : ℤ, 0 ≤ K z := by
+    intro z; dsimp only [K]
+    split_ifs with hz
+    · apply div_nonneg
+      · apply hp_nonneg
+        have : z.toNat < m * hh := by omega
+        exact Nat.div_lt_of_lt_mul (by rwa [mul_comm])
+      · exact hhh_pos.le
+    · exact le_refl 0
+  have hK_supp : ∀ z : ℤ, ¬(0 ≤ z ∧ z < (H : ℤ)) → K z = 0 := by
+    intro z hz; dsimp only [K]; rw [if_neg hz]
+  have hK_sum : ∑ s ∈ Finset.range H, K (s : ℤ) = 1 := by
+    have hcongr : ∑ s ∈ Finset.range H, K (s : ℤ) =
+        ∑ s ∈ Finset.range (m * hh), p (s / hh) / (hh : ℝ) :=
+      Finset.sum_congr rfl fun s hs => hK_nat s (Finset.mem_range.mp hs)
+    rw [hcongr, sum_range_mul_blocks]
+    have hblock : ∀ i ∈ Finset.range m,
+        ∑ r ∈ Finset.range hh, p ((i * hh + r) / hh) / (hh : ℝ) = p i := by
+      intro i _
+      have hdiv : ∀ r ∈ Finset.range hh, p ((i * hh + r) / hh) / (hh : ℝ) = p i / (hh : ℝ) := by
+        intro r hr; rw [add_mul_div_self_right_lt hhh (Finset.mem_range.mp hr)]
+      rw [Finset.sum_congr rfl hdiv, Finset.sum_const, Finset.card_range, nsmul_eq_mul]
+      field_simp
+    rw [Finset.sum_congr rfl hblock, hp_sum]
+  have hC0 : autocorr H K 0 = a / (H : ℝ) := by
+    unfold autocorr
+    have hcongr : ∑ s ∈ Finset.range H, K (s : ℤ) * K ((s : ℤ) + 0) =
+        ∑ s ∈ Finset.range (m * hh), (p (s / hh) / (hh : ℝ)) ^ 2 := by
+      refine Finset.sum_congr rfl fun s hs => ?_
+      rw [add_zero, hK_nat s (Finset.mem_range.mp hs), sq]
+    rw [hcongr, sum_range_mul_blocks]
+    have hblock : ∀ i ∈ Finset.range m,
+        ∑ r ∈ Finset.range hh, (p ((i * hh + r) / hh) / (hh : ℝ)) ^ 2 = (p i) ^ 2 / (hh : ℝ) := by
+      intro i _
+      have hdiv : ∀ r ∈ Finset.range hh,
+          (p ((i * hh + r) / hh) / (hh : ℝ)) ^ 2 = (p i) ^ 2 / (hh : ℝ) ^ 2 := by
+        intro r hr; rw [add_mul_div_self_right_lt hhh (Finset.mem_range.mp hr), div_pow]
+      rw [Finset.sum_congr rfl hdiv, Finset.sum_const, Finset.card_range, nsmul_eq_mul]
+      field_simp
+    rw [Finset.sum_congr rfl hblock, ← Finset.sum_div]
+    dsimp only [a, H]; rw [Nat.cast_mul]; field_simp
+  -- One-sided boundary weight Q: w on [0, LH), constant 1 on [LH, N + H - 1)
+  let Q : ℕ → ℝ := fun n => if n < L * H then w (n / hh) else 1
+  have hQ_eq_w : ∀ n, Q n = w (n / hh) := by
+    intro n; dsimp only [Q]
+    split_ifs with hlt
+    · rfl
+    · symm; apply hw_tail
+      have hLHm : L * m * hh ≤ n := by
+        have : L * H = L * m * hh := by dsimp only [H]; ring
+        omega
+      exact (Nat.le_div_iff_mul_le hhh).mpr hLHm
+  -- Norm of Q on J = range (N + H - 1) equals N + b * H - 1
+  have hQ_norm : ∑ n ∈ Finset.range (N + H - 1), (Q n) ^ 2 = (N : ℝ) + b * (H : ℝ) - 1 := by
+    have hLH_le : L * H ≤ N + H - 1 := by omega
+    rw [← Finset.sum_range_add_sum_Ico _ hLH_le]
+    have hleft : ∑ n ∈ Finset.range (L * H), (Q n) ^ 2 =
+        (hh : ℝ) * ∑ j ∈ Finset.range (L * m), (w j) ^ 2 := by
+      have hcongr : ∑ n ∈ Finset.range (L * H), (Q n) ^ 2 =
+          ∑ n ∈ Finset.range ((L * m) * hh), (w (n / hh)) ^ 2 := by
+        have hLHm : L * H = (L * m) * hh := by dsimp only [H]; ring
+        rw [hLHm]
+        refine Finset.sum_congr rfl fun n _ => by rw [hQ_eq_w]
+      rw [hcongr, sum_range_mul_blocks, Finset.mul_sum]
+      refine Finset.sum_congr rfl fun j _ => ?_
+      have hdiv : ∀ r ∈ Finset.range hh, (w ((j * hh + r) / hh)) ^ 2 = (w j) ^ 2 := by
+        intro r hr; rw [add_mul_div_self_right_lt hhh (Finset.mem_range.mp hr)]
+      rw [Finset.sum_congr rfl hdiv, Finset.sum_const, Finset.card_range, nsmul_eq_mul]
+    have hright : ∑ n ∈ Finset.Ico (L * H) (N + H - 1), (Q n) ^ 2 =
+        ((N + H - 1 - L * H : ℕ) : ℝ) := by
+      have h1 : ∀ n ∈ Finset.Ico (L * H) (N + H - 1), (Q n) ^ 2 = 1 := by
+        intro n hn; rw [Finset.mem_Ico] at hn; dsimp only [Q]; rw [if_neg (by omega), one_pow]
+      rw [Finset.sum_congr rfl h1, Finset.sum_const, Nat.card_Ico, nsmul_eq_mul, mul_one]
+    rw [hleft, hright]
+    have hcast_r : ((N + H - 1 - L * H : ℕ) : ℝ) =
+        (N : ℝ) + (H : ℝ) - 1 - (L : ℝ) * (H : ℝ) := by
+      have hge : L * H + 1 ≤ N + H := by omega
+      have : N + H - 1 - L * H = N + H - (L * H + 1) := by omega
+      rw [this, Nat.cast_sub hge]; push_cast; ring
+    rw [hcast_r]; dsimp only [b, H]; rw [Nat.cast_mul]; field_simp; ring
+  -- Pointwise covering for ALL x < N (only 2 cases: x < LH or x ≥ LH!)
+  have hcover_all : ∀ x, x < N → 1 ≤ ∑ s ∈ Finset.range H, K (s : ℤ) * Q (x + s) := by
+    intro x _
+    by_cases hx : x < L * H
+    · let q := x / hh
+      let t := x % hh
+      have hq_lt : q < L * m := by
+        have : x < (L * m) * hh := by dsimp only [H] at hx; linarith
+        exact Nat.div_lt_of_lt_mul (by rwa [mul_comm])
+      have ht_lt : t < hh := Nat.mod_lt x hhh
+      have hx_eq : x = q * hh + t := (Nat.div_add_mod' x hh).symm
+      have hcongr : ∑ s ∈ Finset.range H, K (s : ℤ) * Q (x + s) =
+          ∑ s ∈ Finset.range (m * hh), (p (s / hh) / (hh : ℝ)) * w ((x + s) / hh) := by
+        refine Finset.sum_congr rfl fun s hs => ?_
+        rw [hK_nat s (Finset.mem_range.mp hs), hQ_eq_w]
+      rw [hcongr, sum_range_mul_blocks]
+      have hblock : ∀ i ∈ Finset.range m,
+          ∑ r ∈ Finset.range hh,
+              (p ((i * hh + r) / hh) / (hh : ℝ)) * w ((x + (i * hh + r)) / hh) =
+            (((hh - t : ℕ) : ℝ) / (hh : ℝ)) * (p i * w (q + i)) +
+            ((t : ℝ) / (hh : ℝ)) * (p i * w (q + 1 + i)) := by
+        intro i _
+        rw [← Finset.sum_range_add_sum_Ico _ (Nat.sub_le hh t)]
+        have hpart1 :
+            ∑ r ∈ Finset.range (hh - t),
+                (p ((i * hh + r) / hh) / (hh : ℝ)) * w ((x + (i * hh + r)) / hh) =
+            (((hh - t : ℕ) : ℝ) / (hh : ℝ)) * (p i * w (q + i)) := by
+          have hconst : ∀ r ∈ Finset.range (hh - t),
+              (p ((i * hh + r) / hh) / (hh : ℝ)) * w ((x + (i * hh + r)) / hh) =
+              (p i / (hh : ℝ)) * w (q + i) := by
+            intro r hr; rw [Finset.mem_range] at hr
+            have hd1 : (i * hh + r) / hh = i := add_mul_div_self_right_lt hhh (by omega)
+            have hd2 : (x + (i * hh + r)) / hh = q + i := by
+              have heq : x + (i * hh + r) = (q + i) * hh + (t + r) := by rw [hx_eq]; ring
+              rw [heq, add_mul_div_self_right_lt hhh (by omega)]
+            rw [hd1, hd2]
+          rw [Finset.sum_congr rfl hconst, Finset.sum_const, Finset.card_range, nsmul_eq_mul]; ring
+        have hpart2 :
+            ∑ r ∈ Finset.Ico (hh - t) hh,
+                (p ((i * hh + r) / hh) / (hh : ℝ)) * w ((x + (i * hh + r)) / hh) =
+            ((t : ℝ) / (hh : ℝ)) * (p i * w (q + 1 + i)) := by
+          have hconst : ∀ r ∈ Finset.Ico (hh - t) hh,
+              (p ((i * hh + r) / hh) / (hh : ℝ)) * w ((x + (i * hh + r)) / hh) =
+              (p i / (hh : ℝ)) * w (q + 1 + i) := by
+            intro r hr; rw [Finset.mem_Ico] at hr
+            have hd1 : (i * hh + r) / hh = i := add_mul_div_self_right_lt hhh hr.2
+            have hd2 : (x + (i * hh + r)) / hh = q + 1 + i := by
+              have hmul : (q + 1 + i) * hh = q * hh + hh + i * hh := by ring
+              have heq : x + (i * hh + r) = (q + 1 + i) * hh + (t + r - hh) := by
+                rw [hx_eq, hmul]; omega
+              rw [heq, add_mul_div_self_right_lt hhh (by omega)]
+            rw [hd1, hd2]
+          rw [Finset.sum_congr rfl hconst, Finset.sum_const, Nat.card_Ico, nsmul_eq_mul]
+          rw [show hh - (hh - t) = t by omega]; ring
+        rw [hpart1, hpart2]
+      rw [Finset.sum_congr rfl hblock, Finset.sum_add_distrib, ← Finset.mul_sum, ← Finset.mul_sum]
+      have hc1 := hcover q (by omega)
+      have hc2 := hcover (q + 1) (by omega)
+      have hα : 0 ≤ (((hh - t : ℕ) : ℝ) / (hh : ℝ)) := by positivity
+      have hβ : 0 ≤ ((t : ℝ) / (hh : ℝ)) := by positivity
+      have hsum_coeff : (((hh - t : ℕ) : ℝ) / (hh : ℝ)) + ((t : ℝ) / (hh : ℝ)) = 1 := by
+        rw [Nat.cast_sub (by omega : t ≤ hh)]; field_simp; ring
+      have h1 := mul_le_mul_of_nonneg_left hc1 hα
+      have h2 := mul_le_mul_of_nonneg_left hc2 hβ
+      linarith
+    · have h1 : ∀ s ∈ Finset.range H, K (s : ℤ) * Q (x + s) = K (s : ℤ) := by
+        intro s _; dsimp only [Q]; rw [if_neg (by omega), mul_one]
+      rw [Finset.sum_congr rfl h1, hK_sum]
+  -- Sum over A, Cauchy–Schwarz, and energy_upper_bound
+  have hinner_ge : (A.card : ℝ) ≤
+      ∑ n ∈ Finset.range (N + H - 1), Q n * (∑ x ∈ A, K ((n : ℤ) - (x : ℤ))) := by
+    have hstep1 : (A.card : ℝ) ≤ ∑ x ∈ A, ∑ s ∈ Finset.range H, K (s : ℤ) * Q (x + s) := by
+      calc (A.card : ℝ) = ∑ _x ∈ A, (1 : ℝ) := by rw [Finset.sum_const, nsmul_eq_mul, mul_one]
+        _ ≤ ∑ x ∈ A, ∑ s ∈ Finset.range H, K (s : ℤ) * Q (x + s) :=
+            Finset.sum_le_sum fun x hx => hcover_all x (Finset.mem_range.mp (hA hx))
+    have hstep2 :
+        ∑ x ∈ A, ∑ s ∈ Finset.range H, K (s : ℤ) * Q (x + s) =
+        ∑ n ∈ Finset.range (N + H - 1), Q n * (∑ x ∈ A, K ((n : ℤ) - (x : ℤ))) := by
+      have hreidx : ∀ x ∈ A,
+          ∑ s ∈ Finset.range H, K (s : ℤ) * Q (x + s) =
+          ∑ n ∈ Finset.range (N + H - 1), Q n * K ((n : ℤ) - (x : ℤ)) := by
+        intro x hx
+        have hxN := Finset.mem_range.mp (hA hx)
+        have hsub : (Finset.range H).image (fun s => x + s) ⊆ Finset.range (N + H - 1) := by
+          intro n hn; rcases Finset.mem_image.mp hn with ⟨s, hs, rfl⟩
+          rw [Finset.mem_range] at hs ⊢; omega
+        symm
+        rw [← Finset.sum_subset hsub]
+        · rw [Finset.sum_image (by intro u _ v _ h; dsimp only at h; omega)]
+          refine Finset.sum_congr rfl fun s _ => ?_
+          rw [show ((x + s : ℕ) : ℤ) - (x : ℤ) = (s : ℤ) by omega, mul_comm]
+        · intro n _ hn
+          have hzero : K ((n : ℤ) - (x : ℤ)) = 0 := by
+            apply hK_supp; intro ⟨h0, hlt⟩; apply hn
+            exact Finset.mem_image.mpr ⟨n - x, Finset.mem_range.mpr (by omega), by omega⟩
+          rw [hzero, mul_zero]
+      rw [Finset.sum_congr rfl hreidx, Finset.sum_comm]
+      refine Finset.sum_congr rfl fun n _ => by rw [Finset.mul_sum]
+    linarith
+  have hsq_le : (A.card : ℝ) ^ 2 ≤
+      (∑ n ∈ Finset.range (N + H - 1), Q n * (∑ x ∈ A, K ((n : ℤ) - (x : ℤ)))) ^ 2 := by
+    nlinarith [Nat.cast_nonneg (α := ℝ) A.card]
+  have hcs := Finset.sum_mul_sq_le_sq_mul_sq (Finset.range (N + H - 1))
+    Q (fun n => ∑ x ∈ A, K ((n : ℤ) - (x : ℤ)))
+  have henergy := energy_upper_bound hNpos hHpos hA hS hK_nonneg hK_supp hK_sum
+  rw [hC0] at henergy
+  have hQ_nonneg : 0 ≤ ∑ n ∈ Finset.range (N + H - 1), (Q n) ^ 2 :=
+    Finset.sum_nonneg fun _ _ => sq_nonneg _
+  have hcomb := (hsq_le.trans hcs).trans (mul_le_mul_of_nonneg_left henergy hQ_nonneg)
+  rwa [hQ_norm] at hcomb
+
+/-- Asymptotic transfer theorem for asymmetric one-sided kernels. -/
+theorem asymmetric_kernel_transfer {m L : ℕ} (hm : 1 ≤ m) (hL : 1 ≤ L)
+    {p w : ℕ → ℝ}
+    (hp_nonneg : ∀ i, i < m → 0 ≤ p i)
+    (hp_sum : ∑ i ∈ Finset.range m, p i = 1)
+    (hw_tail : ∀ j, L * m ≤ j → w j = 1)
+    (hcover : ∀ q, q ≤ L * m → 1 ≤ ∑ i ∈ Finset.range m, p i * w (q + i))
+    {γ : ℝ} (hγ_pos : 0 < γ)
+    (hb_pos : 0 < 1 + ((∑ j ∈ Finset.range (L * m), (w j) ^ 2) / (m : ℝ) - (L : ℝ)))
+    (hab_lt : ((m : ℝ) * ∑ i ∈ Finset.range m, (p i) ^ 2) *
+        (1 + ((∑ j ∈ Finset.range (L * m), (w j) ^ 2) / (m : ℝ) - (L : ℝ))) < γ ^ 2) :
+    ∀ᶠ N : ℕ in atTop, (h N : ℝ) ≤ Real.sqrt (N : ℝ) + γ * (N : ℝ) ^ (4⁻¹ : ℝ) := by
+  set a : ℝ := (m : ℝ) * ∑ i ∈ Finset.range m, (p i) ^ 2
+  set b : ℝ := 1 + ((∑ j ∈ Finset.range (L * m), (w j) ^ 2) / (m : ℝ) - (L : ℝ))
+  have ha_ge_one : 1 ≤ a := by
+    have hcs := Finset.sum_mul_sq_le_sq_mul_sq (Finset.range m) (fun _ => (1 : ℝ)) p
+    simp only [one_mul, one_pow, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one] at hcs
+    rw [hp_sum, one_pow] at hcs; exact hcs
+  have ha_pos : 0 < a := by linarith
+  set g : ℝ := Real.sqrt (a * b)
+  have hg_pos : 0 < g := Real.sqrt_pos.mpr (mul_pos ha_pos hb_pos)
+  have hg_sq : g ^ 2 = a * b := Real.sq_sqrt (mul_pos ha_pos hb_pos).le
+  have hg_lt : g < γ := by
+    have : g ^ 2 < γ ^ 2 := by rw [hg_sq]; exact hab_lt
+    nlinarith
+  set r : ℝ := Real.sqrt (a / b)
+  have hr_pos : 0 < r := Real.sqrt_pos.mpr (div_pos ha_pos hb_pos)
+  have hbr : b * r = g := by
+    dsimp only [r, g]
+    rw [show b * Real.sqrt (a / b) = Real.sqrt (b ^ 2 * (a / b)) from by
+      rw [Real.sqrt_mul (sq_nonneg b), Real.sqrt_sq hb_pos.le]]
+    congr 1; field_simp
+  have ha_div_r : a / r = g := by
+    rw [div_eq_iff hr_pos.ne']
+    rw [show g * r = Real.sqrt ((a * b) * (a / b)) from by
+      dsimp only [g, r]; rw [← Real.sqrt_mul (mul_pos ha_pos hb_pos).le]]
+    rw [show a * b * (a / b) = a ^ 2 from by field_simp, Real.sqrt_sq ha_pos.le]
+  let C : ℝ := g ^ 2 + 2 * g + b * (m : ℝ) + 2 * g ^ 2 +
+    g * (b * (m : ℝ)) + 2 * g * (b * (m : ℝ))
+  let T : ℝ := max 1 (max ((L : ℝ) * r + (L : ℝ) * (m : ℝ) + 1)
+      ((|C| + 1) / (2 * (γ - g)) + 1))
+  let N0 : ℕ := Nat.ceil (T ^ 4) + 1
+  filter_upwards [Filter.eventually_ge_atTop N0] with N hN
+  have hT_ge_one : 1 ≤ T := le_max_left _ _
+  have hN_ge_T4 : T ^ 4 ≤ (N : ℝ) := by
+    have h1 : T ^ 4 ≤ (Nat.ceil (T ^ 4) : ℝ) := Nat.le_ceil _
+    have h2 : (Nat.ceil (T ^ 4) : ℝ) ≤ (N : ℝ) := by exact_mod_cast (show Nat.ceil (T ^ 4) ≤ N by omega)
+    linarith
+  set t : ℝ := (N : ℝ) ^ (4⁻¹ : ℝ)
+  have hN_pos : (0 : ℝ) < (N : ℝ) := by
+    have : (0 : ℝ) < T ^ 4 := by positivity
+    linarith
+  have ht4 : t ^ 4 = (N : ℝ) := by
+    dsimp only [t]; rw [← Real.rpow_natCast, ← Real.rpow_mul hN_pos.le]; norm_num
+  have ht2 : t ^ 2 = Real.sqrt (N : ℝ) := by
+    rw [Real.sqrt_eq_rpow]; dsimp only [t]; rw [← Real.rpow_natCast, ← Real.rpow_mul hN_pos.le]; norm_num
+  have ht_ge_T : T ≤ t := by
+    by_contra hlt; push Not at hlt
+    have ht_nonneg : 0 ≤ t := Real.rpow_nonneg hN_pos.le _
+    have : t ^ 4 < T ^ 4 := by
+      have hsq : t ^ 2 < T ^ 2 := by nlinarith
+      nlinarith
+    linarith
+  have ht1 : 1 ≤ t := hT_ge_one.trans ht_ge_T
+  have ht_pos : 0 < t := by linarith
+  let hh : ℕ := Nat.floor (r * t ^ 3 / (m : ℝ)) + 1
+  have hhh : 1 ≤ hh := Nat.succ_pos _
+  let H : ℕ := m * hh
+  have hm_pos : (0 : ℝ) < (m : ℝ) := Nat.cast_pos.mpr hm
+  have hH_gt : r * t ^ 3 < (H : ℝ) := by
+    dsimp only [H, hh]; rw [Nat.cast_mul, Nat.cast_add, Nat.cast_one]
+    have hfl := Nat.lt_floor_add_one (r * t ^ 3 / (m : ℝ))
+    have := mul_lt_mul_of_pos_left hfl hm_pos
+    field_simp at this ⊢; linarith
+  have hH_le : (H : ℝ) ≤ r * t ^ 3 + (m : ℝ) := by
+    dsimp only [H, hh]; rw [Nat.cast_mul, Nat.cast_add, Nat.cast_one]
+    have hfl : (Nat.floor (r * t ^ 3 / (m : ℝ)) : ℝ) ≤ r * t ^ 3 / (m : ℝ) :=
+      Nat.floor_le (by positivity)
+    have := mul_le_mul_of_nonneg_left hfl hm_pos.le
+    have hsimp : (m : ℝ) * (r * t ^ 3 / (m : ℝ)) = r * t ^ 3 := by field_simp
+    linarith
+  have hN_large : L * H ≤ N := by
+    have hT2 : (L : ℝ) * r + (L : ℝ) * (m : ℝ) + 1 ≤ t :=
+      ((le_max_left _ _).trans (le_max_right _ _)).trans ht_ge_T
+    have hreal : ((L * H : ℕ) : ℝ) ≤ (N : ℝ) := by
+      push_cast
+      have h1 : (L : ℝ) * (H : ℝ) ≤ (L : ℝ) * (r * t ^ 3 + (m : ℝ)) :=
+        mul_le_mul_of_nonneg_left hH_le (by positivity)
+      have h2 : (L : ℝ) * (r * t ^ 3 + (m : ℝ)) ≤ t ^ 4 := by
+        have ht3_ge1 : 1 ≤ t ^ 3 := one_le_pow₀ ht1
+        have hLm_le : (L : ℝ) * (m : ℝ) ≤ (L : ℝ) * (m : ℝ) * t ^ 3 :=
+          le_mul_of_one_le_right (by positivity) ht3_ge1
+        have hmul_t3 : ((L : ℝ) * r + (L : ℝ) * (m : ℝ)) * t ^ 3 ≤ t * t ^ 3 :=
+          mul_le_mul_of_nonneg_right (by linarith) (pow_nonneg ht_pos.le 3)
+        linarith
+      linarith [ht4]
+    exact_mod_cast hreal
+  obtain ⟨A, hAsub, hAS, hAcard⟩ := exists_max_sidon_range N
+  have hmaster : (h N : ℝ) ^ 2 ≤
+      ((N : ℝ) + b * (H : ℝ) - 1) * (1 + ((h N : ℝ) - 1) * (a / (H : ℝ))) := by
+    have hraw := asymmetric_block_kernel_master_ineq hm hL hhh hN_large
+      hp_nonneg hp_sum hw_tail hcover hAsub hAS
+    dsimp only at hraw; rw [hAcard] at hraw; exact hraw
+  set k : ℝ := (h N : ℝ)
+  have hk_nonneg : 0 ≤ k := Nat.cast_nonneg _
+  have hk_lind : k ≤ t ^ 2 + t + 1 := by
+    have hl := lindstrom_theorem N
+    have hkeq : k = (h N : ℝ) := rfl
+    have hteq : t = (N : ℝ) ^ (4⁻¹ : ℝ) := rfl
+    linarith [ht2, hl]
+  have hfac1 : (N : ℝ) + b * (H : ℝ) - 1 ≤ t ^ 4 + g * t ^ 3 + b * (m : ℝ) := by
+    have := mul_le_mul_of_nonneg_left hH_le hb_pos.le
+    have : b * (H : ℝ) ≤ g * t ^ 3 + b * (m : ℝ) := by
+      calc b * (H : ℝ) ≤ b * (r * t ^ 3 + (m : ℝ)) := this
+        _ = (b * r) * t ^ 3 + b * (m : ℝ) := by ring
+        _ = g * t ^ 3 + b * (m : ℝ) := by rw [hbr]
+    linarith [ht4]
+  have hfac2 : 1 + (k - 1) * (a / (H : ℝ)) ≤ 1 + g / t + 2 * g / t ^ 2 := by
+    have hH_pos' : 0 < (H : ℝ) := by linarith [mul_pos hr_pos (pow_pos ht_pos 3)]
+    have hinv : 1 / (H : ℝ) ≤ 1 / (r * t ^ 3) :=
+      one_div_le_one_div_of_le (mul_pos hr_pos (pow_pos ht_pos 3)) hH_gt.le
+    have haH : a / (H : ℝ) ≤ g / t ^ 3 := by
+      have : a / (H : ℝ) ≤ a / (r * t ^ 3) := by
+        simpa [div_eq_mul_inv] using mul_le_mul_of_nonneg_left hinv ha_pos.le
+      calc a / (H : ℝ) ≤ a / (r * t ^ 3) := this
+        _ = (a / r) / t ^ 3 := by rw [div_mul_eq_div_div]
+        _ = g / t ^ 3 := by rw [ha_div_r]
+    have hkm1 : k - 1 ≤ t ^ 2 + 2 * t := by linarith
+    have hkm1_mul : (k - 1) * (a / (H : ℝ)) ≤ (t ^ 2 + 2 * t) * (g / t ^ 3) := by
+      have hpos_aH : 0 ≤ a / (H : ℝ) := div_nonneg ha_pos.le hH_pos'.le
+      have h1 : (k - 1) * (a / (H : ℝ)) ≤ (t ^ 2 + 2 * t) * (a / (H : ℝ)) :=
+        mul_le_mul_of_nonneg_right hkm1 hpos_aH
+      have h2 : (t ^ 2 + 2 * t) * (a / (H : ℝ)) ≤ (t ^ 2 + 2 * t) * (g / t ^ 3) :=
+        mul_le_mul_of_nonneg_left haH (by nlinarith)
+      exact h1.trans h2
+    have hsimp : (t ^ 2 + 2 * t) * (g / t ^ 3) = g / t + 2 * g / t ^ 2 := by field_simp
+    linarith
+  have hfac1_nonneg : 0 ≤ (N : ℝ) + b * (H : ℝ) - 1 := by
+    have hH0 : 0 ≤ (H : ℝ) := Nat.cast_nonneg _
+    have hN1 : (1 : ℝ) ≤ (N : ℝ) := by rw [← ht4]; exact one_le_pow₀ ht1
+    have hbH : 0 ≤ b * (H : ℝ) := mul_nonneg hb_pos.le hH0
+    linarith
+  have hfac2_nonneg : 0 ≤ 1 + g / t + 2 * g / t ^ 2 := by
+    have h1 : 0 ≤ g / t := div_nonneg hg_pos.le ht_pos.le
+    have h2 : 0 ≤ 2 * g / t ^ 2 := div_nonneg (by linarith) (sq_nonneg t)
+    linarith
+  have hk2_le : k ^ 2 ≤ (t ^ 4 + g * t ^ 3 + b * (m : ℝ)) * (1 + g / t + 2 * g / t ^ 2) := by
+    have h1 := mul_le_mul_of_nonneg_left hfac2 hfac1_nonneg
+    have h2 := mul_le_mul_of_nonneg_right hfac1 hfac2_nonneg
+    exact hmaster.trans (h1.trans h2)
+  have hk_le : k ≤ t ^ 2 + γ * t := by
+    have hT3 : (|C| + 1) / (2 * (γ - g)) + 1 ≤ t :=
+      ((le_max_right _ _).trans (le_max_right _ _)).trans ht_ge_T
+    exact kernel_transfer_collapse hg_pos (mul_nonneg hb_pos.le hm_pos.le)
+      hγ_pos hg_lt ht1 hk_nonneg hk2_le hT3
+  linarith [ht2]
+
+/-- Exact 192-bin left-boundary weight lookup (2-level O(1) dispatch for fast kernel `decide`),
+corresponding to linear kernel `p_i = (2*i + 1) / 2304` (`m = 48, L = 4`, denominator `1000000`). -/
+def asymWBlock (b r : ℕ) : ℕ :=
+  match b with
+  | 0 => match r with
+    | 0 => 10521 | 1 => 31801 | 2 => 53521 | 3 => 75701
+    | 4 => 98341 | 5 => 121471 | 6 => 145081 | 7 => 169201
+    | 8 => 193821 | 9 => 218961 | 10 => 244641 | 11 => 270851
+    | 12 => 297621 | 13 => 324961 | 14 => 352871 | _ => 381371
+  | 1 => match r with
+    | 0 => 410471 | 1 => 440181 | 2 => 470511 | 3 => 501491
+    | 4 => 533111 | 5 => 565391 | 6 => 598351 | 7 => 632001
+    | 8 => 666361 | 9 => 701431 | 10 => 737231 | 11 => 773791
+    | 12 => 811101 | 13 => 849211 | 14 => 888101 | _ => 927821
+  | 2 => match r with
+    | 0 => 968371 | 1 => 1009771 | 2 => 1052041 | 3 => 1095211
+    | 4 => 1139281 | 5 => 1184281 | 6 => 1230241 | 7 => 1277161
+    | 8 => 1325081 | 9 => 1374021 | 10 => 1423991 | 11 => 1475011
+    | 12 => 1527131 | 13 => 1580341 | 14 => 1634691 | _ => 1690191
+  | 3 => match r with
+    | 0 => 725871 | 1 => 740711 | 2 => 755401 | 3 => 769941
+    | 4 => 784321 | 5 => 798521 | 6 => 812531 | 7 => 826321
+    | 8 => 839901 | 9 => 853231 | 10 => 866321 | 11 => 879131
+    | 12 => 891651 | 13 => 903871 | 14 => 915771 | _ => 927321
+  | 4 => match r with
+    | 0 => 938501 | 1 => 949311 | 2 => 959711 | 3 => 969681
+    | 4 => 979201 | 5 => 988251 | 6 => 996811 | 7 => 1004841
+    | 8 => 1012331 | 9 => 1019251 | 10 => 1025561 | 11 => 1031251
+    | 12 => 1036271 | 13 => 1040611 | 14 => 1044231 | _ => 1047101
+  | 5 => match r with
+    | 0 => 1049191 | 1 => 1050451 | 2 => 1050861 | 3 => 1050381
+    | 4 => 1048981 | 5 => 1046601 | 6 => 1043221 | 7 => 1038791
+    | 8 => 1033261 | 9 => 1026611 | 10 => 1018771 | 11 => 1009701
+    | 12 => 999351 | 13 => 987681 | 14 => 974631 | _ => 960151
+  | 6 => match r with
+    | 0 => 954931 | 1 => 959601 | 2 => 964051 | 3 => 968291
+    | 4 => 972321 | 5 => 976131 | 6 => 979721 | 7 => 983091
+    | 8 => 986251 | 9 => 989191 | 10 => 991921 | 11 => 994431
+    | 12 => 996721 | 13 => 998801 | 14 => 1000681 | _ => 1002341
+  | 7 => match r with
+    | 0 => 1003811 | 1 => 1005071 | 2 => 1006131 | 3 => 1007001
+    | 4 => 1007691 | 5 => 1008191 | 6 => 1008521 | 7 => 1008681
+    | 8 => 1008691 | 9 => 1008541 | 10 => 1008251 | 11 => 1007821
+    | 12 => 1007281 | 13 => 1006621 | 14 => 1005871 | _ => 1005031
+  | 8 => match r with
+    | 0 => 1004121 | 1 => 1003161 | 2 => 1002161 | 3 => 1001141
+    | 4 => 1000121 | 5 => 999111 | 6 => 998151 | 7 => 997251
+    | 8 => 996431 | 9 => 995721 | 10 => 995161 | 11 => 994751
+    | 12 => 994551 | 13 => 994571 | 14 => 994851 | _ => 995431
+  | 9 => match r with
+    | 0 => 996231 | 1 => 997051 | 2 => 997791 | 3 => 998461
+    | 4 => 999051 | 5 => 999571 | 6 => 1000031 | 7 => 1000421
+    | 8 => 1000751 | 9 => 1001021 | 10 => 1001241 | 11 => 1001411
+    | 12 => 1001541 | 13 => 1001621 | 14 => 1001661 | _ => 1001661
+  | 10 => match r with
+    | 0 => 1001631 | 1 => 1001571 | 2 => 1001491 | 3 => 1001381
+    | 4 => 1001251 | 5 => 1001111 | 6 => 1000961 | 7 => 1000801
+    | 8 => 1000631 | 9 => 1000461 | 10 => 1000301 | 11 => 1000141
+    | 12 => 999981 | 13 => 999831 | 14 => 999701 | _ => 999581
+  | _ => match r with
+    | 0 => 999471 | 1 => 999381 | 2 => 999311 | 3 => 999271
+    | 4 => 999241 | 5 => 999231 | 6 => 999241 | 7 => 999271
+    | 8 => 999331 | 9 => 999391 | 10 => 999481 | 11 => 999571
+    | 12 => 999681 | 13 => 999781 | 14 => 999891 | _ => 1005481
+
+def asymPNum (i : ℕ) : ℕ := 2 * i + 1
+def asymWNum (j : ℕ) : ℕ := if j < 192 then asymWBlock (j / 16) (j % 16) else 1000000
+
+noncomputable def asymP (i : ℕ) : ℝ := (asymPNum i : ℝ) / 2304
+noncomputable def asymW (j : ℕ) : ℝ := (asymWNum j : ℝ) / 1000000
+
+-- Fast 2D blocked `ℕ` sum & range-checker so pure kernel `decide` stays well within stack depth
+def sumRangeAux : ℕ → (ℕ → ℕ) → ℕ → ℕ
+  | 0, _, acc => acc
+  | n + 1, f, acc => sumRangeAux n f (acc + f n)
+
+lemma sumRangeAux_eq (n : ℕ) (f : ℕ → ℕ) (acc : ℕ) :
+    sumRangeAux n f acc = acc + ∑ i ∈ Finset.range n, f i := by
+  induction n generalizing acc with
+  | zero => simp [sumRangeAux]
+  | succ n ih =>
+    rw [sumRangeAux, ih, Finset.sum_range_succ]
+    omega
+
+def sumBlocks (blocks blockSize : ℕ) (f : ℕ → ℕ) : ℕ :=
+  sumRangeAux blocks (fun b => sumRangeAux blockSize (fun r => f (b * blockSize + r)) 0) 0
+
+lemma sumBlocks_eq (B S : ℕ) (f : ℕ → ℕ) :
+    sumBlocks B S f = ∑ j ∈ Finset.range (B * S), f j := by
+  unfold sumBlocks
+  rw [sumRangeAux_eq, zero_add]
+  induction B with
+  | zero => simp
+  | succ B ih =>
+    rw [Finset.sum_range_succ, ih, sumRangeAux_eq, zero_add]
+    rw [show (B + 1) * S = B * S + S by ring, Finset.sum_range_add]
+
+def checkRange : ℕ → (ℕ → Bool) → Bool
+  | 0, _ => true
+  | n + 1, p => if p n then checkRange n p else false
+
+lemma checkRange_true {n : ℕ} {p : ℕ → Bool} (h : checkRange n p = true) :
+    ∀ q, q < n → p q = true := by
+  induction n with
+  | zero => intro q hq; omega
+  | succ n ih =>
+    intro q hq
+    unfold checkRange at h
+    split_ifs at h with hpn
+    rcases Nat.lt_succ_iff_lt_or_eq.mp hq with hlt | rfl
+    · exact ih h q hlt
+    · exact hpn
+
+def checkBlocks (blocks blockSize : ℕ) (p : ℕ → Bool) : Bool :=
+  checkRange blocks (fun b => checkRange blockSize (fun r => p (b * blockSize + r)))
+
+lemma checkBlocks_true {B S : ℕ} (hS : 0 < S) {p : ℕ → Bool}
+    (h : checkBlocks B S p = true) :
+    ∀ q, q < B * S → p q = true := by
+  intro q hq
+  have hdiv : q / S < B := Nat.div_lt_of_lt_mul (by rwa [mul_comm])
+  have hmod : q % S < S := Nat.mod_lt q hS
+  have hb := checkRange_true h (q / S) hdiv
+  have hr := checkRange_true hb (q % S) hmod
+  rwa [Nat.div_add_mod' q S] at hr
+
+-- Pure Lean kernel checks via `decide` (zero extra axioms!)
+lemma asymPNum_sum : ∑ i ∈ Finset.range 48, asymPNum i = 2304 := by
+  have h := sumBlocks_eq 4 12 asymPNum
+  have hdec : sumBlocks 4 12 asymPNum = 2304 := by decide
+  rw [show (48 : ℕ) = 4 * 12 from rfl, ← h, hdec]
+
+lemma asymPNum_sq_sum : ∑ i ∈ Finset.range 48, (asymPNum i) ^ 2 = 147440 := by
+  have h := sumBlocks_eq 4 12 (fun i => (asymPNum i) ^ 2)
+  have hdec : sumBlocks 4 12 (fun i => (asymPNum i) ^ 2) = 147440 := by decide
+  rw [show (48 : ℕ) = 4 * 12 from rfl, ← h, hdec]
+
+lemma asymWNum_sq_sum : ∑ j ∈ Finset.range 192, (asymWNum j) ^ 2 = 176012388616832 := by
+  have h := sumBlocks_eq 12 16 (fun j => (asymWNum j) ^ 2)
+  have hdec : sumBlocks 12 16 (fun j => (asymWNum j) ^ 2) = 176012388616832 := by decide
+  rw [show (192 : ℕ) = 12 * 16 from rfl, ← h, hdec]
+
+def asymCoverCheck (q : ℕ) : Bool :=
+  decide (2304000000 ≤ sumBlocks 4 12 (fun i => asymPNum i * asymWNum (q + i)))
+
+lemma asymCover_chunk0 :
+    checkBlocks 3 16 (fun r => asymCoverCheck r) = true := by decide
+
+lemma asymCover_chunk1 :
+    checkBlocks 3 16 (fun r => asymCoverCheck (48 + r)) = true := by decide
+
+lemma asymCover_chunk2 :
+    checkBlocks 3 16 (fun r => asymCoverCheck (96 + r)) = true := by decide
+
+lemma asymCover_chunk3 :
+    checkBlocks 3 16 (fun r => asymCoverCheck (144 + r)) = true := by decide
+
+lemma asymCover_last : asymCoverCheck 192 = true := by decide
+
+lemma asym_covering_nat :
+    ∀ q ∈ Finset.range 193,
+      2304000000 ≤ ∑ i ∈ Finset.range 48, asymPNum i * asymWNum (q + i) := by
+  intro q hq
+  rw [Finset.mem_range] at hq
+  have htrue : asymCoverCheck q = true := by
+    by_cases h0 : q < 48
+    · exact checkBlocks_true (by norm_num) asymCover_chunk0 q h0
+    · by_cases h1 : q < 96
+      · have := checkBlocks_true (by norm_num) asymCover_chunk1 (q - 48) (by omega)
+        rwa [show 48 + (q - 48) = q by omega] at this
+      · by_cases h2 : q < 144
+        · have := checkBlocks_true (by norm_num) asymCover_chunk2 (q - 96) (by omega)
+          rwa [show 96 + (q - 96) = q by omega] at this
+        · by_cases h3 : q < 192
+          · have := checkBlocks_true (by norm_num) asymCover_chunk3 (q - 144) (by omega)
+            rwa [show 144 + (q - 144) = q by omega] at this
+          · have hq192 : q = 192 := by omega
+            subst hq192
+            exact asymCover_last
+  have hle := of_decide_eq_true htrue
+  rw [sumBlocks_eq] at hle
+  exact hle
+
+/-- Formally verified Sidon upper bound strictly sharper than Hou–Zhao (Sep 2026, `0.9435`)
+and Carter–O'Bryant–Tao (Oct 2026, `0.94304`):
+`h(N) ≤ √N + 0.94295 * N^(1/4)` for all sufficiently large `N`, certified via the asymmetric
+linear kernel `p_i = (2i+1)/48^2` (`m = 48, L = 4`, `√(ab) = 0.94294036... < 0.94295`). -/
+theorem sidon_sub_094295 :
+    ∀ᶠ N : ℕ in atTop,
+      (h N : ℝ) ≤ Real.sqrt (N : ℝ) + (0.94295 : ℝ) * (N : ℝ) ^ (4⁻¹ : ℝ) := by
+  have hp_nonneg : ∀ i, i < 48 → 0 ≤ asymP i := fun i _ => by
+    dsimp only [asymP]; positivity
+  have hp_sum : ∑ i ∈ Finset.range 48, asymP i = 1 := by
+    dsimp only [asymP]
+    rw [← Finset.sum_div, ← Nat.cast_sum, asymPNum_sum]
+    norm_num
+  have hw_tail : ∀ j, 4 * 48 ≤ j → asymW j = 1 := by
+    intro j hj
+    dsimp only [asymW, asymWNum]
+    rw [if_neg (by omega)]
+    norm_num
+  have hcover : ∀ q, q ≤ 4 * 48 → 1 ≤ ∑ i ∈ Finset.range 48, asymP i * asymW (q + i) := by
+    intro q hq
+    have hnat := asym_covering_nat q (Finset.mem_range.mpr (by omega))
+    have hreal : (2304000000 : ℝ) ≤
+        ((∑ i ∈ Finset.range 48, asymPNum i * asymWNum (q + i) : ℕ) : ℝ) := by
+      exact_mod_cast hnat
+    have hsum_eq :
+        ∑ i ∈ Finset.range 48, asymP i * asymW (q + i) =
+        ((∑ i ∈ Finset.range 48, asymPNum i * asymWNum (q + i) : ℕ) : ℝ) / 2304000000 := by
+      dsimp only [asymP, asymW]
+      push_cast
+      rw [Finset.sum_div]
+      refine Finset.sum_congr rfl fun i _ => by ring
+    rw [hsum_eq]
+    linarith
+  have ha_eq : ((48 : ℕ) : ℝ) * ∑ i ∈ Finset.range 48, (asymP i) ^ 2 =
+      (48 : ℝ) * 147440 / 2304 ^ 2 := by
+    have hsq : ∑ i ∈ Finset.range 48, (asymP i) ^ 2 = (147440 : ℝ) / 2304 ^ 2 := by
+      dsimp only [asymP]
+      have : ∀ i ∈ Finset.range 48, ((asymPNum i : ℝ) / 2304) ^ 2 =
+          ((asymPNum i ^ 2 : ℕ) : ℝ) / 2304 ^ 2 := by
+        intro i _; push_cast; ring
+      rw [Finset.sum_congr rfl this, ← Finset.sum_div, ← Nat.cast_sum, asymPNum_sq_sum]
+      norm_num
+    rw [hsq]; norm_num
+  have hb_eq :
+      1 + ((∑ j ∈ Finset.range (4 * 48), (asymW j) ^ 2) / ((48 : ℕ) : ℝ) - ((4 : ℕ) : ℝ)) =
+      1 + (((176012388616832 : ℝ) / 1000000 ^ 2) / 48 - 4) := by
+    have hsq : ∑ j ∈ Finset.range (4 * 48), (asymW j) ^ 2 =
+        (176012388616832 : ℝ) / 1000000 ^ 2 := by
+      dsimp only [asymW]
+      have : ∀ j ∈ Finset.range 192, ((asymWNum j : ℝ) / 1000000) ^ 2 =
+          ((asymWNum j ^ 2 : ℕ) : ℝ) / 1000000 ^ 2 := by
+        intro j _; push_cast; ring
+      rw [show 4 * 48 = 192 from rfl, Finset.sum_congr rfl this, ← Finset.sum_div,
+        ← Nat.cast_sum, asymWNum_sq_sum]
+      norm_num
+    rw [hsq]; norm_num
+  apply asymmetric_kernel_transfer (m := 48) (L := 4) (by norm_num) (by norm_num)
+    hp_nonneg hp_sum hw_tail hcover (γ := (0.94295 : ℝ)) (by norm_num)
+  · rw [hb_eq]; norm_num
+  · rw [ha_eq, hb_eq]; norm_num
+
 end Erdos030

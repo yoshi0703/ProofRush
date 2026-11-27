@@ -22,3 +22,9 @@
 --- Verifying Erdos030.bose_lower_bound_theorem ---
 'Erdos030.bose_lower_bound_theorem' depends on axioms: [propext, Classical.choice, Quot.sound]
 [PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.asymmetric_kernel_transfer ---
+'Erdos030.asymmetric_kernel_transfer' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.sidon_sub_094295 ---
+'Erdos030.sidon_sub_094295' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
