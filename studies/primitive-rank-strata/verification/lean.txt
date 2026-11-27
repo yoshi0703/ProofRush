@@ -1,0 +1,34 @@
+Kasonyi105.page328_intersection : ¬Kasonyi105.StratifiedSemilinear (Kasonyi105.E2 ∩ Kasonyi105.E Kasonyi105.Q105)
+'Kasonyi105.page328_intersection' depends on axioms: [propext, Classical.choice, Quot.sound]
+Kasonyi105.existential_rank_refutation : ¬Kasonyi105.StratifiedSemilinear Kasonyi105.ExistentialRankSet
+'Kasonyi105.existential_rank_refutation' depends on axioms: [propext, Classical.choice, Quot.sound]
+Kasonyi105.prime_factors_105 : Nat.primeFactors 105 = {3, 5, 7}
+'Kasonyi105.prime_factors_105' depends on axioms: [propext, Classical.choice, Quot.sound]
+Kasonyi105.exponent_mem_iff (e : Kasonyi105.Gap) :
+  e ∈ Kasonyi105.E Kasonyi105.Q105 ↔ KasonyiWord.Primitive (KasonyiWord.encode e)
+'Kasonyi105.exponent_mem_iff' depends on axioms: [propext, Quot.sound]
+Kasonyi105.no_twoSparse_cover_of_ray (W : Set Kasonyi105.Gap) (hTop : ∀ e ∈ W, Kasonyi105.TopZero (Kasonyi105.intGap e))
+  (hRay : ∀ (t : ℕ), Kasonyi105.ray (105 * t + 1) ∈ W) : ¬Kasonyi105.TwoSparseSemilinear W
+'Kasonyi105.no_twoSparse_cover_of_ray' depends on axioms: [propext, Classical.choice, Quot.sound]
+Kasonyi105.topZero_twoSparse_eq_zero {f : Kasonyi105.Gap} (hf : Kasonyi105.TopZero (Kasonyi105.intGap f))
+  (hs : Kasonyi105.TwoSparse f) : f = 0
+'Kasonyi105.topZero_twoSparse_eq_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+Kasonyi105.ray_word_primitive (t : ℕ) : KasonyiWord.Primitive (KasonyiWord.encode (Kasonyi105.ray (105 * t + 1)))
+'Kasonyi105.ray_word_primitive' depends on axioms: [propext, Classical.choice, Quot.sound]
+KasonyiGrid.minimum_support_from_boxes (ds : List ℕ) (r : ℕ) (hpos : ∀ d ∈ ds, 0 < d)
+  (hsorted : List.Pairwise (fun x1 x2 => x1 ≤ x2) ds) (f : KasonyiGrid.Grid ds → ℤ)
+  (hf : ∀ (t : KasonyiGrid.RectTest ds (r + 1)), KasonyiGrid.testValue t f = 0) (hn : ∃ x, f x ≠ 0) :
+  (List.take (ds.length - r) ds).prod ≤ KasonyiGrid.weight ds f
+'KasonyiGrid.minimum_support_from_boxes' depends on axioms: [propext, Classical.choice, Quot.sound]
+KasonyiGrid.minimum_box_support_iff_fiber (ds : List ℕ) (r : ℕ) (hpos : ∀ d ∈ ds, 0 < d)
+  (hsorted : List.Pairwise (fun x1 x2 => x1 < x2) ds) (f : KasonyiGrid.Grid ds → ℤ) :
+  KasonyiGrid.MinimalFiber ds r f ↔
+    (∀ (t : KasonyiGrid.RectTest ds (r + 1)), KasonyiGrid.testValue t f = 0) ∧
+      (∃ x, f x ≠ 0) ∧ KasonyiGrid.weight ds f = (List.take (ds.length - r) ds).prod
+'KasonyiGrid.minimum_box_support_iff_fiber' depends on axioms: [propext, Classical.choice, Quot.sound]
+KasonyiGrid.minimum_box_support_attained (ds : List ℕ) (r : ℕ) (hpos : ∀ d ∈ ds, 0 < d)
+  (hsorted : List.Pairwise (fun x1 x2 => x1 < x2) ds) :
+  ∃ f,
+    (∀ (t : KasonyiGrid.RectTest ds (r + 1)), KasonyiGrid.testValue t f = 0) ∧
+      (∃ x, f x ≠ 0) ∧ KasonyiGrid.weight ds f = (List.take (ds.length - r) ds).prod
+'KasonyiGrid.minimum_box_support_attained' depends on axioms: [propext, Classical.choice, Quot.sound]
