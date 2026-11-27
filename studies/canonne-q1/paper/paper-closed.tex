@@ -1,0 +1,183 @@
+\section{An explicit finite-arithmetic rate}
+\label{sec:closed-rate}
+
+This section gives a root-free expression for the rate on a finite
+rational input and describes its bit complexity. Let
+\(\lfloor z\rfloor_2\) be the largest integral power of two at most
+\(z>0\), and let \(\lfloor0\rfloor_2=0\). The empty-alternative branch
+returns zero when \(e\ge1-\min_iq_i\). The minimum is taken on the
+declared alphabet, including zero-probability labels.
+
+Assume the alternative is nonempty, set \(\delta=1-e\), and compute
+\[
+  \widehat J=\sum_i q_i\min\{1,\lfloor\sqrt{q_i/\delta}\rfloor_2\}.
+\]
+Then \(J/2\le\widehat J\le J\). If \(\widehat J\ge16\delta\), return
+\(\lceil1/\widehat J\rceil\). This is the near-maximum-distance
+rate, since in this branch \(J\ge16\delta\). In the other branch
+\(J<32\delta\), which is sufficient for all the regular-regime
+baseline comparisons.
+
+Use the shortest decreasing-mass prefix \(H\) with \(q(H)\ge\delta\).
+Its complement \(T\) has mass \(w\). Put \(A=1-w\), \(\Delta=e-w\),
+and \(O=H\setminus\{i_*\}\), with \(i_*\) a largest head label.
+The head cuts \(R\) are prefixes of \(O\), and the tail cuts \(S\) are
+prefixes of \(T\), each in decreasing reference mass. It suffices
+to use endpoints of equal-probability runs, including the empty
+and full cut in each list. For each \(R\) set
+\[
+ \begin{split}
+ c_{R,0}&=q(O\setminus R),\\
+ c_{R,1}&=\max\left\{\lfloor\sqrt{wA}\rfloor_2,\
+       \left\lfloor
+          \left(\sum_{i\in R}\lfloor q_i^{2/3}\rfloor_2\right)^{3/4}
+       \right\rfloor_2\right\},\\
+ c_{R,2}&=1.
+ \end{split}
+\]
+For each \(S\) set
+\[
+ b_S=\max\{\Delta,q(S)\},\qquad
+ h_S=\left(\sum_{i\in T\setminus S}q_i\lfloor\sqrt{q_i}\rfloor_2\right)^2 .
+\]
+A tail consisting solely of null-zero atoms contributes only the
+empty cut, with \(b_S=\Delta\) and \(h_S=0\).
+
+For \(c,b\ge0\) and a nonnegative integer \(j\), define
+\[
+ E(c,b,j)=
+ \begin{cases}
+ 0,&c\le b,\\
+ +\infty,&c>b\ \text{and}\ (b=0\ \text{or}\ j=0),\\
+ \displaystyle\left\lceil\frac{\lceil\log_2(c/b)\rceil}{j}\right\rceil,
+   &\text{otherwise}.
+ \end{cases}
+\]
+The resulting rate in the regular regime is
+\begin{equation}
+ 4^{\,\displaystyle\min_R\,
+       \max_{\substack{S\\ a\in\{0,1,2\}}}
+       \min\{E(c_{R,a},b_S,a),\,E(c_{R,a},h_S,a+4)\}} .
+ \label{eq:closed-rate}
+\end{equation}
+The use of \(a\) as a numerical index inside \eqref{eq:closed-rate}
+is local to that display.
+
+\subsection{Comparison with the statistical crossing}
+
+For any \(n\ge1\) define
+\[
+ \widehat D(n)=\min_R\max_{a=0,1,2}c_{R,a}n^{-a/2},
+ \qquad
+ \widehat Y(n)=\min_S\max\{b_S,h_Sn^2\}.
+\]
+The original head cost for each \(R\) is the sum of four terms:
+the omitted mass, the group standard deviation divided by \(\sqrt n\),
+the retained bulk divided by \(\sqrt n\), and \(1/n\).
+The group numerator loses at most a factor 2 in rounding. The
+head numerator loses at most \(2^{7/4}<4\), including the inner
+rounding and the final rounding. Thus at every cut the rounded
+maximum lies between one eighth of the original cost and the
+original cost. Within an equal-probability run, the original head
+cost is affine plus a positive multiple of a \(3/4\)-power of an
+affine function of the number of retained labels. Concavity places
+its minimum at an endpoint. Consequently
+\begin{equation}
+  D(n)/8\le\widehat D(n)\le D(n).
+  \label{eq:closed-head-comparison}
+\end{equation}
+The rounded maximum itself may prefer a cut within a tied run.
+The same constant-factor estimate holds with endpoint compression.
+An expanded scan of all tied labels can return a different integer.
+
+For the tail, let \(z=\sqrt{X(n)}\), and put
+\(Q_S=q(S)\), \(H_S=\sum_{i\in T\setminus S}q_i^{3/2}\).
+If \(z>0\), its defining equation gives
+\[
+ z^2=\sum_{i\in T}\min(q_i,nq_i^{3/2}z)
+       \le Q_S+nH_Sz
+       \qquad\text{for every }S.
+\]
+If \(B_S=\max\{Q_S,(nH_S)^2\}\), this implies
+\(z^2\le B_S+\sqrt{B_S}\,z\), hence \(z^2\le4B_S\).
+Conversely, equality holds in the previous display for the prefix
+\(\{i:nz\sqrt{q_i}\ge1\}\), which then has \(B_S\le z^2\).
+This prefix ends at an equal-run boundary, including when some
+atoms are exactly at the saturation threshold. Rounding the square
+root in \(H_S\) costs at most a factor 2, so that
+\[
+ \widehat X(n):=\min_S\max\{Q_S,h_Sn^2\}\in[X(n)/16,X(n)].
+\]
+If the tail mass is zero, all these tail moments and \(X\) vanish.
+Taking the maximum with \(\Delta\) gives
+\begin{equation}
+  Y(n)/17\le\widehat Y(n)=\max\{\Delta,\widehat X(n)\}\le Y(n),
+  \qquad Y(n)=\Delta+X(n).
+  \label{eq:closed-tail-comparison}
+\end{equation}
+
+For \(n=4^k\), the condition \(\widehat D(n)\le\widehat Y(n)\)
+means that some \(R\) satisfies, for every \(S\) and \(a=0,1,2\),
+at least one of
+\[
+ c_{R,a}\le b_S2^{ak},
+ \qquad c_{R,a}\le h_S2^{(a+4)k}.
+\]
+Each inequality is an upward interval of nonnegative integer
+exponents. Its least exponent is \(E\). The first exponent in
+the union of two such intervals is the smaller of the two
+\(E\)'s, and their intersection over the requirements has first
+exponent equal to the maximum. Minimizing over \(R\) gives
+\eqref{eq:closed-rate}. At the full head cut the constant
+omitted-mass term is zero, so a finite exponent always exists:
+for every tail cut at least one budget is positive when \(e>0\).
+
+A successful closed comparison enforces the baseline scales
+even without an explicit lower search floor. The full tail cut
+forces \(1/n\le\max(\Delta,w)\le e\).
+For the other scale, choose \(S=\{i\in T:q_i\ge\delta\}\).
+In the regular branch \(q(S)\le J<32\delta\), and
+\(\Delta<\min_{i\in H}q_i\le\max_iq_i\le\max(J,\delta)\).
+The remaining moment is at most \(\sqrt\delta J\). The \(1/n\)
+term thus forces
+\[
+ 1/n\le\max\{32\delta,1024\delta^3n^2\},
+\]
+and hence \(n\delta\ge1/32\).
+
+By \eqref{eq:closed-head-comparison}--\eqref{eq:closed-tail-comparison},
+passing the closed comparison implies \(D(n)\le8Y(n)\).
+Conversely, \(D(n)\le Y(n)/17\) suffices to pass. The horizontal
+comparison and the statistical bounds therefore identify
+\eqref{eq:closed-rate} with the sample complexity up to universal
+constants at the same radius. A fixed dilation covers the baseline
+floor, and rounding a clock up to the next power of four costs
+at most a factor four.
+
+\subsection{Exact arithmetic and scope}
+
+A finite input may specify distinct rational atom weights together
+with their binary multiplicities. Sort the weights, and locate the
+shortest head by one rational ceiling if it ends within a run.
+Delete one largest atom for the head cost. The remaining head
+and tail scans use run endpoints. The displayed sums are computed
+using multiplicities and do not enumerate the labels in a run.
+
+A downward rounding \(\lfloor x^{u/v}\rfloor_2\) for the fixed
+rational powers used here is computed by comparing the numerator and
+denominator of \(x^u\) with integer shifts. Similarly, the ceiling binary
+logarithm of a positive rational ratio is its numerator-denominator
+bit-length difference adjusted by one exact comparison. The
+definition of \(E\) then uses integer ceiling division. Common
+denominators have bit length bounded by the sum of the input
+denominator bit lengths, and each fixed-power and shift step
+preserves polynomial bit length. The exponent and the binary
+output \(4^k\) have polynomial bit length. The number of head-tail
+cut pairs is quadratic in the number of input runs. Thus
+\eqref{eq:closed-rate} is evaluable in polynomial bit time without
+a root computation, a scan over sample sizes, or expansion of binary
+multiplicities. This bit bound concerns evaluation of the rate.
+The statistical theorem bounds the number of observations.
+
+For a countable alphabet, the next section gives an exact projection argument
+and relates the direct profile to its finite evaluations.

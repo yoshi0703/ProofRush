@@ -1,0 +1,31 @@
+\section{Verification, scope and contributions}
+The Lean 4 development constructs randomized tests on ordered independent
+observations and proves lower bounds against all such tests. It includes
+the empty-alternative criterion, integer sample budgets, both finite
+branches, the countable projection equivalence and a uniform sample-size
+comparison. The finite head and the finite suffix admit independent label
+permutations. On explicitly listed rational inputs a further formal theorem bounds the number of dyadic comparisons by a polynomial in the input bit length and evaluates each comparison using finite prefix radicals. The retained prefix includes its boundary atom. The proof
+terms use only Lean's standard propositional extensionality, quotient
+soundness and classical choice. A separate Rust kernel, nanoda, checks
+the exported declarations without access to the Lean sources or Mathlib.
+The reproducibility package pins Lean 4.36.0 and its Mathlib revision.
+
+The finite radical formula and the countable theorem using the supremum
+over projections have corresponding Lean declarations. The passage from
+the rounded integer arithmetic in Section~\ref{sec:closed-rate} to a
+polynomial bit bound, and the eventual equality with the direct countable
+profile in Section~\ref{sec:countable-projections}, are given as mathematical
+proofs in this paper. The Python implementation has independent exact-arithmetic
+checks. The result concerns universal multiplicative constants. Their size
+leaves open useful questions about numerical calibration for small samples.
+
+Yoshiaki Otsuka set the research question, the acceptance criteria and
+the conditions for public release. OpenAI Codex research agents developed
+the mathematical constructions, wrote the manuscript and Lean sources,
+and ran the verification. Parallel agents investigated the upper tail
+statistic, competing lower constructions, and signed head perturbations.
+Separate agent reviews examined fidelity to the source question and
+searches for prior equivalent results. The proof does not rely on the
+agents' agreement. The public record contains source hashes, the independent
+checker receipt, reproducibility instructions and a computation log.
+A public IFM dataset index lists a prior generator run and sixteen verification sessions concerning this question. Its public summary gives no question-specific verdict. Our priority audit found no earlier publicly inspectable general solution. No external human peer review had been completed at the time of writing.

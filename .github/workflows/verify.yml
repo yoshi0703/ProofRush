@@ -12,7 +12,7 @@ jobs:
   proof:
     name: Witness, Lean and independent Rust kernel
     runs-on: ubuntu-24.04
-    timeout-minutes: 45
+    timeout-minutes: 65
     env:
       LEAN_ARCHIVE_SHA256: 2b7ab1ed8b92d2e6abfaf41344823b510064dbc9c0260cac73eb496ab2dea6eb
       MATHLIB_REV: fc4f59e577feb1a4956671bc04ac18aaaf8cd842
@@ -34,6 +34,11 @@ jobs:
         run: |
           python3 -B studies/exact-radius-identity/check_priors.py
           python3 -B studies/exact-radius-identity/check_endpoint.py
+
+      - name: Exercise the closed-form instance-optimal identity-testing rate
+        run: |
+          python3 -B studies/canonne-q1/experiments/check_closed_rate.py
+          python3 -B studies/canonne-q1/experiments/check_bernoulli.py
 
       - name: Compare the identity-testing functionals in exact arithmetic
         run: python3 -B studies/canonne-functional-comparison/check.py
@@ -112,7 +117,7 @@ jobs:
           cd "$mathlib"
           mapfile -t study_modules < <(
             awk '$1 == "import" && $2 ~ /^Mathlib[.]/ {print $2}' \
-              "$GITHUB_WORKSPACE"/studies/{masked-guidance,string-identified-bpe,attention-value-dimension,shoreline-transects,althofer-game,canonne-functional-comparison,shallit-hankel,shoreline-zone-coverage,exact-radius-identity}/lean/*.lean | sort -u
+              "$GITHUB_WORKSPACE"/studies/{masked-guidance,string-identified-bpe,attention-value-dimension,shoreline-transects,althofer-game,canonne-functional-comparison,shallit-hankel,shoreline-zone-coverage,exact-radius-identity,canonne-q1}/lean/*.lean | sort -u
           )
           lake exe cache get Mathlib.Combinatorics.SimpleGraph.Coloring.Vertex \
             Mathlib.Combinatorics.SimpleGraph.Diam Mathlib.Data.Fin.VecNotation "${study_modules[@]}"
@@ -255,3 +260,14 @@ jobs:
               --docker-image "$CHECK_IMAGE" --run-dir "$output"
             tail -n 1 "$output/nanoda.txt" >> "$GITHUB_STEP_SUMMARY"
           done
+
+      - name: Verify the complete instance-optimal identity-testing characterization
+        shell: bash
+        run: |
+          set -euo pipefail
+          umask 022
+          output="$RUNNER_TEMP/canonne-q1"
+          python3 -B studies/canonne-q1/verify.py --mathlib "$RUNNER_TEMP/mathlib" \
+            --nanoda "$RUNNER_TEMP/nanoda/target/release/nanoda_bin" \
+            --docker-image "$CHECK_IMAGE" --run-dir "$output"
+          tail -n 1 "$output/nanoda.txt" >> "$GITHUB_STEP_SUMMARY"

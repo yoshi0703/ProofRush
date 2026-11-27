@@ -1,0 +1,120 @@
+{
+  "from_utc": "2026-11-27T02:06:27.343Z",
+  "through_utc": "2026-11-27T03:37:00.000Z",
+  "interval_seconds": 5432,
+  "scope": "Deltas of per-session cumulative Codex counters during the indicated interval, for the lead and five participating research or review roles. Some inherited work and accounting at the interval boundary can overlap. Cached tokens are included in input, reasoning tokens are included in output. Distinct counter increases are an observable proxy for calls, not a provider billing ledger.",
+  "totals": {
+    "input_tokens": 262596798,
+    "cached_input_tokens": 260664192,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 727072,
+    "reasoning_output_tokens": 272006,
+    "total_tokens": 263323870
+  },
+  "distinct_accounting_updates": 1161,
+  "by_role": {
+    "priority_review": {
+      "model_contexts": [
+        [
+          "gpt-6.2-sol",
+          "high"
+        ]
+      ],
+      "distinct_accounting_updates": 21,
+      "usage": {
+        "input_tokens": 2311834,
+        "cached_input_tokens": 2167424,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 11298,
+        "reasoning_output_tokens": 1721,
+        "total_tokens": 2323132
+      }
+    },
+    "scout225_ai": {
+      "model_contexts": [
+        [
+          "gpt-6.2-sol",
+          "high"
+        ]
+      ],
+      "distinct_accounting_updates": 295,
+      "usage": {
+        "input_tokens": 66106891,
+        "cached_input_tokens": 65628032,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 198143,
+        "reasoning_output_tokens": 85875,
+        "total_tokens": 66305034
+      }
+    },
+    "statement_review": {
+      "model_contexts": [
+        [
+          "gpt-6.2-astra",
+          "high"
+        ]
+      ],
+      "distinct_accounting_updates": 20,
+      "usage": {
+        "input_tokens": 1583788,
+        "cached_input_tokens": 1493248,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 9553,
+        "reasoning_output_tokens": 3056,
+        "total_tokens": 1593341
+      }
+    },
+    "ocean_field": {
+      "model_contexts": [
+        [
+          "gpt-6.2-sol",
+          "high"
+        ]
+      ],
+      "distinct_accounting_updates": 283,
+      "usage": {
+        "input_tokens": 73805195,
+        "cached_input_tokens": 73323392,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 179699,
+        "reasoning_output_tokens": 64807,
+        "total_tokens": 73984894
+      }
+    },
+    "frontier_prize": {
+      "model_contexts": [
+        [
+          "gpt-6.2-sol",
+          "medium"
+        ]
+      ],
+      "distinct_accounting_updates": 279,
+      "usage": {
+        "input_tokens": 75860191,
+        "cached_input_tokens": 75464064,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 167692,
+        "reasoning_output_tokens": 53337,
+        "total_tokens": 76027883
+      }
+    },
+    "lead": {
+      "model_contexts": [
+        [
+          "gpt-6.2-astra",
+          "max"
+        ]
+      ],
+      "distinct_accounting_updates": 263,
+      "usage": {
+        "input_tokens": 42928899,
+        "cached_input_tokens": 42588032,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 160687,
+        "reasoning_output_tokens": 63210,
+        "total_tokens": 43089586
+      }
+    }
+  },
+  "compute": "Local Apple M3 Pro, 11 CPU cores, 18 GiB. Model inference through the existing Codex subscription. Public ordinary GitHub Actions used for replay. No additional paid model API was invoked; no separately attributable model-inference cost is available."
+}

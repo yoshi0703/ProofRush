@@ -1,0 +1,6 @@
+75 exponent tests and 1,500 rational crossing tests passed
+First difference between endpoint-only and all-count scans: ([Fraction(15, 94), Fraction(3, 47), Fraction(9, 47), Fraction(5, 47), Fraction(1, 94), Fraction(9, 47), Fraction(5, 47), Fraction(1, 94), Fraction(15, 94), Fraction(0, 1)], Fraction(79, 100), 4, 16)
+Two large-decimal input/output regressions passed
+compressed 2^16 equal tail atoms: output bit size 9
+compressed 2^128 equal tail atoms: output bit size 55
+compressed 2^1000 equal tail atoms: output bit size 403
