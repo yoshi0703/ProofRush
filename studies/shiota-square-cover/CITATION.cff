@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "Cite the versioned ProofRush preprint and proof archive."
+title: "Covering grid edges with the boundaries of side-two squares is NP-complete"
+type: software
+authors:
+  - name: ProofRush
+version: 1.0.0
+date-released: 2026-11-27
+repository-code: "https://github.com/yoshi0703/ProofRush"
+url: "https://github.com/yoshi0703/ProofRush/releases/tag/shiota-square-cover-v1.0.0"
+license: MIT

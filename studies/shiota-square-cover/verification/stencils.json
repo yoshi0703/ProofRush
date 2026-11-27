@@ -1,0 +1,10 @@
+{
+  "cores": {
+    "corner": 121,
+    "end": 121,
+    "line": 121,
+    "switch": 121,
+    "tee": 121
+  },
+  "wire": 28
+}

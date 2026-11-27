@@ -1,0 +1,133 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{fontspec}
+\usepackage[hidelinks,pdftitle={Instance-optimal identity testing at the specified total variation distance},pdfauthor={ProofRush. Research directed by Yoshiaki Otsuka}]{hyperref}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\TV}{\operatorname{TV}}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prb}{\mathbb P}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\given}{\,\middle|\,}
+\newfontfamily\namefont[Path=fonts/]{ProofRushDirectorJP.otf}
+\newcommand{\titleDirector}{{\namefont 大束良明} (Yoshiaki Otsuka)}
+\title{Instance-optimal identity testing at the specified total variation distance}
+\author{ProofRush\\[2pt]\small AI-assisted research directed by \titleDirector}
+\date{27 November 2026\qquad Preprint, version 1}
+\begin{document}
+\maketitle
+\begin{abstract}
+Given a known discrete distribution $q$ and $0<e\le1$, let $N_q(e)$ be the least number of independent observations that distinguish $q$ from every distribution at total variation distance strictly greater than $e$, with both errors at most one third. We give a functional of $q$ and $e$ comparable to $N_q(e)$ by absolute constants at the very same $e$. The head consists of the fewest largest atoms whose complement has mass at most $e$. The head contributes a minimized truncated $2/3$-moment. The tail contributes the attainable overlap of a random empirical support at a prescribed testing budget. A second regime near distance one is governed by a clipped $3/2$-moment. The lower bound uses one random channel on a reduced experiment, with the same pilot lists under both hypotheses. A deterministic scale comparison converts the resulting inequalities to a sample-size bound without rescaling the distance. For an explicit finite rational law we give a closed formula using polynomially many bit operations. A finite projection argument covers all discrete laws on a countable alphabet. The source package contains Lean proofs of the two-sided sample-complexity statements.
+\end{abstract}
+
+\section{Problem and prior bounds}
+Fix a discrete alphabet $\mathcal X$. Its labels form part of the experiment, including any with zero mass under the null. For a specified $q$, a randomized test on $n$ observations is a function $f:\mathcal X^n\to[0,1]$ giving the conditional rejection probability. We seek the least nonnegative integer $N_q(e)$ such that
+\[
+ \E_{q^{\otimes n}} f\le 1/3,\qquad
+ \E_{p^{\otimes n}} f\ge 2/3\quad
+ \text{for every probability law }p\text{ with }\TV(p,q)>e .
+\]
+Here $\TV(p,q)=\tfrac12\sum_i|p_i-q_i|$. Access to the unknown law consists of ordinary independent observations.
+
+Valiant and Valiant \cite{valiantvaliant2017} identified a truncated $2/3$-quasinorm that captures much of the instance dependence. Their lower and upper bounds truncate different multiples of the distance. Blais, Canonne and Gur \cite{BCG} obtained bounds using an inverse Peetre functional and described a harmonic family on which changing the truncation distance changes the sample scale by a polynomial in the alphabet size. Chhor and Carpentier \cite{chhorcarpentier2022} characterized a local minimax separation radius to within constants. Inverting an interval of separation radii can leave an unbounded discrepancy between sample sizes at a specified distance. Canonne formulated the sample-size question explicitly as COLT 2024 Open Question~1 \cite{Canonne}. Dewasurendra \cite{Zipf} subsequently reported same-distance bounds for a Zipfian class under envelope assumptions. Section~6 of that manuscript already discusses relating a weighted head test to sparse changes in the tail. Here a common ordered-record channel supplies both the head and marker obstructions, and a sample-scale dilation closes the comparison for arbitrary nulls. Our comparison constants are uniform over the null distribution and the distance. The use of weighted quadratic tests, adjacent signed perturbations and second-moment arguments builds on the distribution-testing literature. The constructions below connect these methods to the amount of overlap a tail can retain at the original distance.
+
+\section{A functional of the known distribution}\label{sec:functional}
+First consider a finite alphabet. If $e\ge 1-\min_i q_i$, return zero. Indeed
+$\min(p_i,q_i)\ge p_iq_i$, so $\TV(p,q)=1-\sum_i\min(p_i,q_i)\le1-\min_i q_i$. A point mass at a least-probable label attains equality. The remaining case has $\delta=1-e>0$ and admits a strict alternative. Define
+\[
+  J=J_\delta(q)=\sum_i q_i\min\{1,\sqrt{q_i/\delta}\}.
+\]
+If $J\ge16\delta$, let $\Phi(q,e)=\lceil1/J\rceil$.
+
+Otherwise order the probabilities decreasingly and let $H$ be the shortest prefix of mass at least $\delta$. Write $T=\mathcal X\setminus H$, $w=q(T)$, $A=1-w$, $a=\min_{i\in H}q_i$ and $\Delta=e-w$. The last head atom is positive, $0\le\Delta<a$, and $q_i\le a$ for $i\in T$. The largest head label is numbered $1$. For a real $n>0$ define
+\begin{align}
+ P(n)&=\min_{1\le j\le |H|}\left\{
+   \frac{(\sum_{2\le i\le j}q_i^{2/3})^{3/4}}{\sqrt n}
+      +\sum_{j<i\le |H|}q_i\right\},\label{eq:P}\\
+ K(n,x)&=\sum_{i\in T}\min\{q_i/x,\ n q_i^{3/2}/\sqrt x\}\quad(x>0).\label{eq:K}
+\end{align}
+If $w=0$, set $X(n)=0$. Otherwise $K(n,x)$ decreases continuously from infinity to zero. Let $X(n)>0$ be its unique unit level. Set
+\begin{equation}\label{eq:cross}
+ D(n)=\sqrt{wA/n}+1/n+P(n),\qquad
+ Y(n)=\Delta+X(n),\qquad c_*=(4\,000\,000)^{-1}.
+\end{equation}
+Define $\Phi(q,e)$ as the first power of two $n\ge1$ with $D(n)\le c_*Y(n)$. The full off-largest head has no omitted mass, so $D(n)\to0$. Also $Y(1)>0$: either $w<e$, or $w=e>0$ gives a positive root. Since $X$ is nondecreasing, a crossing exists. Equal probabilities may be ordered arbitrarily.
+
+The implicit root has a finite radical expression. Order the tail decreasingly. For every tail prefix $S$, including the empty and full prefix, write $Q_S=\sum_{i\in S}q_i$ and $B_S=n\sum_{i\in T\setminus S}q_i^{3/2}$. Then
+\begin{equation}\label{eq:radical}
+ \sqrt{X(n)}=\min_S \frac{B_S+\sqrt{B_S^2+4Q_S}}2 .
+\end{equation}
+For $y=\sqrt{X(n)}>0$, the root equation is $y^2=\sum_{i\in T}\min(q_i,n y q_i^{3/2})$. Splitting this sum at any prefix gives $y^2\le Q_S+B_S y$, with equality for $S=\{i:n y\sqrt{q_i}\ge1\}$. For a zero tail both sides vanish. This calculation also gives an expression using only minimum and maximum up to absolute factors. We use it below to avoid comparisons between sums of radicals on rational inputs.
+
+\begin{theorem}\label{thm:main}
+There are universal constants $L,U>0$ such that
+\[
+   \Phi(q,e)\le L N_q(e),\qquad N_q(e)\le U\Phi(q,e)
+\]
+for every finite $q$ and $0<e\le1$. One can take $U=49152$. The same constants apply on $\mathbb N$ with $\Phi(q,e)=\sup_m\Phi(q_m,e)$, where $q_m$ is the law of the first $m$ singleton cells and the remaining cell. This supremum is finite. There is an explicit finite rational-input version, computable in time polynomial in the binary description length, with universal comparison constants.
+\end{theorem}
+
+For example, take $q=(1-w,w/k,\ldots,w/k)$ with $0<w\le1/2$, $k\ge2$, and choose $e=w$. Then $H$ contains only the largest label and $\Delta=P(n)=0$. Equation~\eqref{eq:K} gives $X(n)=\min(w,n^2w^3/k)$. On writing $t=nw$, one has $D(n)/w=\sqrt{(1-w)/t}+1/t$ and $Y(n)/w=\min(1,t^2/k)$. The crossing occurs at $t\asymp k^{2/5}$, with absolute constants. In this family the total tail mass equals the testing distance exactly.
+
+For each alternative $p$ write $L_H=\sum_{i\in H}(q_i-p_i)_+$ and $O_T=\sum_{i\in T}\min(q_i,p_i)$. The equality
+\begin{equation}\label{eq:split-tv}
+             \TV(p,q)=w+L_H-O_T
+\end{equation}
+holds because the total decrease from $q$ to $p$ equals total variation. A strict alternative therefore satisfies $L_H>\Delta+O_T$. This exact difference explains why the tail cannot be discarded at a fixed multiple of $e$.
+
+\input{paper-upper}
+\input{paper-pilots}
+\input{paper-headlower}
+
+\section{Comparing sample budgets at the same distance}\label{sec:horizontal}
+This section completes the finite proof. The near-one tests and the small-$J$ lower construction give $mJ>1/64$ for every successful budget $m$ on a nonempty instance, and a test with $3\lceil16384/J\rceil$ samples whenever $J\ge16\delta$. Rounding gives $\Phi\le65m$ and an upper bound of $49152\Phi$ on this branch.
+
+In the other branch we can use the slightly weaker assumption $J\le32\delta$. Suppose $m$ observations suffice. A strictly far witness $p$ can be interpolated with $q$ to any prescribed distance strictly between $e$ and $\TV(p,q)$. The product total variation is at most $m$ times the one-observation distance. Letting the latter decrease to $e$ gives $me\ge1/3$. The preceding bound on $mJ$ gives $m\delta>1/2048$. Put $n=2^{43}m$. A test can discard its extra observations, so $n$ is a successful budget as well.
+
+Put $x=4096\max\{X(n),1/n\}$. The preceding signed-head and marker bounds give
+\[
+       P(n)\le32(\Delta+x),\qquad
+       \sqrt{wA/n}\le8(\Delta+x).
+\]
+The marker estimate requires $nA\ge1$, which follows from $A\ge\delta$. If $nY(n)<1$, then $X(n)<1/n$ and $n\Delta<1$. The marker bound gives $nwA\le32776^2$. If $w\le1/2$, it follows that $ne=nw+n\Delta\le2(32776)^2+1$. If $w>1/2$, then $n\delta\le nA\le2(32776)^2$. Either conclusion contradicts $ne,n\delta\ge2^{32}$. Thus $nY(n)\ge1$ and $x\le4096Y(n)$. In particular
+\begin{equation}\label{eq:weak}
+             D(n)\le163881\,Y(n).
+\end{equation}
+
+\begin{lemma}\label{lem:dilate}
+For each $K,c>0$ there is a finite $M=M(K,c)$, independent of the law, such that $D(n)\le K Y(n)$ with $n\ge1$ implies $D(n')\le cY(n')$ at a power of two $n'$ in $[n,2Mn]$.
+\end{lemma}
+\begin{proof}
+Both $D$ and $-Y$ are nonincreasing. Since $D(n)\ge1/n$, a weak crossing implies $nY(n)\ge G:=1/K$. Choose $M_1\ge1$ with $2K\le c M_1^2$. Choose $\gamma>0$ with $2\gamma\le G^2$ and $M_1^4\gamma\le1$. Finally take $t\ge1$ with $2(K+1/\gamma)\le ct$.
+
+For any omitted head suffix of mass $u$, the sum $W$ of its $2/3$ powers is at most $u/a^{1/3}$. Consequently $W^{3/4}/\sqrt n\le u+1/(an^2)$, by considering $an^2u\ge1$ and its complement. At a minimizing head cutoff in \eqref{eq:P}, append this omitted suffix and use $(v+W)^{3/4}\le v^{3/4}+W^{3/4}$. The full head, evaluated at $t^2n$, gives
+\[
+        D(t^2n)\le\frac2t\big(D(n)+1/(an^2)\big).
+\]
+If $n^2aY(n)\ge\gamma$, this gives $D(t^2n)\le cY(t^2n)$.
+
+For the other case write $Y=Y(n)$. If $Y>2X(n)$ then $Y<2\Delta\le2a$, whence $(nY)^2<2\gamma\le G^2$, a contradiction. Thus $X(n)\ge Y/2>0$. For every tail atom, $M_1^4 n^2q_iX(n)\le M_1^4 n^2aY<1$. At $M_1n$ all terms of \eqref{eq:K} at $x'=M_1^2 X(n)$ are on their unsaturated branch, as they were at $(n,X(n))$. Their sum is still one, so $X(M_1n)=M_1^2X(n)$. Therefore $D(M_1n)\le D(n)\le KY\le cY(M_1n)$. Increase the successful real budget to the next power of two. Monotonicity preserves the inequality, and the increase is at most a factor of two. Take $M=\max(M_1,t^2)$.
+\end{proof}
+
+Apply Lemma~\ref{lem:dilate} to \eqref{eq:weak} with $K=163881$ and $c=c_*$. The first dyadic crossing is at most $2^{44}M(163881,c_*)m$. Conversely the regular test at a strong crossing uses at most $3076n$ original observations. These bounds prove the finite statistical assertion of Theorem~\ref{thm:main}.
+
+\input{paper-closed}
+\input{paper-countable}
+\input{paper-verification}
+
+\begin{thebibliography}{9}
+\bibitem{Canonne} C.~L. Canonne. Open problem: tight characterization of instance-optimal identity testing. COLT, PMLR 247, 5312--5316, 2024.
+\href{https://proceedings.mlr.press/v247/canonne24a.html}{Proceedings and Open Question 1}.
+\bibitem{valiantvaliant2017} G.~Valiant and P.~Valiant. An automatic inequality prover and instance optimal identity testing. SIAM J. Comput. 46(1), 429--455, 2017. \href{https://doi.org/10.1137/151002526}{DOI: 10.1137/151002526}. Conference version, FOCS 2014.
+\bibitem{BCG} E.~Blais, C.~L. Canonne and T.~Gur. Distribution testing lower bounds via reductions from communication complexity. CCC, LIPIcs 79, 28:1--28:40, 2017.
+\href{https://doi.org/10.4230/LIPIcs.CCC.2017.28}{DOI: 10.4230/LIPIcs.CCC.2017.28}.
+\bibitem{chhorcarpentier2022} J.~Chhor and A.~Carpentier. Sharp local minimax rates for goodness-of-fit testing in multivariate binomial and Poisson families and in multinomials. Math. Stat. Learn. 5(1/2), 1--54, 2022. \href{https://doi.org/10.4171/MSL/32}{DOI: 10.4171/MSL/32}.
+\bibitem{paninski2008} L.~Paninski. A coincidence-based test for uniformity given very sparsely sampled discrete data. IEEE Trans. Inform. Theory 54(10), 4750--4755, 2008. \href{https://doi.org/10.1109/TIT.2008.928987}{DOI: 10.1109/TIT.2008.928987}.
+\bibitem{Zipf} P.~Dewasurendra. Closing the harmonic gap: exact identity testing for Zipfian distributions. Author-posted manuscript, 2026.
+\href{https://andotheror.github.io/p/closing-the-harmonic-gap-exact-identity-testing-for-zipfian-distributi.html}{Author's manuscript}.
+\end{thebibliography}
+\end{document}

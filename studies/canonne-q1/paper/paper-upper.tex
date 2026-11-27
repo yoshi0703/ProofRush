@@ -1,0 +1,213 @@
+\section{Upper bounds at the prescribed radius}
+\label{sec:upper}
+
+For a set \(T\) of labels, define its overlap and the directed deficit
+on its complement by
+\[
+ O_T(p,q)=\sum_{i\in T}\min(p_i,q_i),\qquad
+ L_H(p,q)=\sum_{i\in H}(q_i-p_i)_+,\qquad H=T^\complement .
+\]
+Writing \(w=q(T)\), normalization gives
+\begin{equation}
+ \operatorname{TV}(p,q)=w+L_H(p,q)-O_T(p,q).
+ \label{eq:upper-head-tail}
+\end{equation}
+In particular, at \(\Delta=e-w\), the strict alternative is exactly
+\(L_H(p,q)>\Delta+O_T(p,q)\).
+
+\subsection{A capped overlap test}
+
+For a positive cap \(b\), replace each selected label \(i\) by
+\(m_i=\max(1,\lceil q_i/b\rceil)\) equiprobable copies. Use independent
+copy choices under both input laws. On the refined labels,
+\(p_i\) and \(q_i\) are divided by the same \(m_i\). The total mass and
+overlap on any union of full copy classes are preserved, and every refined
+reference probability in the selected set is at most \(b\). Its refined
+moment satisfies
+\begin{equation}
+ \frac{1}{\sqrt{2}}\sum_{i\in T}\min(q_i\sqrt b,q_i^{3/2})
+ \ \le\ \sum_{i\in T}\frac{q_i^{3/2}}{\sqrt{m_i}}
+ \ \le\ \sum_{i\in T}\min(q_i\sqrt b,q_i^{3/2}).
+ \label{eq:upper-clone-moment}
+\end{equation}
+For \(q_i\le b\) the atom is unchanged. For \(q_i>b\) use
+\(q_i/b\le m_i<2q_i/b\). Null-zero labels have one copy and remain
+available to the alternative.
+
+We now work on a refined alphabet and denote its probabilities by \(p_i,q_i\).
+Suppose \(q_i\le b\) for \(i\in T\), \(0<b\le x\), and
+\[
+   M=\sum_{i\in T}q_i^{3/2}\ge 8x\sqrt b.
+\]
+We test against all full laws with \(O_T(p,q)\le x\), with no condition
+on the number of tail observations or on \(p(T)\). Put
+\(\ell=\lceil8192\sqrt{x}/M\rceil\) and \(r=M^2/x\).
+On a first batch of \(\ell\) full observations use the score
+\(W(i)=\sqrt{q_i}\) on \(T\) and \(W(i)=0\) off \(T\). Reject if its empirical
+mean is below \(7M/8\). Under any law,
+\(\operatorname{Var}(W)\le\sqrt b\,\mathbb E W\).
+Thus this gate has null error at most \(64\sqrt b/(\ell M)<1/100\),
+and it misses an alternative of mean at most \(3M/4\) with probability
+at most the same bound.
+
+If instead the mean exceeds \(3M/4\), let
+\(F=\{i\in T:p_i\ge q_i\}\). The score contribution from \(T\setminus F\)
+is at most \(\sqrt b\,O_T\le M/8\), and \(q(F)\le O_T\le x\).
+Cauchy--Schwarz on \(F\) shows that
+\[
+  \sum_{i\in T}p_i^2\ge M^2/(4x)=r/4.
+\]
+The null squared mass is at most \(\sqrt b\,M\le r/8\).
+
+In two new independent batches of size \(\ell\), count matching pairs
+with one observation from each batch and with label in \(T\). Reject if
+the cross-pair proportion exceeds \(3r/16\). For any law \(p\), put
+\(B=\sum_{i\in T}p_i^2\) and \(C=\sum_{i\in T}p_i^3\). The cross count
+has mean \(\ell^2 B\). Two indicators for disjoint observation positions
+have covariance zero. Indicators that share exactly one position
+have joint expectation \(C\), and the identical pair has expectation
+\(B\). Counting ordered indicator pairs gives the variance bound
+\[
+  \operatorname{Var}(\text{cross count})
+  \le \ell^2 B+2\ell^3 C
+  \le \ell^2 B+2\ell^3 B^{3/2}.
+\]
+In the last step, every \(p_i\le\sqrt{B}\) on \(T\).
+By Chebyshev, the cross-pair gate has null error at most
+\(32/(\ell^2 r)+64/(\ell\sqrt r)\), and miss probability
+at most \(16/(\ell^2 B)+32/(\ell\sqrt B)\) when \(B\ge r/4\).
+Both are below \(1/100\) for \(\ell\sqrt r\ge8192\).
+The combined test on \(3\ell\) draws therefore has null error at most
+\(1/50\) and miss probability at most \(1/100\).
+This is the standard collision moment argument on a selected
+subprobability, with a separate weighted score to enforce power
+for arbitrary nonuniform alternatives \cite{paninski2008}.
+
+\subsection{Close to the maximum distance}
+
+Let \(\delta=1-e>0\) and
+\[
+ J=\sum_i q_i\min(1,\sqrt{q_i/\delta}).
+\]
+When \(J\ge16\delta\), split all labels at cap \(b=\delta\). By
+\eqref{eq:upper-clone-moment} the refined moment is at least
+\(\sqrt{\delta}\,J/\sqrt 2\ge8\delta\sqrt\delta\).
+A strict alternative has full overlap below \(\delta\).
+The capped overlap test with \(x=\delta\) uses
+\(3\lceil16384/J\rceil\) observations or fewer, including the randomized
+refinement. This proves the upper bound \(O(1/J)\) in this branch.
+
+\subsection{The regular regime}
+
+Use the shortest descending prefix \(H\) with \(q(H)\ge\delta\) and write
+\(A=q(H)=1-w\). Choose \(i_*\) to be its largest-probability label and put
+\(O=H\setminus\{i_*\}\). The head term in original probability units is
+\[
+ P(n)=\min_{\substack{R\ \mathrm{prefix}\\\mathrm{of}\ O}}
+  \left\{\frac{\big(\sum_{i\in R}q_i^{2/3}\big)^{3/4}}{\sqrt n}
+              +q(O\setminus R)\right\},\qquad
+ D(n)=\sqrt{wA/n}+\frac1n+P(n).
+\]
+For the normalized conditional head \(h=q_H/A\), this is
+\(P(n)=A P_h(nA)\) by direct scaling. No conditional observations are
+required for the test below.
+
+First test the tail mass using \(n\) full observations. For the tail count,
+use the threshold \(512L\) about \(nw\), where \(L=\sqrt{nwA}+1\).
+Its null variance is \(nwA\), giving null error less than \(1/100\).
+At alternative mass \(s\), the variance is at most \(n(wA+|s-w|)\),
+since \(s(1-s)-w(1-w)=(s-w)(1-s-w)\).
+If \(n|s-w|>1024L\), accepting requires a deviation from the alternative
+mean of at least \(n|s-w|/2\). Writing \(d=|s-w|\), the resulting miss bound is
+\(4(nwA+nd)/(nd)^2\le4/1024^2+4/1024<1/100\).
+In particular the same test detects
+\(p(S)>4096(q(S)+1/n)\) for an arbitrary prescribed set \(S\), on
+replacing \(T\) by \(S\). To see the implication, put \(u=nq(S)\) and
+use \(\sqrt{u}+1\le u+2\).
+
+For the remaining head shape, choose a minimizing prefix \(R\) and set
+\[
+ W_R=\sum_{i\in R}q_i^{2/3},\qquad B_R=W_R^{3/4}/\sqrt n,
+ \qquad v=\sqrt{W_R}/n.
+\]
+If \(W_R=0\), take the retained set \(K\) empty. Otherwise let
+\(K=\{i\in R:n^2v q_i^{2/3}\ge1\}\). The extra mass omitted by this
+trimming is at most \(W_R/(n\sqrt v)=B_R\).
+Take weights \(u_i=q_i^{-2/3}\) on \(K\), zero elsewhere, and define
+\[
+ Z=\sum_i u_i (N_i-nq_i)(N'_i-nq_i),\qquad
+ V=\sum_i u_i(p_i-q_i)^2,
+\]
+from independent \(n\)-sample histograms \(N,N'\) of the full law.
+This is the weighted centered quadratic method used in identity
+testing \cite{valiantvaliant2017,chhorcarpentier2022}, here in a fixed
+two-batch form. Its expectation is \(n^2 V\). Writing
+\(\Sigma=\operatorname{diag}(p)-pp^\top\) for the single-observation
+covariance, the centered bilinear part has variance
+\(n^2\sum_{i,j}u_i u_j\Sigma_{ij}^2\le2n^2\sum_i u_i^2p_i^2\).
+Indeed the diagonal term is at most \(\sum_i u_i^2p_i^2\) and the
+off-diagonal term is at most \((\sum_i u_i p_i^2)^2\), which is bounded
+by the same quantity. The linear parts are uncorrelated with the
+bilinear part and have combined variance at most
+\(2n^3\sum_i u_i^2p_i(p_i-q_i)^2\). In particular
+\[
+ \operatorname{Var}(Z)
+ \le 3n^2\sum_i u_i^2p_i^2+
+       6n^3\sum_i u_i^2p_i(p_i-q_i)^2.
+\]
+The cap on \(K\) gives \(\max u_i\le n^2v\), while
+\(\sum_i u_i^2q_i^2\le W_R=n^2v^2\) and \(\max u_iq_i\le nv\).
+It follows that
+\[
+ \sum_i u_i^2p_i^2\le2W_R+2n^2vV,\qquad
+ \max_i u_i p_i\le n v+n\sqrt{vV}.
+\]
+Rejecting for \(Z>32n^2v\) gives null error at most \(3/32^2\).
+If \(\sum_{i\in K}|p_i-q_i|>10000B_R\), Cauchy--Schwarz and
+\(B_R^2=W_Rv\) give \(V>10^8v\). The threshold is below half the
+mean. The ratio of variance to squared mean is bounded by
+\[
+ 6(v/V)^2+12(v/V)+6\sqrt{v/V}.
+\]
+Four times this bound is below \(1/100\), giving the stated miss
+probability by Chebyshev.
+
+Apply the mass gate on another \(n\) observations to \(O\setminus K\).
+Its null mass is at most \(B_R+q(O\setminus R)=P(n)\).
+Unless one of the two shape guarantees applies, we have
+\[
+ \sum_{i\in O}|p_i-q_i|
+ \le 14097P(n)+4096/n .
+\]
+For \(W_R=0\) the retained gate is unnecessary and the same bound holds.
+Using \(|p(T)-w|+\sum_{i\in O}|p_i-q_i|\) to bound \(L_H(p,q)\)
+follows by eliminating the single coordinate \(a\) with normalization.
+Consequently any strict alternative outside the head rejection guarantees
+has \(L_H(p,q)\le G\), where
+\[
+ G=1024\left(\sqrt{wA/n}+1/n\right)+14097P(n)+4096/n
+ \le 14097D(n).
+\]
+
+Write \(Y(n)=\Delta+X(n)\), and suppose \(4000000D(n)\le Y(n)\).
+Then \(256G\le Y(n)\). If \(X(n)\le\Delta\), this implies \(G\le\Delta\)
+and every strict alternative is covered by a head guarantee.
+Otherwise put \(x=X(n)/256\). Then \(G\le\Delta+x\), so by
+\eqref{eq:upper-head-tail} all remaining strict alternatives have
+\(O_T(p,q)<x\). Also \(nx\ge1\), since \(D(n)\ge1/n\) and
+\(Y(n)<2X(n)\).
+
+On the tail split at cap \(b=1/(n^2x)\), keeping the other labels
+unchanged. The defining root gives
+\[
+ \sum_{i\in T}\min(q_i/x,nq_i^{3/2}/\sqrt x)\ge16
+\]
+by comparing each term at \(x=X(n)/256\) to its value at \(X(n)\).
+Equation \eqref{eq:upper-clone-moment} then gives a refined moment
+\(M\ge8\sqrt x/n=8x\sqrt b\).
+Since \(b\le x\), the capped overlap test applies and needs at most
+\(3\lceil8192\sqrt x/M\rceil\le3072n\) draws.
+The group gate, head gates, and optional tail test use disjoint
+batches of full observations. Combining their rejections gives both
+errors below \(1/3\) with at most \(3076n\) observations. All inequalities
+use the original \(e\), including equality at the population head gate.

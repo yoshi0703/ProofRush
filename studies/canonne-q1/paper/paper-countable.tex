@@ -1,0 +1,109 @@
+\section{Countable alphabets by finite projections}
+\label{sec:countable-projections}
+
+Let the declared alphabet be \(\mathbb N\). For \(m\geq 0\), let
+\(\pi_m\) keep the first \(m\) labels distinct and send all remaining
+labels to one tail cell. For a law \(p\) write \(p_m=(\pi_m)_*p\).
+Every projection retains its tail cell, including when the reference
+assigns that cell probability zero.
+
+\paragraph{Exact fixed-budget equivalence.}
+For each nonnegative integer \(n\) and a fixed strict radius \(e\),
+a test with \(n\) ordered IID observations exists for \(q\) if and only
+if a test with that budget exists for every \(q_m\) at the same radius.
+The two separate error bounds are preserved.
+
+To see the forward implication, fix \(m\). Within a cell of positive
+\(q_m\)-mass, independently lift a projected observation by drawing
+from the conditional law of \(q\) in that cell. In a cell of zero
+\(q_m\)-mass use a point mass at an arbitrary declared label of that
+cell. These conditionals have disjoint supports. Thus a lifted finite
+law \(\widetilde r\) satisfies \(\widetilde q_m=q\) and
+\[
+ \operatorname{TV}(\widetilde r,q)=\operatorname{TV}(r,q_m).
+\]
+The full test applied to the independently lifted ordered observations
+gives a finite randomized test with the required errors.
+
+For the converse, lift a projected test to a rejection function
+\(f_m\colon \mathbb N^n\to[0,1]\) by applying \(\pi_m\) coordinatewise.
+The cube \([0,1]^{\mathbb N^n}\), in its product topology, is sequentially
+compact. Select a subsequence \(m_j\to\infty\) for which \(f_{m_j}\)
+converges pointwise to \(f\colon\mathbb N^n\to[0,1]\). This subsequence
+depends only on the sequence of tests. Under each fixed law \(p^{\otimes n}\),
+bounded convergence yields
+\[
+ \mathbb E_{p^{\otimes n}} f
+   =\lim_{j\to\infty}\mathbb E_{p^{\otimes n}} f_{m_j}.
+\]
+The null bound holds at every index. For each \(p\) with
+\(\operatorname{TV}(p,q)>e\), the singleton contribution
+\(\tfrac12\sum_{i<m}|p_i-q_i|\) converges to
+\(\operatorname{TV}(p,q)\). The projected distance is at least this
+contribution, so it is strictly greater than \(e\) for all sufficiently
+large \(m\). Bounded convergence therefore also gives the stated
+alternative bound. This argument includes \(n=0\).
+
+\paragraph{Finiteness at positive radius.}
+Pooling the tail \(\mathcal T_m\) loses at most \(q(\mathcal T_m)\) in
+TV. In fact, the loss equals
+\[
+ \frac12\left(\sum_{i\in\mathcal T_m}|p_i-q_i|
+                  -|p(\mathcal T_m)-q(\mathcal T_m)|\right)
+ \leq \min\{p(\mathcal T_m),q(\mathcal T_m)\}.
+\]
+For \(e>0\), choose \(m\) with \(q(\mathcal T_m)<e/2\). A finite test for
+\(q_m\) at radius \(e/2\) then yields a finite-budget test for \(q\) at
+radius \(e\). The use of \(e/2\) proves finiteness only and does not enter
+the fixed-budget comparison.
+
+Let \(N_q(e)\) denote the least successful budget at the two fixed error
+levels. Fixed-budget equivalence and the option to ignore extra
+observations give
+\[
+ N_q(e)=\sup_{m\geq0}N_{q_m}(e).
+\]
+In particular, if \(\Phi(q,e)\) is the finite-alphabet formula of the
+main theorem, then
+\[
+ \Phi_{\mathbb N}(q,e):=\sup_{m\geq0}\Phi(q_m,e)
+\]
+characterizes \(N_q(e)\) with the same universal comparison constants.
+This defines a distribution-dependent functional on countable laws,
+without a finite runtime guarantee for arbitrary representations of
+infinite inputs. Any countably infinite declared alphabet can be
+enumerated to use this formulation.
+
+\paragraph{Evaluation directly on a countable null.}
+The original head and tail expression also gives a profile on the countable law.
+Sort the positive atoms and retain all declared null-zero labels in the tail.
+If $e=1$ the alternative is empty. If $e<1$, a countably infinite alphabet
+has atoms of arbitrarily small mass and admits a strict alternative.
+Only finitely many head atoms are needed to reach $1-e$. Include in the
+prefix projection every atom of mass at least the last head mass $a>0$,
+and take $m$ large enough that the aggregate unexposed mass $r_m<a$.
+All later projections have the same head probabilities, $P$, $w$ and
+$\Delta$. This also covers finite positive support on an infinite alphabet,
+for which a zero-mass tail cell remains available once that support is exposed.
+
+For fixed $n,x>0$, the contribution of a single atom $z$ to $K(n,x)$
+is superadditive in $z$ since its ratio to $z$ is nondecreasing.
+The same holds for the summands of $J$. Consequently $K_m(n,x)$ and
+$J_m$ decrease to the corresponding formulae on the full sequence, with
+errors at most $r_m/x$ and $r_m$ respectively. If $w>0$, the continuous
+strictly decreasing function $K(n,\cdot)$ has a unique positive unit level.
+For every $t>X(n)$, eventually $K_m(n,t)<1$ whereas $K_m(n,X(n))\ge1$.
+Thus $X_m(n)\downarrow X(n)$. When $w=0$ all roots vanish. The small-overlap
+branch stabilizes even if $J=16\delta$, as $J_m\ge J$. Its rounded reciprocal
+stabilizes from below. On the regular branch the first crossing $n_*$ for
+the full sequence is finite by the same full-head bound and $Y(1)>0$.
+It passes every sufficiently fine projected comparison even at equality.
+Every earlier dyadic comparison fails strictly in the limit, so all the
+finitely many earlier comparisons eventually fail. Hence $\Phi(q_m,e)$
+eventually equals the direct countable formula, while $N_{q_m}(e)$ is a
+bounded nondecreasing integer sequence and eventually equals $N_q(e)$.
+The finite theorem therefore gives the same comparison constants for the
+direct profile. At any positive tail root the saturated prefix in
+\eqref{eq:radical} is finite. A countable infimum describes the minimal
+tail expression at fixed $n$. No finite representation is assumed for
+an arbitrary infinite probability law.

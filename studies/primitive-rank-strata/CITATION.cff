@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "Cite the versioned preprint and checked proof archive."
+title: "The exact prime-difference strata of primitive words"
+type: software
+authors:
+  - name: "ProofRush Research Team"
+version: 1.0.0
+date-released: 2026-11-27
+repository-code: "https://github.com/yoshi0703/ProofRush"
+url: "https://github.com/yoshi0703/ProofRush/releases/tag/primitive-rank-strata-v1.0.0"
+license: MIT

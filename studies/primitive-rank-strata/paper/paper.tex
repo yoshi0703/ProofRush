@@ -1,0 +1,342 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.95in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{fontspec}
+\newfontfamily\directorfont[Path=fonts/]{ProofRushDirectorJP.otf}
+\usepackage[hidelinks,pdftitle={The exact prime-difference strata of primitive words},pdfauthor={ProofRush Research Team; research directed by Yoshiaki Otsuka}]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\N}{\mathbb N_0}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\rankset}{\mathcal S}
+\title{The exact prime-difference strata of primitive words}
+\author{ProofRush Research Team\\\small Research directed by {\directorfont 大束良明} (Yoshiaki Otsuka)}
+\date{27 November 2026 \qquad Preprint}
+\begin{document}
+\maketitle
+\begin{abstract}
+K\'aszonyi conjectured in 2010 that the intermediate classes in his
+classification of primitive binary words have stratified semilinear
+exponent sets. We prove that every intermediate class fails this condition,
+for all multiplicities of the prime factors of the number of marked
+letters. The same obstruction corrects the rank-one assertion of his
+Theorem~6. We also determine when a proper-rank class contains an
+infinite context-free sublanguage. In the only case where it does, each
+such sublanguage has an exponent set that is a finite union of points
+and arithmetic progressions, each adding equal amounts in two opposite
+positions. A Lean proof uses the binary words themselves to refute the
+published universal conjecture at 105 marked letters.
+\end{abstract}
+
+\section{The conjecture}
+A word is primitive if it is nonempty and is not a proper power. For
+distinct letters \(a,b\), let \(Q_n\) consist of the primitive words of
+the form
+\[
+ w(e)=a b^{e_0}a b^{e_1}\cdots a b^{e_{n-1}},\qquad e\in\N^n .
+\]
+Write \(E(Q_n)=\{e:w(e)\in Q_n\}\). The long-standing question about
+primitive words led D\"om\"osi and coauthors to study these fixed
+regular slices \cite{domosi}. K\'aszonyi and Katsura proved that
+\(Q_n\) is context-free when \(n\) has at most three distinct prime
+factors \cite{three}. K\'aszonyi subsequently sought grammars for
+subclasses of \(Q_n\) and classified its exponents through prime
+differences \cite[pp.~314, 325, 328]{kasonyi}. We study his explicitly
+stated conjecture about the individual classes.
+
+Let \(P=\{p_1<\cdots<p_k\}\) be the distinct prime divisors of \(n\).
+On cyclic indices in \(\Z/n\Z\) put \(T_p e(i)=e(i+n/p)\). For a
+subset \(S\subseteq P\) and integers \(t_p\) coprime to their
+respective primes put
+\[
+  D_{S,t}=\prod_{p\in S}(1-T_p^{t_p}).
+\]
+This is the alternating box sum in Definitions~4--6 of \cite{kasonyi}.
+Definition~4 labels a selected denominator \(q_i\) but prints \(p_i\)
+in the coprimality condition. Lemma~2 takes inverses modulo \(q_i\),
+which identifies the intended prime. In Definition~6 the numeric
+difference is compared to an empty-set symbol. Lemma~11 uses the
+numeric comparison with zero.
+Write \(D_S\) for the unit multipliers. The statements
+\(D_{S,t}e\equiv0\) and \(D_Se\equiv0\) are equivalent. In either
+direction each cyclic shift is a power of the shift in the other
+direction on that axis. Factoring \(1-U^m\) as
+\((1-U)(1+\cdots+U^{m-1})\) proves the assertion with positive
+residue representatives. Operators on different axes commute.
+
+Let \(V_\alpha\subseteq\Q^n\) consist of the arrays with every
+difference of order \(\alpha+1\) identically zero, and put
+\(V_k=\Q^n\). All higher differences of a member of \(V_\alpha\)
+also vanish. The exact primitive class \(\rankset_\alpha=E_\alpha\cap
+E(Q_n)\) in Definition~10 of \cite{kasonyi} lies in \(V_\alpha\) and
+asks for nonvanishing differences at order \(\alpha\). Equation~(57)
+can be read as requiring nonvanishing for every prime subset of that
+size. Lemma~11(ii) specifies existence at each order up to
+\(\alpha\), as does the pattern in Example~2 on p.~329. Our witnesses
+have nonvanishing differences for every
+nonempty subset of every order through \(\alpha\).
+
+A set of vectors is stratified semilinear if it is a finite union of
+linear sets \(b+\sum_j\N v_j\), with \(b,v_j\in\N^n\), in each of
+which the periods \(v_j\) have support of size at most two and no two
+of their supports cross. Crossing means alternating endpoints
+\(i<j<\ell<m\) of the two pairs. The classical bounded-language
+characterization applies with these conditions \cite{ginsburg}.
+
+\begin{theorem}\label{main}
+For every \(n\) with \(k\ge2\) and \(1\le\alpha<k\), the set
+\(\rankset_\alpha\) is not stratified semilinear. In fact it has no
+finite union presentation by linear sets with periods supported on at
+most two positions, even when the periods may cross. The top class
+\(\rankset_k\) is stratified semilinear.
+\end{theorem}
+
+The range \(2\le\alpha\le k-1\) answers the conjecture on printed
+p.~328. The case \(\alpha=1\) corrects the first-rank clause of
+Theorem~6 on p.~325. The formal counterexample below occurs inside
+\(Q_{105}\), a language already known to be context-free. The larger
+questions about all the \(Q_n\) and about the full primitive-word
+language remain open.
+
+\section{Possible periods inside a mixed-difference kernel}
+Write \(d=\prod_{p\in P}p\) and \(\theta=n/d\). In each residue class
+modulo \(\theta\), express an index uniquely as \(u+\theta z\) for
+\(0\le u<\theta\), \(z\in\Z/d\Z\). The Chinese remainder theorem
+identifies \(z\) with a point of \(\prod_{p\in P}\Z/p\Z\).
+The shift \(n/p\) changes only its \(p\)-coordinate, by the nonzero
+residue \(d/p\bmod p\). All conditions defining \(V_\alpha\)
+therefore apply independently on each of these \(\theta\) grids.
+
+\begin{lemma}\label{distance}
+Let a finite grid have pairwise distinct side lengths
+\(2\le m_1<\cdots<m_k\), and \(0\le\alpha\le k\).
+Suppose all \((\alpha+1)\)-axis alternating differences of an array
+vanish, for every choice of two levels on each selected axis.
+The smallest support of a nonzero such array has size
+\(d_\alpha=\prod_{j=1}^{k-\alpha}m_j\).
+Equality holds precisely for a nonzero constant times the indicator
+of a fiber with the largest \(\alpha\) coordinates fixed.
+\end{lemma}
+\begin{proof}
+When \(\alpha=k\), a singleton suffices and describes every minimizer.
+When \(\alpha=0\), every array is constant. For \(0<\alpha<k\), slice
+along the axis of length \(m_1\).
+If two slices differ, their difference has vanishing \(\alpha\)-axis
+differences on the remaining grid. Its support is bounded above by
+the sum of the supports of the two slices. Induction applied to that
+difference bounds the support of the entire array below by
+\(\prod_{j=2}^{k-\alpha+1}m_j>d_\alpha\).
+If all slices coincide, their common array satisfies the original
+order bound on the remaining grid. Induction gives a lower bound
+\(m_1\prod_{j=2}^{k-\alpha}m_j=d_\alpha\), and describes every
+equality case. The listed indicators depend only on their fixed
+coordinates, so they attain the bound.
+\end{proof}
+
+The distance value also follows from the minimum distance of a downset
+evaluation code \cite[Lemma~2]{downset}. On distinct rational labels
+one can interpolate each axis up to degree \(m_i-1\). The monomials of
+interest use at most \(\alpha\) variables: expansion about a fixed grid
+point by inclusion--exclusion decomposes any array into its anchored
+mixed differences, and all summands of higher order vanish. This
+identifies the relevant downset. The equality case is also a
+specialization of Geil's footprint results \cite[Theorem~7 and
+Corollary~9]{geil}: distinct side lengths give a unique allowed
+minimum-distance monomial. We have included the induction to make the
+application to the prime-difference spaces self-contained.
+
+\begin{corollary}\label{periods}
+If \(\alpha<k\), a nonzero vector of \(V_\alpha\) with support of size
+at most two exists precisely when \(n\) is even and \(\alpha=k-1\).
+In that case it is a scalar multiple of
+\(h_i=\mathbf e_i+\mathbf e_{i+n/2}\) for some \(0\le i<n/2\).
+\end{corollary}
+\begin{proof}
+Apply Lemma~\ref{distance} on each nonzero residue class. A
+two-position support is possible only when the product of the
+\(k-\alpha\) smallest distinct primes is 2. Both positions then lie in
+one class, have equal entries, and fill its order-two axis.
+\end{proof}
+
+A second proof of Corollary~\ref{periods} works directly in cyclic
+indices. Let \(\zeta\) be a primitive \(n\)th root of unity and
+\(\widehat v(m)=\sum_i v(i)\zeta^{mi}\). Vanishing of the full
+difference forces \(\widehat v(1)=0\), since its multiplier
+\(\prod_{p\mid n}(1-\zeta^{-n/p})\) is nonzero. Two distinct powers
+of \(\zeta\) can be linearly dependent over \(\mathbb R\) only at
+antipodes. Cancellation then requires equal coefficients. If
+\(\alpha\le k-2\) and \(n\) is even, choose \(\alpha+1\) odd prime
+axes. Their multiplier at \(m=2\) is nonzero, forcing
+\(\widehat v(2)=0\), whereas an antipodal pair of weight \(c\ne0\)
+has coefficient \(2c\zeta^{2i}\). For \(\alpha=k-1\) an antipodal
+pair is killed by \(1-T_2\).
+
+\section{Primitive witnesses and the exact classes}
+Primitivity has a convenient cyclic test. A decomposition
+\(w(e)=v^m\), \(m\ge2\), starts each copy of \(v\) with \(a\).
+If \(v\) has \(j\) occurrences of \(a\), then \(n=mj\) and the gap
+list repeats every \(j\) positions. For a prime \(p\mid m\), this gives
+\(T_pe=e\). Conversely, \(T_pe=e\) writes \(w(e)\) as \(p\) copies
+of its first \(n/p\) blocks. Zero gaps cause no exception.
+
+On the residue class \(u=0\), put \(I_p(z)=1\) if \(z\bmod p=0\)
+and \(I_p(z)=0\) otherwise. Define
+\[
+ F_\alpha(z)=\sum_{\substack{J\subseteq P\\|J|=\alpha}}
+                 \prod_{p\in J} I_p(z)
+\]
+there, and put it equal to zero on the other classes. Each summand
+omits an axis of every higher-order difference. At \(z=0\) all
+admissible \(S\)-differences with \(1\le |S|\le\alpha\) satisfy
+\[
+ (D_{S,t}F_\alpha)(0)=\binom{k-|S|}{\alpha-|S|}>0 .
+\]
+Only terms indexed by \(J\supseteq S\) contribute. In particular every
+prime shift fails to preserve \(F_\alpha\). The distinct vectors
+\(mF_\alpha\) for \(m\ge1\) belong to the required primitive class.
+
+\begin{proof}[Proof of Theorem~\ref{main}]
+Every component in an exact finite-union representation is contained
+in \(V_\alpha\). Both its base \(b\) and \(b+v\) lie in this vector
+space for each period \(v\), so \(v\in V_\alpha\).
+Outside the exceptional case of Corollary~\ref{periods}, all periods
+are zero and a finite union cannot contain the infinite family above.
+In the exceptional case \(D_{\{2\}}v=0\) for every allowed period.
+The number \((D_{\{2\}}e)(0)\) is fixed on each component and takes
+only finitely many values in their union. On \(mF_\alpha\) it takes
+the distinct values \(m\binom{k-1}{\alpha-1}\).
+
+At order \(k\), a nonzero full difference implies that each prime
+period is violated. Thus the top set is the union over the finitely
+many base positions of a nonzero signed linear comparison of the gap
+lengths. Each such comparison has a one-counter test: while scanning
+the fixed blocks, add the signed weight of each letter to a counter
+and accept for a nonzero final balance. A stack of absolute value
+with one sign in the finite control implements this test. Finite
+union and the bounded-language characterization give the assertion.
+\end{proof}
+
+The local comparisons in the proof of Theorem~6 of \cite{kasonyi}
+explain the discrepancy. For example, its (79) retains two unequal
+gap comparisons guaranteeing primitivity but omits the equalities
+imposing rank one. At \(n=15\), take \(e(i)=\mathbf1_{3\mid i}+
+\mathbf1_{5\mid i}\). The pairs \((0,5)\) and \((7,10)\) are
+noncrossing and have unequal values. Adding one at index \(1\)
+preserves both comparisons and makes \(D_{\{3,5\}}e(1)=1\).
+Such comparisons can cover a class by larger
+primitive sets. Equality with the exact class needs the missing
+containment.
+
+\section{Which strata contain an infinite context-free language?}
+For fixed \(n\), \(w(E)\) is context-free exactly when \(E\) is
+stratified semilinear. Indeed, one may tag each gap by its position
+using finite control, obtaining the bounded language with \(n\) distinct
+gap letters. The inverse relation inserts the \(n\) markers and erases
+the tags, including when a gap has length zero. Both operations are
+finite-state transductions. Apply the letter-bounded theorem
+\cite[Theorem~2.1]{ginsburg} to the tagged gap lengths. Ginsburg and
+Spanier also gave a sparse-period criterion for existence of an
+infinite context-free subset of a semilinear bounded language
+\cite[Theorem~2.3 and Example~(3) on p.~294]{ginsburg}.
+Each present exponent set is semilinear in the ordinary sense:
+for fixed \(n\) its defining equations, disequations and the
+prime-period tests form a finite Boolean combination of linear
+conditions. We identify which sparse periods actually occur for this
+family and determine the permitted sublanguages.
+
+\begin{theorem}\label{immune}
+Let \(1\le\alpha<k\). If \(n\) is odd or \(\alpha\le k-2\), every
+context-free sublanguage of \(w(\rankset_\alpha)\) is finite.
+If \(n\) is even and \(\alpha=k-1\), the class has an infinite
+context-free sublanguage. A sublanguage of the class is context-free
+if and only if its exponent set is a finite union of points and
+arithmetic progressions whose nonzero steps have the form \(c h_i\)
+for \(c\in\mathbb N\).
+\end{theorem}
+\begin{proof}
+Apply Corollary~\ref{periods} to any stratified presentation of the
+sublanguage. In the even exceptional case two distinct antipodal
+pairs cross: for \(0\le i<j<n/2\), their order is
+\(i<j<i+n/2<j+n/2\). Thus within a single component all nonzero
+periods lie on the same ray. Its scalar finitely generated submonoid
+of \(\N\) is a finite union of arithmetic progressions or a singleton.
+Indeed, given a positive generator \(c\), take the least represented
+element in each occupied residue class modulo \(c\) and add
+\(0,c,2c,\ldots\). Conversely each stated progression is already
+stratified linear.
+
+To see existence, take \(F=F_{k-1}\) and fix one \(h_i\).
+Every \(F+t h_i\) has zero full difference. For each nonempty \(S\)
+of size at most \(k-1\), its unit-scale difference at zero is affine
+in \(t\), with a strictly positive constant term. It can vanish for
+at most one \(t\). The finitely many exceptions over all \(S\) are
+avoided by all sufficiently large \(t\). The remaining arithmetic
+progression lies in the exact primitive class.
+\end{proof}
+
+In the standard terminology \cite{immune}, this proves CFL-immunity
+of the infinite exact classes outside the even exceptional case.
+It rules out generating any infinite portion of those classes by
+a context-free grammar constrained to stay inside the given class.
+Constructions for the whole \(Q_n\) may use grammars that cross ranks.
+
+\section{A binary-word certificate}
+For \(n=105\), \(\alpha=2\), let \(I_p(i)=\mathbf1_{p\mid i}\). Use
+\[
+  f=I_3I_5+2I_3I_7+2I_5I_7,\qquad e_t=(105t+1)f\quad(t\in\N).
+\]
+The pair differences at zero have coefficients \(1,2,2\) for all
+admissible multipliers. All triple differences vanish. The sum of
+the gaps in \(f\) is \(7+2\cdot5+2\cdot3=23\). Hence \(w(e_t)\)
+has \(105\) letters \(a\) and \(23(105t+1)\) letters \(b\); the two
+counts are coprime. Every proper repetition exponent would divide
+both. The zeroth gaps \(5(105t+1)\) grow without bound.
+
+The supplied Lean modules define binary words as lists, encode each
+gap literally, quantify over arbitrary integer scale multipliers, and
+define every period and the noncrossing condition. They exclude finite
+stratified presentations of the exact set at these parameters, both for
+universal and existential readings of order-two nonvanishing. The
+all-\(n\) grammar and immunity conclusions use the arguments above
+and the classical bounded-language theorem. The research archive
+identifies the precise formal targets and supplies a clean replay.
+
+\paragraph{Research and review.}
+Yoshiaki Otsuka set the research objective and acceptance criteria.
+OpenAI Codex agents developed the argument and carried out the
+formalization, literature search and independent mathematical checks.
+External specialist review is pending. The source question has no
+identified prize of its own.
+
+\begin{thebibliography}{9}
+\bibitem{domosi}
+P. D\"om\"osi, S. Horv\'ath, M. Ito, L. K\'aszonyi and M. Katsura,
+Formal languages consisting of primitive words, \emph{Fundamentals
+of Computation Theory}, LNCS 710 (1993), 194--203.
+\href{https://doi.org/10.1007/3-540-57163-9_15}{doi:10.1007/3-540-57163-9\_15}.
+\bibitem{three}
+L. K\'aszonyi and M. Katsura, On the context-freeness of a class of
+primitive words, \emph{Publ. Math. Debrecen} 51 (1997), 1--11.
+\href{https://doi.org/10.5486/PMD.1997.1707}{doi:10.5486/PMD.1997.1707}.
+\bibitem{kasonyi}
+L. K\'aszonyi, Semiperiodic vectors and the context-freeness of
+\(Q_n=Q\cap(ab^*)^n\), \emph{Publ. Math. Debrecen} 77 (2010), 313--330.
+\href{https://doi.org/10.5486/PMD.2010.4680}{doi:10.5486/PMD.2010.4680}.
+\bibitem{ginsburg}
+S. Ginsburg and E. H. Spanier, Semigroups, Presburger formulas, and
+languages, \emph{Pacific J. Math.} 16 (1966), 285--296.
+\href{https://doi.org/10.2140/pjm.1966.16.285}{doi:10.2140/pjm.1966.16.285}.
+\bibitem{downset}
+S. Srinivasan, U. Tripathi and S. Venkitesh, Decoding downset codes
+over a finite grid (2019). \href{https://arxiv.org/abs/1908.07215}{arXiv:1908.07215}.
+\bibitem{geil}
+O. Geil, On multivariate polynomials with many roots over a finite
+grid. \href{https://arxiv.org/abs/1909.06613}{arXiv:1909.06613}.
+\bibitem{immune}
+T. Yamakami, Immunity and pseudorandomness of context-free languages.
+\href{https://arxiv.org/abs/0902.0261}{arXiv:0902.0261}.
+\end{thebibliography}
+\end{document}

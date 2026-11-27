@@ -1,0 +1,155 @@
+\section{Signed perturbations on the retained head}
+\label{sec:signed-head-lower}
+
+The retained \(\ell_{2/3}\) term, deletion of a largest atom, and
+clipped \(2/3\)-power shifts appear in Valiant and Valiant's
+instance-optimal testing analysis \cite{valiantvaliant2017}.
+Chhor and Carpentier formulate the corresponding fixed-sample
+separation radius and use signed priors in their bulk lower bound
+\cite[Corollary~1 and Section~5.1]{chhorcarpentier2022}. We use
+capped, paired shifts and keep the original head probabilities. This
+preserves the total head mass and lets the same prior be composed with
+the independent tail construction.
+
+List the positive head probabilities as \(q_1\ge\cdots\ge q_d>0\).
+They need not sum to one. Set \(w=1-\sum_{i=1}^{d}q_i\) and
+\(\Delta=e-w\). On the reduced alphabet, write \(q^\sharp\) for the
+law with these \(d\) probabilities and an additional tail marker of
+mass \(w\). For \(n\ge1\), use the head profile
+\begin{equation}
+ P(n)=\min_{1\le j\le d}
+ \left\{
+  \frac{\left(\sum_{i=2}^{j}q_i^{2/3}\right)^{3/4}}{\sqrt n}
+  +\sum_{i=j+1}^{d}q_i
+ \right\}.
+ \label{eq:signed-head-profile}
+\end{equation}
+If the normalized head law is \(h_i=q_i/A\), where \(A=1-w>0\),
+then this profile equals \(A P_h(nA)\) with \(P_h\) given by the
+same formula on \(h\). Both terms scale by \(A\) under this
+substitution. We will use \(P(n)\) directly.
+
+\paragraph{A capped shift with a quartic budget.}
+For \(i=2,\ldots,d\), choose
+\[
+ z_i=\min(q_i,\lambda q_i^{2/3}),
+ \qquad
+ \sum_{i=2}^{d}\frac{z_i^4}{q_i^2}\le\frac1{n^2}.
+\]
+If \(\sum_{i=2}^{d}q_i^2\le n^{-2}\), take \(\lambda\) large
+enough that every \(z_i=q_i\). Otherwise the budget is attained with
+equality for some \(\lambda>0\), by continuity between
+\(\lambda=0\) and \(\lambda=\max_{i\ge2}q_i^{1/3}\). In the
+singleton case all sums are empty and the saturated choice applies.
+We extend the same definition of \(z_i\) to \(i=1\) for ordering
+purposes and write \(S=\sum_{i=2}^{d}z_i\).
+
+For any cutoff \(j\), H\"older's inequality and the quartic budget
+give
+\[
+ \sum_{i=2}^{j} z_i
+ \le \left(\sum_{i=2}^{j}z_i^4/q_i^2\right)^{1/4}
+       \left(\sum_{i=2}^{j}q_i^{2/3}\right)^{3/4}
+ \le n^{-1/2}\left(\sum_{i=2}^{j}q_i^{2/3}\right)^{3/4}.
+\]
+The remaining shift mass is at most the remaining reference mass.
+Thus \(S\le P(n)\). In the all-saturated case the cutoff \(j=1\)
+also gives \(P(n)\le S\). Otherwise put
+\(I=\{i\ge2:q_i>\lambda^3\}\) and
+\(I^c=\{2,\ldots,d\}\setminus I\). The retained indices \(I\)
+form a prefix. Write
+\[
+ W=\sum_{i\in I}q_i^{2/3},\qquad
+ U=\sum_{i\in I^c}q_i,\qquad R=\sum_{i\in I^c}q_i^2.
+\]
+Here \(S=\lambda W+U\), \(n^{-2}=\lambda^4W+R\), and
+\(R\le\lambda^3 U\). The fourth power of the bulk term at this
+cutoff satisfies
+\[
+ \frac{W^3}{n^2}
+ \le (\lambda W)^4+(\lambda W)^3U
+ \le (\lambda W+U)^4.
+\]
+Consequently \(S\le P(n)\le2S\). Atoms tied at
+\(\lambda^3\) may stay outside the prefix.
+
+\paragraph{The paired prior.}
+Use the disjoint pairs \((1,2),(3,4),\ldots\). For each pair \(j\)
+draw an independent uniform sign \(\sigma_j\in\{-1,1\}\) and add
+\(\sigma_j b_j\) to coordinate \(2j-1\) and subtract it from
+coordinate \(2j\), where \(b_j=z_{2j}/8\). Write \(p_\sigma^\sharp\)
+for the resulting reduced law. Since \(b_j\le q_{2j}\le q_{2j-1}\),
+the shifts give a nonnegative normalized law. They leave the marker
+and any unpaired label unchanged. In particular the construction
+permits a marker of mass zero. The function
+\(t\mapsto\min(t,\lambda t^{2/3})\) is nondecreasing, so the \(z_i\)
+are sorted. Each odd index \(i\ge3\), including a possible unpaired
+last index, has \(z_i\le z_{i-1}\). For every sign vector the
+unconditional head deficit is therefore
+\begin{equation}
+ L_H(p_\sigma^\sharp,q^\sharp)=\sum_j b_j
+   \ge S/16\ge P(n)/32 .
+ \label{eq:signed-head-deficit}
+\end{equation}
+
+Let \(M=\mathbb E_\sigma (p_\sigma^\sharp)^{\otimes n}\) and
+\(Q=(q^\sharp)^{\otimes n}\) on ordered \(n\)-tuples. The
+perturbations have no mass outside the null support, including at a
+zero marker. With independent sign vectors \(\sigma,\tau\), product
+factorization of the likelihood inner product gives
+\begin{align*}
+ 1+\chi^2(M,Q)
+ &=\mathbb E_{\sigma,\tau}
+   \left(\sum_{a:q^\sharp_a>0}
+      \frac{(p_\sigma^\sharp)_a(p_\tau^\sharp)_a}{q^\sharp_a}
+   \right)^n  \\
+ &=\mathbb E_{\sigma,\tau}
+   \left(1+\sum_j c_j\sigma_j\tau_j\right)^n,
+ & c_j&=b_j^2\left(\frac1{q_{2j-1}}+\frac1{q_{2j}}\right).
+\end{align*}
+The linear shift terms cancel within each pair, and the unchanged
+labels contribute their null masses to the constant term. The
+quantity raised to the power \(n\) is nonnegative. The inequality
+\(1+u\le e^u\) and independence of the sign products now give
+\[
+ 1+\chi^2(M,Q)
+ \le \prod_j\cosh(nc_j)
+ \le \exp\!\left(\frac{n^2}{2}\sum_j c_j^2\right)
+ \le \exp(1/2048).
+\]
+The middle step follows from the power series and
+\((2k)!\ge2^k k!\). The last follows from
+\(c_j\le 2b_j^2/q_{2j}\) and the quartic budget. Thus
+\(\operatorname{TV}(M,Q)\le\frac12\sqrt{e^{1/2048}-1}<1/8\)
+by Cauchy--Schwarz. For the numerical inequality one can use
+\(e^t\le(1-t)^{-1}\) at \(t=1/2048\).
+
+\paragraph{Consequences at the exact radius.}
+Suppose the tail construction gives a prior of tail laws of mass
+\(w\) whose reference overlap is at most \(x\) for every draw of the
+prior. Suppose also that when the head probabilities are unchanged,
+its ordered \(n\)-sample mixture is within \(1/8\) of the full
+null. When \(x\ge w\), the unchanged tail is such a prior. In
+particular the argument covers \(w=0\), where the marker is never
+observed. For positive \(w\), choose the tail prior independently
+of the head signs and replace each marker by an independent draw
+from the chosen conditional tail law, given that law. This is a
+single common randomized channel on ordered \(n\)-tuples. It
+contracts total variation, so the full mixture of paired alternatives
+is within \(1/8+1/8=1/4\) of the null.
+
+If \(P(n)>32(\Delta+x)\), equation~\eqref{eq:signed-head-deficit}
+gives \(L_H>\Delta+x\) for every paired alternative. Marker
+replacement leaves this deficit unchanged and gives
+\(O_T=\sum_{i\in T}\min(p_i,q_i)\le x\). Hence every lifted law
+has distance \(w+L_H-O_T>e\). A test with each of its two errors
+at most \(1/3\) would then have a rejection-probability gap of at
+least \(1/3\) between the null and this mixture. That is impossible
+at mixture TV at most \(1/4\). Thus a successful \(n\)-draw test
+necessarily satisfies
+\begin{equation}
+ P(n)\le32(\Delta+x)
+ \label{eq:signed-head-necessity}
+\end{equation}
+whenever the stated tail-prior bounds hold. The radius in this
+comparison is the original strict threshold \(e\).

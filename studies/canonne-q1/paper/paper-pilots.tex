@@ -1,0 +1,180 @@
+\section{Lower bounds from shared pilot lists}
+\label{sec:pilot-lower}
+
+We use the half-\(\ell_1\) convention for total variation. Two laws
+on the space of ordered records with TV less than \(1/3\) cannot have
+rejection probabilities at most \(1/3\) and at least \(2/3\), respectively.
+This remains true when the second law mixes product laws of strictly
+far alternatives, since the power bound then holds under the mixture.
+
+\paragraph{A lower bound near the maximum distance.}
+Put \(\delta=1-e>0\) and
+\[
+ J_\delta(q)=\sum_i q_i\min\{1,\sqrt{q_i/\delta}\}.
+\]
+We prove that a successful positive budget \(n\) satisfies
+\(nJ_\delta(q)>1/64\). Suppose instead \(nJ_\delta(q)\leq 1/64\).
+Remove the atoms with \(q_i>\delta/16\). Their total mass \(R\) is
+at most \(4J_\delta(q)\), so \(R\leq 1/16\). Write \(q^\circ\) for
+the remaining reference normalized by \(1-R\).
+The original and normalized ordered product laws differ in TV by at
+most \(1-(1-R)^n\leq nR\leq 1/16\). This follows by conditioning the
+original record on avoiding all removed labels.
+
+Partition the retained positive atoms into occupied dyadic bins
+\((u_j/2,u_j]\) with \(u_j=(\delta/16)2^{-j}\). Let \(b_j\) be the
+bin mass under \(q^\circ\), and put \(M=\sum_j b_j\sqrt{u_j}\).
+For a retained atom \(q_i\) in bin \(j\), we have
+\(\sqrt{u_j}\leq 2\sqrt{q_i}\). Thus
+\[
+ \sqrt{\delta}\,M
+ \leq \frac{2\delta}{1-R}
+          \sum_{i:\,q_i\leq \delta/16}q_i\sqrt{q_i/\delta}
+ \leq 4\delta J_\delta(q).
+\]
+We also have \(\sum_j u_j\leq \delta/8\).
+For each bin draw independent pilot labels from its conditional
+reference, with list length
+\[
+ k_j=\left\lceil n\sqrt{\delta}\,b_j/\sqrt{u_j}\right\rceil.
+\]
+A realized alternative allocates mass \(b_j\) to the uniform
+distribution on the list slots in bin \(j\), counting repeated
+labels with their multiplicities. Each realized law is normalized.
+The reference mass of its support is at most
+\[
+ \sum_j k_j u_j
+ \leq n\sqrt{\delta}\,M+\sum_j u_j
+ \leq \delta/16+\delta/8<\delta.
+\]
+Its overlap with \(q\) is therefore strictly less than \(\delta\).
+
+In the ordered predictive law, each coordinate independently
+chooses its bin and a uniform slot from the shared list. Couple
+this law to \((q^\circ)^{\otimes n}\) by using the corresponding
+pilot label on the first use of each slot and fresh independent
+conditional draws for repeat uses in the reference record. A
+difference can occur only when a pair uses the same bin and slot.
+The resulting TV bound is
+\[
+ \binom n2\sum_j\frac{b_j^2}{k_j}
+ \leq \frac{n}{\sqrt{\delta}}M
+ \leq 4nJ_\delta(q)\leq 1/16.
+\]
+Together the two TV costs are at most \(1/8\), which yields the
+contradiction. If the strict alternative is nonempty, zero draws
+cannot give the two errors, so the bound also provides a positive
+sample-scale lower bound in cases where \(1/(64J_\delta(q))<1\).
+
+\paragraph{The regular pilot construction.}
+Let \(H\) be the chosen head, \(T\) its tail, \(w=q(T)\), and
+\(\Delta=e-w\). For any full law \(p\), define
+\[
+ L(p)=\sum_{i\in H}(q_i-p_i)_+,\qquad
+ O(p)=\sum_{i\in T}\min(q_i,p_i).
+\]
+The exact identity is \(\operatorname{TV}(p,q)=w+L(p)-O(p)\).
+Keep the head labels and replace \(T\) by a single marker, writing
+\(\bar q\) for this reduced reference.
+
+Suppose \(w>0\), \(n\geq1\), and \(x>0\) obeys
+\[
+ \rho=K_T(n,x)
+  :=\sum_{i\in T}\min\{q_i/x,\ n q_i^{3/2}/\sqrt{x}\}
+  \leq 1/64,\qquad nx\geq 8.
+\]
+Freeze the tail atoms with \(q_i\geq \tau=1/(n^2x)\).
+The two terms in the minimum cross at \(\tau\), giving
+\[
+ \sum_{i\in T:\,q_i\geq\tau}q_i\leq \rho x,\qquad
+ n\sqrt{x}\sum_{i\in T:\,q_i<\tau}q_i^{3/2}\leq \rho x.
+\]
+Put the other positive atoms in occupied dyadic bins
+\((u_j/2,u_j]\) with \(u_j=\tau 2^{-j}\). Denote their
+\emph{unconditional} masses under \(q\) by \(b_j\), and set
+\(M=\sum_j b_j\sqrt{u_j}\). Then
+\[
+ n\sqrt{x}\,M\leq 2\rho x,\qquad
+ \sum_j u_j\leq 2\tau\leq x/32.
+\]
+For each bin draw an independent list of
+\[
+ k_j=\left\lceil n\sqrt{x}\,b_j/\sqrt{u_j}\right\rceil
+\]
+labels from the conditional reference in that bin.
+
+The channel takes an ordered reduced record. It first draws the lists,
+independently of the input record. It keeps every head label. For
+each marker it independently chooses a frozen label \(i\) with
+weight \(q_i/w\), or a bin \(j\) with weight \(b_j/w\) followed by
+a uniform slot in that list. This prescription defines one common
+Markov channel on ordered records. Conditional on the lists, an
+IID reduced input yields an IID full output. For any reduced input
+law and every realized list collection, the full tail overlap is
+at most the reference mass of the frozen labels and the occupied
+slots. This is bounded by
+\[
+ \rho x+\sum_j k_j u_j
+ \leq 3\rho x+x/32\leq x.
+\]
+In particular, this bound holds for every possible probability of
+the marker in a reduced alternative.
+
+Under \(\bar q^{\otimes n}\), each light bin is selected with its
+unconditional probability \(b_j\). The same first-use coupling
+works on ordered records, leaving the head and frozen draws
+fresh. The predictive TV cost of the fill under this reduced
+null is bounded by
+\[
+ \binom n2\sum_j\frac{b_j^2}{k_j}
+  \leq \frac{nM}{\sqrt{x}}\leq 2\rho .
+\]
+Let a prior on reduced laws have predictive TV at most \(1/8\)
+from \(\bar q^{\otimes n}\), and suppose each positive-prior reduced
+law has head deficit strictly larger than \(\Delta+x\). The
+full filled components all have strict TV greater than \(e\).
+By data processing for the common channel and the preceding
+null comparison, their predictive TV from \(q^{\otimes n}\) is
+at most \(1/8+2\rho<1/3\). No full test with both errors at most
+\(1/3\) succeeds.
+
+If \(X(n)\) is the positive root of \(K_T(n,X)=1\), take
+\[
+ x=4096\max\{X(n),1/n\}.
+\]
+This meets the two scalar conditions. Each summand shrinks by at
+least a factor of \(64\) when the second argument is increased by
+a factor of \(4096\). Labels of zero null mass have zero pilot mass. If \(w=0\),
+a reduced head prior whose marker remains zero transfers by
+keeping its head draws, at zero additional predictive cost. Full
+tail overlap is then zero, including when the declared tail is
+empty.
+
+\paragraph{The marker fluctuation.}
+Write \(A=1-w\). For \(w>0\) and \(nA\geq1\), let
+\[
+ d=\frac18\sqrt{wA/n}.
+\]
+Since \(w\leq1\leq nA\), we have \(d\leq A/8\).
+Consider the reduced law whose marker has mass \(w+d\) and
+whose head probabilities are \(q_i(1-d/A)\). This is a probability
+law, with head deficit exactly \(d\). Its one-draw chi-square
+divergence with respect to \(\bar q\) is
+\[
+ d^2/w+d^2/A=d^2/(wA)=1/(64n).
+\]
+Its ordered product TV from the reduced null is bounded by
+\[
+ \frac12\sqrt{(1+1/(64n))^n-1}
+ \leq \frac{1}{2\sqrt{63}}<\frac1{12}.
+\]
+The middle inequality follows from the binomial expansion and
+\(\binom nk\leq n^k\), followed by the geometric sum.
+This singleton reduced prior meets the predictive condition
+above. If a full test succeeds, it follows that \(d\leq\Delta+x\),
+or
+\[
+ \sqrt{w(1-w)/n}\leq 8(\Delta+x).
+\]
+When \(w=0\) the left-hand side vanishes and the same necessity
+holds for \(\Delta\geq0\).
