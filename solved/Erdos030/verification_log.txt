@@ -28,3 +28,34 @@
 --- Verifying Erdos030.sidon_sub_094295 ---
 'Erdos030.sidon_sub_094295' depends on axioms: [propext, Classical.choice, Quot.sound]
 [PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+
+--- Verifying Erdos030.shor_rlt_sdp1_lift ---
+'Erdos030.shor_rlt_sdp1_lift' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.shor_rlt_sdp1_lift_3ap_4sidon_cuts ---
+'Erdos030.shor_rlt_sdp1_lift_3ap_4sidon_cuts' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.fractional_energy_upper_bound ---
+'Erdos030.fractional_energy_upper_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.sdp1_energy_upper_bound ---
+'Erdos030.sdp1_energy_upper_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.fractional_sidon_sub_094295_theta ---
+'Erdos030.fractional_sidon_sub_094295_theta' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.sdp1_sub_094295 ---
+'Erdos030.sdp1_sub_094295' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.strict_separation_h6_lt_fractional_sdp1 ---
+'Erdos030.strict_separation_h6_lt_fractional_sdp1' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.bose_modular_difference_set ---
+'Erdos030.bose_modular_difference_set' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.bose_periodic_fourier_flatness ---
+'Erdos030.bose_periodic_fourier_flatness' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.bose_3ap_free_superset_bound ---
+'Erdos030.bose_3ap_free_superset_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']

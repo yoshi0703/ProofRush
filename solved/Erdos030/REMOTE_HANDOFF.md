@@ -12,11 +12,9 @@ This document enables a fresh **Antigravity Remote Agents** cloud VM session on 
     mkdir -p state/locks
     printf '%s\n' '3b2f86d3ed3e5c57f709a36adbe1ebbaa84252bae4b8b4a0b25333f3d0dba9f8' > state/locks/Erdos030.sha256
     ```
-- **Already Lean 4 Verified (10 theorems in `Formal/Problems/Erdos030/Solution.lean`, standard axioms only, 0 `sorry`)**:
-  - `Erdos030.sidon_sub_094295` ($\forall^\infty N,\; h(N) \le \sqrt{N} + 0.94295\,N^{1/4}$, beating Hou–Zhao Sep 2026 `0.94349` and Carter–O'Bryant–Tao Oct 2026 `0.94304`)
-  - `Erdos030.asymmetric_kernel_transfer`
-  - `Erdos030.sidon_sub_0949`, `Erdos030.kernel_transfer_single`
-  - `Erdos030.lindstrom_theorem`, `Erdos030.erdos_turan_theorem`, `Erdos030.balogh_furedi_roy_theorem`, `Erdos030.obryant_theorem`, `Erdos030.carter_hunter_obryant_theorem`, `Erdos030.bose_lower_bound_theorem`
+- **Already Lean 4 Verified (20 results in `Formal/Problems/Erdos030/Solution.lean`, standard axioms only, 0 `sorry`)**:
+  - **Part I (10 frontier & classical bounds)**: `Erdos030.sidon_sub_094295` ($\forall^\infty N,\; h(N) \le \sqrt{N} + 0.94295\,N^{1/4}$), `Erdos030.asymmetric_kernel_transfer`, `Erdos030.sidon_sub_0949`, `Erdos030.kernel_transfer_single`, `Erdos030.lindstrom_theorem`, `Erdos030.erdos_turan_theorem`, `Erdos030.balogh_furedi_roy_theorem`, `Erdos030.obryant_theorem`, `Erdos030.carter_hunter_obryant_theorem`, `Erdos030.bose_lower_bound_theorem`.
+  - **Part II (10 Option 2 barrier & hierarchy theorems)**: `Erdos030.shor_rlt_sdp1_lift`, `Erdos030.shor_rlt_sdp1_lift_3ap_4sidon_cuts`, `Erdos030.fractional_energy_upper_bound`, `Erdos030.sdp1_energy_upper_bound`, `Erdos030.fractional_sidon_sub_094295_theta`, `Erdos030.sdp1_sub_094295`, `Erdos030.strict_separation_h6_lt_fractional_sdp1`, `Erdos030.bose_modular_difference_set`, `Erdos030.bose_periodic_fourier_flatness`, `Erdos030.bose_3ap_free_superset_bound`.
 
 ## 2. Cloud VM Fast Bootstrap (Do NOT Compile Mathlib From Source!)
 
