@@ -1,4 +1,7 @@
 import Problems.Erdos030.Statement
+import Problems.Erdos030.Lasserre2
+import Problems.Erdos030.PeriodicDFT
+import Problems.Erdos030.SmoothBumpBarrier
 import Mathlib.FieldTheory.Finite.GaloisField
 import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.Tactic
@@ -3883,5 +3886,122 @@ theorem bose_3ap_free_superset_bound {p : ℕ} (hp : p.Prime) :
   rw [le_div_iff₀ hsqrtp_pos]
   have hsq : Real.sqrt (p : ℝ) * Real.sqrt (p : ℝ) = (p : ℝ) := Real.mul_self_sqrt hp_pos.le
   nlinarith
+
+/-! ### Section 10: Asymptotic Exact Pointwise Fractional & Degree-1 Lasserre SDP Barrier -/
+
+/-- Explicit Asymptotic Exact Pointwise Fractional & Degree-1 Lasserre SDP + BQP + 3-AP + 4-Sidon
+Barrier Theorem:
+for EVERY prime `p ≥ 10000` (`M = p^2 - 1`), there exist `μ : ℕ → ℝ` and `X : ℕ → ℕ → ℝ`
+satisfying:
+1. `IsFractionalSidon M μ` (with zero clipping: `0 ≤ μ i ≤ 1 / √3` everywhere),
+2. `IsSDP1Feasible M μ X` (full Shor + RLT + McCormick + exact pointwise Sidon constraints),
+3. all Boolean Quadric Polytope (BQP) triangle inequalities `X i j + X i k - X j k ≤ μ i`,
+4. all `Θ(M^2)` exact 3-AP linear cuts `X a b + X b c + X a c ≤ 1`,
+5. all `Θ(M^3)` exact 4-tuple Sidon linear cuts `X a b + X a c + X a e + X b c + X b e + X c e ≤ 3`,
+6. objective `∑_{i < M} μ i ≥ p + (1 / 250) * √p > √M + (1 / 250) * M^(1/4)`. -/
+theorem asymptotic_fractional_sdp1_barrier_explicit {p : ℕ} (hp : p.Prime) (hp10k : 10000 ≤ p) :
+    let M : ℕ := p ^ 2 - 1
+    ∃ (μ : ℕ → ℝ) (X : ℕ → ℕ → ℝ),
+      IsFractionalSidon M μ ∧
+      IsSDP1Feasible M μ X ∧
+      (∀ i, i < M → ∀ j, j < M → ∀ k, k < M → i ≠ j → i ≠ k → j ≠ k →
+        X i j + X i k - X j k ≤ μ i) ∧
+      (∀ a b c, a < b → b < c → c < M → a + c = 2 * b →
+        X a b + X b c + X a c ≤ 1) ∧
+      (∀ a b c e, a < b → b < c → c < e → e < M → a + e = b + c →
+        X a b + X a c + X a e + X b c + X b e + X c e ≤ 3) ∧
+      (p : ℝ) + (1 / 250 : ℝ) * Real.sqrt (p : ℝ) ≤ ∑ i ∈ Finset.range M, μ i ∧
+      Real.sqrt (M : ℝ) + (1 / 250 : ℝ) * (M : ℝ) ^ (4⁻¹ : ℝ) < ∑ i ∈ Finset.range M, μ i := by
+  intro M
+  obtain ⟨S, hS_sub, hS_card, hflat⟩ := bose_periodic_fourier_flatness hp
+  obtain ⟨μ, hμ_cap, hμ_ac, hμ_mass⟩ :=
+    smooth_bump_periodic_barrier_of_bose_flat hp hp10k hS_sub hS_card hflat
+  have h1_div_sqrt3_le_one : (1 : ℝ) / Real.sqrt 3 ≤ 1 := by
+    rw [div_le_one (Real.sqrt_pos.mpr (by norm_num))]
+    have h1 : (1 : ℝ) ≤ Real.sqrt 3 := by
+      rw [← Real.sqrt_one]; exact Real.sqrt_le_sqrt (by norm_num)
+    exact h1
+  have hμ_frac : IsFractionalSidon M μ :=
+    ⟨fun x hx => ⟨(hμ_cap x hx).1, (hμ_cap x hx).2.trans h1_div_sqrt3_le_one⟩, hμ_ac⟩
+  obtain ⟨hSDP1, hBQP⟩ := shor_rlt_sdp1_lift hμ_frac
+  obtain ⟨_, h3AP, h4Sidon⟩ :=
+    shor_rlt_sdp1_lift_3ap_4sidon_cuts hμ_frac (fun i hi => (hμ_cap i hi).2)
+  have hM_lt_p2 : (M : ℝ) < (p : ℝ) ^ 2 := by
+    dsimp only [M]
+    rw [Nat.cast_sub (by nlinarith : 1 ≤ p ^ 2), Nat.cast_pow, Nat.cast_one]
+    linarith
+  have hM_posR : (0 : ℝ) < (M : ℝ) := by
+    dsimp only [M]
+    have : 10000 ^ 2 ≤ p ^ 2 := Nat.pow_le_pow_left hp10k 2
+    exact_mod_cast (show 0 < p ^ 2 - 1 by omega)
+  have hsqrtM_lt_p : Real.sqrt (M : ℝ) < (p : ℝ) := by
+    have h1 := Real.sqrt_lt_sqrt hM_posR.le hM_lt_p2
+    rwa [Real.sqrt_sq (Nat.cast_nonneg p)] at h1
+  have hM14_lt_sqrtp : (M : ℝ) ^ (4⁻¹ : ℝ) < Real.sqrt (p : ℝ) := by
+    have hsq1 : ((M : ℝ) ^ (4⁻¹ : ℝ)) ^ 2 = Real.sqrt (M : ℝ) := by
+      rw [Real.sqrt_eq_rpow, ← Real.rpow_natCast, ← Real.rpow_mul hM_posR.le]
+      norm_num
+    have hsq2 : (Real.sqrt (p : ℝ)) ^ 2 = (p : ℝ) := Real.sq_sqrt (Nat.cast_nonneg p)
+    have hnn1 : 0 ≤ (M : ℝ) ^ (4⁻¹ : ℝ) := Real.rpow_nonneg hM_posR.le _
+    have hnn2 : 0 ≤ Real.sqrt (p : ℝ) := Real.sqrt_nonneg _
+    nlinarith
+  exact ⟨μ, (fun i j => if i = j then μ i else μ i * μ j),
+    hμ_frac, hSDP1, hBQP, h3AP, h4Sidon, hμ_mass, by linarith⟩
+
+/-- Asymptotic `atTop` formulation of the Exact Pointwise Fractional & Degree-1 Lasserre
+SDP + BQP + 3-AP + 4-Sidon Barrier Theorem:
+`∃ c₀ > 0, ∀ᶠ p in atTop, p.Prime → ...` with excess `≥ c₀ * M^(1/4)`. -/
+theorem asymptotic_fractional_sdp1_barrier :
+    ∃ c₀ : ℝ, 0 < c₀ ∧ ∀ᶠ p : ℕ in atTop, p.Prime →
+      let M : ℕ := p ^ 2 - 1
+      ∃ (μ : ℕ → ℝ) (X : ℕ → ℕ → ℝ),
+        IsFractionalSidon M μ ∧
+        IsSDP1Feasible M μ X ∧
+        (∀ i, i < M → ∀ j, j < M → ∀ k, k < M → i ≠ j → i ≠ k → j ≠ k →
+          X i j + X i k - X j k ≤ μ i) ∧
+        (∀ a b c, a < b → b < c → c < M → a + c = 2 * b →
+          X a b + X b c + X a c ≤ 1) ∧
+        (∀ a b c e, a < b → b < c → c < e → e < M → a + e = b + c →
+          X a b + X a c + X a e + X b c + X b e + X c e ≤ 3) ∧
+        Real.sqrt (M : ℝ) + c₀ * (M : ℝ) ^ (4⁻¹ : ℝ) ≤ ∑ i ∈ Finset.range M, μ i := by
+  refine ⟨1 / 250, by norm_num, ?_⟩
+  filter_upwards [Filter.eventually_ge_atTop 10000] with p hp10k hp
+  obtain ⟨μ, X, h1, h2, h3, h4, h5, _, hstrict⟩ :=
+    asymptotic_fractional_sdp1_barrier_explicit hp hp10k
+  exact ⟨μ, X, h1, h2, h3, h4, h5, hstrict.le⟩
+
+/-! ### Section 11: Degree-2 Lasserre Hierarchy Projection & Frontier Upper Bound -/
+
+/-- Exact projection of Degree-2 Lasserre onto Degree-1 Lasserre (`IsSDP1Feasible`) plus all
+`Θ(N^2)` exact 3-AP cuts and all `Θ(N^3)` pairwise & 6-edge 4-Sidon cuts. -/
+theorem lasserre2_implies_sdp1_with_cuts {N : ℕ} {y : Finset ℕ → ℝ}
+    (hy : IsLasserre2Feasible N y) :
+    let x : ℕ → ℝ := fun i => y {i}
+    let X : ℕ → ℕ → ℝ := fun i j => y {i, j}
+    IsSDP1Feasible N x X ∧
+    (∀ a b c, a < b → b < c → c < N → a + c = 2 * b →
+      X a b + X b c + X a c ≤ 1) ∧
+    (∀ a b c e, a < b → b < c → c < e → e < N → a + e = b + c →
+      X a b + X c e ≤ 1 ∧ X a c + X b e ≤ 1 ∧ X a e + X b c ≤ 1 ∧
+      X a b + X a c + X a e + X b c + X b e + X c e ≤ 3) := by
+  intro x X
+  refine ⟨⟨?_, ?_, ?_, ?_, ?_⟩, ?_, ?_⟩
+  · intro i _ j _; dsimp only [X]; rw [Finset.pair_comm]
+  · exact lasserre2_psd1 hy
+  · intro i _; dsimp only [X, x]; rw [Finset.pair_eq_singleton]
+  · intro i hi j hj; exact lasserre2_mccormick hy hi hj
+  · intro d hd1 hdN; exact lasserre2_sidon_offdiag hy hd1 hdN
+  · intro a b c hab hbc hcN hap; exact lasserre2_3ap_cut hy hab hbc hcN hap
+  · intro a b c e hab hbc hce heN hsid4; exact lasserre2_4sidon_cuts hy hab hbc hce heN hsid4
+
+/-- Frontier upper bound for the Degree-2 Lasserre hierarchy:
+for all sufficiently large `N`, EVERY `IsLasserre2Feasible N y` satisfies
+`∑_{i < N} y {i} ≤ √N + 0.94295 * N^(1/4)`. -/
+theorem lasserre2_sub_094295 :
+    ∀ᶠ N : ℕ in atTop, ∀ y : Finset ℕ → ℝ,
+      IsLasserre2Feasible N y →
+      ∑ i ∈ Finset.range N, y {i} ≤ Real.sqrt (N : ℝ) + (0.94295 : ℝ) * (N : ℝ) ^ (4⁻¹ : ℝ) := by
+  filter_upwards [sdp1_sub_094295] with N hN y hy
+  exact hN (fun i => y {i}) (fun i j => y {i, j}) (lasserre2_implies_sdp1_with_cuts hy).1
 
 end Erdos030
