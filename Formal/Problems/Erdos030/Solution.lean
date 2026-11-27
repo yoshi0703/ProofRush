@@ -2,6 +2,9 @@ import Problems.Erdos030.Statement
 import Problems.Erdos030.Lasserre2
 import Problems.Erdos030.PeriodicDFT
 import Problems.Erdos030.SmoothBumpBarrier
+import Problems.Erdos030.Track2EquidistAndM3AP
+import Problems.Erdos030.Track3BoseVariance
+import Problems.Erdos030.Universal3APBound
 import Mathlib.FieldTheory.Finite.GaloisField
 import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.Tactic
@@ -4003,5 +4006,199 @@ theorem lasserre2_sub_094295 :
       ∑ i ∈ Finset.range N, y {i} ≤ Real.sqrt (N : ℝ) + (0.94295 : ℝ) * (N : ℝ) ^ (4⁻¹ : ℝ) := by
   filter_upwards [sdp1_sub_094295] with N hN y hy
   exact hN (fun i => y {i}) (fun i j => y {i, j}) (lasserre2_implies_sdp1_with_cuts hy).1
+
+/-! ### Section 12: Track 2 — `M_3AP(11)` Separation, Exact Mod-`q` Equidistribution, & Universal `O(N^(11/12))` Support Bound -/
+
+/-- Theorem T2-C (Strict Nonlinear `M_3AP` Separation at `N = 11`):
+`h(11) = 4 < 3√2`, yet there exist `μ` and `X` satisfying `IsFractionalSidon 11 μ`,
+`IsSDP1Feasible 11 μ X`, and strict 3-AP-freeness `Is3APFreeMeasure 11 μ` with
+`∑_{x < 11} μ x = 3√2`. -/
+theorem strict_separation_h11_lt_m3ap :
+    h 11 = 4 ∧ (h 11 : ℝ) < 3 * Real.sqrt 2 ∧
+    ∃ (μ : ℕ → ℝ) (X : ℕ → ℕ → ℝ),
+      IsFractionalSidon 11 μ ∧
+      IsSDP1Feasible 11 μ X ∧
+      Is3APFreeMeasure 11 μ ∧
+      ∑ x ∈ Finset.range 11, μ x = 3 * Real.sqrt 2 := by
+  obtain ⟨hh11, hlt, μ, hbox, hac, h3ap, hsum⟩ := strict_separation_h11_lt_m3ap_core
+  have hfrac : IsFractionalSidon 11 μ := ⟨hbox, hac⟩
+  obtain ⟨hSDP1, _⟩ := shor_rlt_sdp1_lift hfrac
+  exact ⟨hh11, hlt, μ, (fun i j => if i = j then μ i else μ i * μ j), hfrac, hSDP1, h3ap, hsum⟩
+
+/-- Theorem T2-A (Exact Mod-`q` Equidistribution for `IsFractionalSidon`):
+For all `N, q, m ≥ 1`, setting `S_r = ∑_{y < N, y % q = r} μ y`,
+`q * ∑_{r < q} S_r^2 ≤ (N + m * q - 1) * (1 + (‖μ‖_2^2 - 1) / m)`. -/
+theorem fractional_sidon_mod_q_equidistribution {N q m : ℕ} (hN : 1 ≤ N) (hq : 1 ≤ q)
+    (hm : 1 ≤ m) {μ : ℕ → ℝ} (hμ : IsFractionalSidon N μ) :
+    (q : ℝ) * ∑ r ∈ Finset.range q,
+        (∑ y ∈ (Finset.range N).filter (fun y => y % q = r), μ y) ^ 2 ≤
+      ((N + m * q - 1 : ℕ) : ℝ) *
+        (1 + ((∑ y ∈ Finset.range N, (μ y) ^ 2) - 1) / (m : ℝ)) := by
+  refine matrix_mod_q_equidistribution hN hq hm
+    (X := fun i j => μ i * μ j) (E := ∑ y ∈ Finset.range N, (μ y) ^ 2) ?_ ?_ ?_ ?_
+  · intro i _ j _; ring
+  · refine le_of_eq (Finset.sum_congr rfl fun i _ => (sq (μ i)).symm)
+  · exact hμ.2
+  · intro r _ x _
+    rw [sq, Finset.sum_mul]
+    refine le_of_eq (Finset.sum_congr rfl fun y _ => Finset.mul_sum _ _ _)
+
+/-- Theorem T2-A (Exact Mod-`q` Equidistribution for `IsSDP1Feasible`, with `‖μ‖_1` diagonal):
+For all `N, q, m ≥ 1`, setting `S_r = ∑_{y < N, y % q = r} μ y`,
+`q * ∑_{r < q} S_r^2 ≤ (N + m * q - 1) * (1 + (‖μ‖_1 - 1) / m)`. -/
+theorem sdp1_mod_q_equidistribution {N q m : ℕ} (hN : 1 ≤ N) (hq : 1 ≤ q) (hm : 1 ≤ m)
+    {μ : ℕ → ℝ} {X : ℕ → ℕ → ℝ} (hSDP : IsSDP1Feasible N μ X) :
+    (q : ℝ) * ∑ r ∈ Finset.range q,
+        (∑ y ∈ (Finset.range N).filter (fun y => y % q = r), μ y) ^ 2 ≤
+      ((N + m * q - 1 : ℕ) : ℝ) *
+        (1 + ((∑ y ∈ Finset.range N, μ y) - 1) / (m : ℝ)) := by
+  classical
+  rcases hSDP with ⟨hSymm, hPSD, hDiag, _, hOff⟩
+  refine matrix_mod_q_equidistribution hN hq hm
+    (X := X) (E := ∑ y ∈ Finset.range N, μ y) hSymm ?_ hOff ?_
+  · exact le_of_eq (Finset.sum_congr rfl fun i hi => hDiag i (Finset.mem_range.mp hi))
+  · intro r _ x _
+    let W := (Finset.range N).filter (fun y => y % q = r ∧ y ≤ x ∧ x < y + m * q)
+    have hWsub : W ⊆ Finset.range N := Finset.filter_subset _ _
+    let v : ℕ → ℝ := fun i => if i ∈ W then 1 else 0
+    have hlin : ∑ i ∈ Finset.range N, v i * μ i = ∑ y ∈ W, μ y := by
+      rw [← Finset.sum_subset hWsub]
+      · refine Finset.sum_congr rfl fun y hy => by simp [v, hy]
+      · intro i _ hi; simp [v, hi]
+    have hquad : ∑ i ∈ Finset.range N, ∑ j ∈ Finset.range N, v i * X i j * v j =
+        ∑ y ∈ W, ∑ z ∈ W, X y z := by
+      rw [← Finset.sum_subset hWsub]
+      · refine Finset.sum_congr rfl fun y hy => ?_
+        rw [← Finset.sum_subset hWsub]
+        · refine Finset.sum_congr rfl fun z hz => by simp [v, hy, hz]
+        · intro j _ hj; simp [v, hj]
+      · intro i _ hi
+        refine Finset.sum_eq_zero fun j _ => by simp [v, hi]
+    have hpsd := hPSD (-(∑ y ∈ W, μ y)) v
+    rw [hlin, hquad] at hpsd
+    nlinarith only [hpsd]
+
+/-- Theorem T2-A Corollary (Mod-`q` Residue-Class Collapse for `IsFractionalSidon`):
+If `supp(μ)` hits at most `k` residue classes mod `q`, then
+`(∑ μ)^2 ≤ (k / q) * (N + m * q - 1) * (1 + (‖μ‖_2^2 - 1) / m)`. -/
+theorem fractional_sidon_mod_q_support_collapse {N q m k : ℕ} (hN : 1 ≤ N) (hq : 1 ≤ q)
+    (hm : 1 ≤ m) {μ : ℕ → ℝ} (hμ : IsFractionalSidon N μ)
+    {R : Finset ℕ} (hR_sub : R ⊆ Finset.range q) (hR_card : R.card ≤ k)
+    (hsupp : ∀ y, y < N → y % q ∉ R → μ y = 0) :
+    (∑ y ∈ Finset.range N, μ y) ^ 2 ≤
+      ((k : ℝ) / (q : ℝ)) * ((N + m * q - 1 : ℕ) : ℝ) *
+        (1 + ((∑ y ∈ Finset.range N, (μ y) ^ 2) - 1) / (m : ℝ)) := by
+  have hqpos : (0 : ℝ) < (q : ℝ) := Nat.cast_pos.mpr hq
+  have hcol := mod_q_support_collapse_of_equidist hq hR_sub hR_card hsupp
+  have heq := fractional_sidon_mod_q_equidistribution hN hq hm hμ
+  have hdiv : ∑ r ∈ Finset.range q, (∑ y ∈ (Finset.range N).filter (fun y => y % q = r), μ y) ^ 2 ≤
+      (((N + m * q - 1 : ℕ) : ℝ) * (1 + ((∑ y ∈ Finset.range N, (μ y) ^ 2) - 1) / (m : ℝ))) / (q : ℝ) :=
+    (le_div_iff₀' hqpos).mpr heq
+  have hmul := mul_le_mul_of_nonneg_left hdiv (Nat.cast_nonneg k)
+  calc (∑ y ∈ Finset.range N, μ y) ^ 2
+      ≤ (k : ℝ) * ∑ r ∈ Finset.range q,
+          (∑ y ∈ (Finset.range N).filter (fun y => y % q = r), μ y) ^ 2 := hcol
+    _ ≤ (k : ℝ) * ((((N + m * q - 1 : ℕ) : ℝ) *
+          (1 + ((∑ y ∈ Finset.range N, (μ y) ^ 2) - 1) / (m : ℝ))) / (q : ℝ)) := hmul
+    _ = ((k : ℝ) / (q : ℝ)) * ((N + m * q - 1 : ℕ) : ℝ) *
+          (1 + ((∑ y ∈ Finset.range N, (μ y) ^ 2) - 1) / (m : ℝ)) := by ring
+
+/-- Theorem T2-A Corollary (Mod-`q` Residue-Class Collapse for `IsSDP1Feasible`):
+If `supp(μ)` hits at most `k` residue classes mod `q`, then
+`(∑ μ)^2 ≤ (k / q) * (N + m * q - 1) * (1 + (‖μ‖_1 - 1) / m)`. -/
+theorem sdp1_mod_q_support_collapse {N q m k : ℕ} (hN : 1 ≤ N) (hq : 1 ≤ q)
+    (hm : 1 ≤ m) {μ : ℕ → ℝ} {X : ℕ → ℕ → ℝ} (hSDP : IsSDP1Feasible N μ X)
+    {R : Finset ℕ} (hR_sub : R ⊆ Finset.range q) (hR_card : R.card ≤ k)
+    (hsupp : ∀ y, y < N → y % q ∉ R → μ y = 0) :
+    (∑ y ∈ Finset.range N, μ y) ^ 2 ≤
+      ((k : ℝ) / (q : ℝ)) * ((N + m * q - 1 : ℕ) : ℝ) *
+        (1 + ((∑ y ∈ Finset.range N, μ y) - 1) / (m : ℝ)) := by
+  have hqpos : (0 : ℝ) < (q : ℝ) := Nat.cast_pos.mpr hq
+  have hcol := mod_q_support_collapse_of_equidist hq hR_sub hR_card hsupp
+  have heq := sdp1_mod_q_equidistribution hN hq hm hSDP
+  have hdiv : ∑ r ∈ Finset.range q, (∑ y ∈ (Finset.range N).filter (fun y => y % q = r), μ y) ^ 2 ≤
+      (((N + m * q - 1 : ℕ) : ℝ) * (1 + ((∑ y ∈ Finset.range N, μ y) - 1) / (m : ℝ))) / (q : ℝ) :=
+    (le_div_iff₀' hqpos).mpr heq
+  have hmul := mul_le_mul_of_nonneg_left hdiv (Nat.cast_nonneg k)
+  calc (∑ y ∈ Finset.range N, μ y) ^ 2
+      ≤ (k : ℝ) * ∑ r ∈ Finset.range q,
+          (∑ y ∈ (Finset.range N).filter (fun y => y % q = r), μ y) ^ 2 := hcol
+    _ ≤ (k : ℝ) * ((((N + m * q - 1 : ℕ) : ℝ) *
+          (1 + ((∑ y ∈ Finset.range N, μ y) - 1) / (m : ℝ))) / (q : ℝ)) := hmul
+    _ = ((k : ℝ) / (q : ℝ)) * ((N + m * q - 1 : ℕ) : ℝ) *
+          (1 + ((∑ y ∈ Finset.range N, μ y) - 1) / (m : ℝ)) := by ring
+
+/-- Theorem T2-B (Universal Power-Saving `O(N^(11/12))` 3-AP-Free Support Bound):
+For every `C₀ : ℝ`, eventually for all `N`, ANY dense fractional Sidon measure `μ` with
+`∑ μ ≥ √N - C₀ N^(1/4)` forces EVERY `T ⊆ range N` forming zero nontrivial linear 3-APs
+`t₁ + t₂ = 2x` (`t₁ ≠ t₂`, `μ x > 0`) to satisfy `|T| ≤ 66 * N^(11/12)`. -/
+theorem universal_3ap_free_superset_bound (C₀ : ℝ) :
+    ∀ᶠ N : ℕ in atTop,
+      ∀ (μ : ℕ → ℝ) (T : Finset ℕ),
+        IsFractionalSidon N μ →
+        Real.sqrt (N : ℝ) - C₀ * (N : ℝ) ^ (4⁻¹ : ℝ) ≤ ∑ x ∈ Finset.range N, μ x →
+        T ⊆ Finset.range N →
+        (∀ t₁ ∈ T, ∀ t₂ ∈ T, ∀ x < N, t₁ ≠ t₂ → t₁ + t₂ = 2 * x → μ x = 0) →
+        (T.card : ℝ) ≤ 66 * (N : ℝ) ^ (11 / 12 : ℝ) := by
+  filter_upwards [universal_3ap_free_superset_asymptotic C₀] with N hN μ T hμ hdense hT h3ap
+  have hdense' : Real.sqrt (N : ℝ) - C₀ * (N : ℝ) ^ (1 / 4 : ℝ) ≤ ∑ x ∈ Finset.range N, μ x := by
+    simpa [one_div] using hdense
+  exact hN μ T hμ.1 hμ.2 hdense' hT h3ap
+
+/-- Theorem T2-B Corollary (Dense Nonlinear `M_3AP(N)` Support Size Bound):
+For every `C₀ : ℝ`, eventually for all `N`, ANY dense feasible witness `μ` of the nonlinear
+3-AP-free relaxation `M_3AP(N)` (`IsFractionalSidon N μ ∧ Is3APFreeMeasure N μ` with
+`∑ μ ≥ √N - C₀ N^(1/4)`) MUST have support cardinality `|supp(μ)| ≤ 66 * N^(11/12)`
+(unconditionally ruling out all Behrend-density supports). -/
+theorem m3ap_dense_support_card_bound (C₀ : ℝ) :
+    ∀ᶠ N : ℕ in atTop,
+      ∀ μ : ℕ → ℝ,
+        IsFractionalSidon N μ →
+        Is3APFreeMeasure N μ →
+        Real.sqrt (N : ℝ) - C₀ * (N : ℝ) ^ (4⁻¹ : ℝ) ≤ ∑ x ∈ Finset.range N, μ x →
+        (((Finset.range N).filter (fun x => 0 < μ x)).card : ℝ) ≤ 66 * (N : ℝ) ^ (11 / 12 : ℝ) := by
+  classical
+  filter_upwards [universal_3ap_free_superset_bound C₀] with N hN μ hμ h3ap hdense
+  refine hN μ ((Finset.range N).filter (fun x => 0 < μ x)) hμ hdense (Finset.filter_subset _ _) ?_
+  intro t₁ ht₁ t₂ ht₂ x hx hne hsum
+  have ht₁' := Finset.mem_filter.mp ht₁
+  have ht₂' := Finset.mem_filter.mp ht₂
+  have ht₁N := Finset.mem_range.mp ht₁'.1
+  have ht₂N := Finset.mem_range.mp ht₂'.1
+  rcases lt_or_gt_of_ne hne with hlt | hgt
+  · have hzero := h3ap t₁ x t₂ (by omega) (by omega) ht₂N hsum
+    have hprod : μ t₁ * μ t₂ > 0 := mul_pos ht₁'.2 ht₂'.2
+    nlinarith only [hzero, hprod]
+  · have hzero := h3ap t₂ x t₁ (by omega) (by omega) ht₁N (by omega)
+    have hprod : μ t₂ * μ t₁ > 0 := mul_pos ht₂'.2 ht₁'.2
+    nlinarith only [hzero, hprod]
+
+/-! ### Section 13: Track 3 — Bose Sparse-Background Cross-Variance & Binary-Autocorrelation Rigidity -/
+
+/-- Theorem T3-B (Exact Bose Sparse-Background Parseval Cross-Variance Lower Bound):
+For EVERY prime `p` (`M = p^2 - 1`), Bose's periodic Fourier-flat Sidon set `S ⊆ range M`
+(`|S| = p`) satisfies, for ANY `IsFractionalSidon M ν`:
+1. `V(S, ν) ≥ (p(p-2)/(p-1)) * (‖ν‖_2^2 - 2)`,
+2. If `supp(ν) ⊆ T ⊆ range M` (`|T| ≥ 1`), then `V(S, ν) ≥ (p(p-2)/(p-1)) * (‖ν‖_1^2 / |T| - 2)`,
+where `V(S, ν) = ∑_{d < M} ((1_S ⋆_cyc ν)(d) - p ‖ν‖_1 / M)^2`. -/
+theorem bose_sparse_background_cross_variance {p : ℕ} (hp : p.Prime) :
+    let M : ℕ := p ^ 2 - 1
+    ∃ S : Finset ℕ, S ⊆ Finset.range M ∧ S.card = p ∧
+      (∀ ξ : ℕ, 1 ≤ ξ → ξ < M →
+        ‖∑ a ∈ S, (rootOfUnity M) ^ (ξ * a)‖ ^ 2 = if (p - 1) ∣ ξ then (1 : ℝ) else (p : ℝ)) ∧
+      ∀ ν : ℕ → ℝ, IsFractionalSidon M ν →
+        let indS : ℕ → ℝ := fun x => if x ∈ S then 1 else 0
+        let V : ℝ := ∑ d ∈ Finset.range M,
+          (cyclicConv M indS ν d - (p : ℝ) * (∑ x ∈ Finset.range M, ν x) / (M : ℝ)) ^ 2
+        ((p : ℝ) * ((p : ℝ) - 2) / ((p : ℝ) - 1)) * ((∑ x ∈ Finset.range M, (ν x) ^ 2) - 2) ≤ V ∧
+        ∀ T : Finset ℕ, T ⊆ Finset.range M → 1 ≤ T.card →
+          (∀ x, x < M → x ∉ T → ν x = 0) →
+          ((p : ℝ) * ((p : ℝ) - 2) / ((p : ℝ) - 1)) *
+            ((∑ x ∈ Finset.range M, ν x) ^ 2 / (T.card : ℝ) - 2) ≤ V := by
+  intro M
+  obtain ⟨S, hS_sub, hS_card, hflat⟩ := bose_periodic_fourier_flatness hp
+  refine ⟨S, hS_sub, hS_card, hflat, ?_⟩
+  intro ν hν
+  exact bose_sparse_background_cross_variance_of_flat hp hS_sub hS_card hflat hν.2
 
 end Erdos030
