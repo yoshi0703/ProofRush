@@ -1,0 +1,248 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.96in]{geometry}
+\usepackage{fontspec,amsmath,amssymb,amsthm,booktabs}
+\usepackage[hidelinks,pdftitle={Exact-Radius Identity Testing for Fixed-Mass Diffuse Bins},pdfauthor={ProofRush Research Team}]{hyperref}
+\newfontfamily\namefont[Path=../canonne-functional-comparison/fonts/]{ProofRushDirectorJP.otf}
+\DeclareMathSizes{10.95}{10.95}{8}{7}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\TV}{\operatorname{TV}}
+\newcommand{\E}{\mathbb{E}}
+\title{Exact-Radius Identity Testing for Fixed-Mass Diffuse Bins}
+\author{ProofRush Research Team\\[2pt]\small Research directed by Yoshiaki Otsuka ({\namefont 大束良明})}
+\date{27 November 2026 (JST)\\\small Working preprint}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We determine the sample complexity of testing identity to a known distribution with one head atom and a fixed number of bins of prescribed positive masses. The bin sizes can grow at different rates. Within each bin we require only that the conditional second moment be at most a constant divided by its size. At the total mass of bins \(i\) and later, the optimal number of samples is of order \(m_i^{2/5}m_{i-1}^{1/10}\), where \(m_i\) is the size of bin \(i\) and \(m_0=1\). We give matching transition rates on both sides and cover every strict total variation radius. We also construct pairs of references on the same alphabet whose maximum atom, Shannon entropy, and any prescribed finite list of power sums agree exactly, yet whose sample complexities at a common fixed radius differ by an unbounded factor. The general instance-optimal characterization remains open.
+\end{abstract}
+
+\section{Model and results}
+
+For probability laws on a specified finite alphabet \(\mathcal X\), write
+\[
+ \TV(p,q)=\tfrac12\sum_{a\in\mathcal X}|p_a-q_a|
+         =\sum_{a\in\mathcal X}(q_a-p_a)_+
+         =1-\sum_{a\in\mathcal X}\min(p_a,q_a).
+\]
+Given the full reference law \(q\), let \(N_q(e)\) be the minimum number of independent observations from \(p\) for an identity test against \(\TV(p,q)>e\), with type I and worst-case type II error at most \(1/3\). We allow randomized tests. The alternative \(p\) ranges over all probability laws on the same alphabet. In particular it can put positive probability on labels with zero null probability. This is the strict-radius convention in Canonne's COLT 2024 Question~1 \cite{canonne}.
+
+Valiant and Valiant and Blais, Canonne, and Gur obtain general reference-dependent bounds with different constant multiples of the radius in the upper and lower functionals \cite{vv,bcg,canonne}. Chhor and Carpentier characterize separation at a fixed sample size up to constant factors in the radius \cite{cc}. These comparisons can leave a sample-complexity gap at a particular radius. We resolve that gap for a class with a fixed number of possibly distinct support scales. The methods use ordinary coarse identity tests, birthday bounds, and normalized priors.
+
+Fix \(r\ge1\) and positive weights \(w_0,\ldots,w_r\) summing to one. The alphabet is a singleton head of mass \(w_0\) and disjoint known bins \(B_1,\ldots,B_r\). Let \(2\le m_1\le\cdots\le m_r\) be their sizes. The reference has \(q(B_i)=w_i\) and satisfies, for a fixed \(0<\beta\le1\),
+\begin{equation}\label{eq:diffuse}
+ \sum_{a\in B_i} q_a^2\le \frac{w_i^2}{\beta m_i}\qquad(1\le i\le r).
+\end{equation}
+The bins are given as part of the reference description. Their atom probabilities may be unequal and need not be globally ordered from one bin to the next. Write
+\[
+  m_0=1,\qquad U_i=\sum_{k=i}^{r}w_k,\qquad U_{r+1}=0,\qquad
+  A_i=m_i^{2/5}m_{i-1}^{1/10}.
+\]
+
+\begin{theorem}[Rates for fixed-mass diffuse bins]\label{thm:rates}
+For a sufficiently small \(c>0\) depending only on \(r,\beta\) and the smallest \(w_i\), the following orders hold uniformly in the bin sizes, their atom probabilities, and \(e\) in the indicated nonempty alternative ranges. The multiplicative constants have the same allowed dependence.
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Radius & Order of \(N_q(e)\) \\
+\midrule
+\(0<e\le c\) & \(\sqrt{m_r}/e^2\) \\
+\(U_{i+1}+c\le e\le U_i-c\), \(1\le i\le r\) & \(\sqrt{m_i}\) \\
+\(U_i-c\le e\le U_i\), \(1\le i\le r\) & \(\max\{A_i,\sqrt{m_i(U_i-e)}\}\) \\
+\(U_i<e\le U_i+c\), \(1\le i\le r\) & \(\min\{A_i,\sqrt{m_{i-1}}/(e-U_i)^2\}\) \\
+\(e\ge U_1+c\) & \(1\) \\
+\bottomrule
+\end{tabular}
+\end{center}
+For \(e\ge1-\min_a q_a\) the strict alternative is empty and \(N_q(e)=0\).
+\end{theorem}
+
+The elementary endpoint follows from convexity of \(p\mapsto\TV(p,q)\) and maximization over point masses in the simplex. At common row boundaries the orders agree since \(c\) is fixed. For two bins of sizes \(m\) and \(M\), the two exact boundary orders are \(M^{2/5}m^{1/10}\) at the mass of the second bin and \(m^{2/5}\) at their combined mass.
+
+\begin{theorem}[Failure of finite global moment summaries]\label{thm:moments}
+Fix any finite set of positive real powers. There exist pairs of full-support references \(q^A_m,q^B_m\) on the same alphabet, with equal largest atom, equal Shannon entropy, and equal power sums \(\sum_a q_a^p\) for every power in the set. At the same radius \(e=3/10\), their respective sample complexities have orders \(m^{1/2}\) and \(m^{9/10}\). Both references satisfy the hypotheses of Theorem~\ref{thm:rates} with fixed weights and a fixed \(\beta>0\).
+\end{theorem}
+
+The second theorem applies, for example, to the untruncated \(2/3\)-quasinorm and the second moment simultaneously. It leaves open characterizations involving truncation or other features of the ordered mass profile.
+
+\section{Upper bounds in Theorem~\ref{thm:rates}}
+
+Put \(w_*=\min_{0\le k\le r} w_k\). For each \(i\), form a coarse observation that keeps the head and all labels in bins of index less than \(i\). In every bin \(k\ge i\), keep the bin index and whether the label is in the known set
+\[
+ H_k=\{a\in B_k:q_a\ge w_k/(4m_k)\}.
+\]
+Call these labels warm. The total null mass of \(H_k\) is at least \(3w_k/4\). Denote by \(D_i\) the TV of the induced coarse laws. Write \(F_i\) for the head and all bins of index less than \(i\), and define
+\[
+ D_i^- = \sum_{a\in F_i}(q_a-p_a)_+,
+ \qquad B_i^+=\sum_{a\notin F_i}\min(p_a,q_a).
+\]
+The exact decomposition is
+\begin{equation}\label{eq:decomp}
+   \TV(p,q)=U_i+D_i^- - B_i^+,\qquad D_i^-\le D_i.
+\end{equation}
+We also use \(i=r+1\), with \(D_{r+1}=\TV(p,q)\) and every label retained.
+
+The coarse alphabet has size at most \(1+\sum_{k<i}m_k+2r=O_r(m_{i-1})\). Standard identity testing at separation \(z\in(0,1)\) on \(K\) labels gives error \(1/12\) with \(O(\sqrt K/z^2)\) samples, by a fixed amplification of the constant-error upper bound \cite{dgpp}. Consequently \eqref{eq:decomp} gives an \(O(\sqrt{m_{i-1}}/(e-U_i)^2)\) upper bound for \(e>U_i\). If \(e\ge U_{i+1}+c\), use \(D_{i+1}\) at radius \(c\), which costs \(O(\sqrt{m_i})\). These tests give the between-boundary upper bounds and constant cost beyond \(U_1+c\). The small-radius upper bound follows by using all labels.
+
+For \(U_i-c\le e\le U_i\), put \(d=U_i-e\), \(x=(m_{i-1}/m_i)^{1/5}\), and \(\eta=x+d\). Then
+\begin{equation}\label{eq:balance}
+  A_i=\sqrt{m_{i-1}}/x^2=\sqrt{m_i x}.
+\end{equation}
+Test the coarse law at radius \(x\). In the regime where this test will be used, \(x<1\). On a separate batch reject if a warm label in bin \(i\) repeats. Suppose a far law satisfies \(D_i\le x\). Its mass on \(H_i\) is at least \(3w_i/4-x\). By \eqref{eq:decomp} its overlap \(B_i^+\) is less than \(\eta\). The set \(R=\{a\in H_i:p_a\ge q_a\}\) therefore has \(p\)-mass at least \(3w_i/4-x-\eta\) and size at most \(4m_i\eta/w_i\). Indeed labels in \(H_i\setminus R\) contribute their entire \(p\)-mass to the overlap, and each label in \(R\) contributes at least \(w_i/(4m_i)\).
+
+For \(b\) iid draws from any law supported on \(K\) labels, the probability that all draws are distinct is at most \((K)_b/K^b\), where \((K)_b=K(K-1)\cdots(K-b+1)\), with value zero if \(b>K\). To prove the bound, note that the no-repeat probability is \(b!\) times the elementary symmetric polynomial of degree \(b\) in the masses. Averaging two masses keeps their sum fixed, increases their product, and cannot decrease the polynomial. Iteratively averaging the largest and smallest masses converges to uniform: the sum of squared deviations from the mean decreases by half the squared range in each iteration. The uniform formula gives \((K)_b/K^b\le \exp[-b(b-1)/(2K)]\) for \(b\le K\).
+
+Choose a constant \(C\ge1\) such that \(8/(Cw_*)\le1/24\), \(Cw_*/4\ge4\), and \(\exp(-C^2w_*^3/1024)\le1/24\). For \(\eta\le w_*/8\) the far law above has \(p(R)\ge w_*/2\). With \(n=\lceil C\sqrt{m_i\eta}\rceil\), set \(b=\lfloor n w_*/4\rfloor\). Chebyshev's inequality for the number of hits gives probability at most \(8/(n w_*)\le1/24\) of fewer than \(b\) hits. Conditional on having \(b\) hits, their labels have the law \(p(\cdot\mid R)\) independently. We have \(b\ge n w_*/8\) and \(b(b-1)\ge b^2/2\). Since \(|R|\le 4m_i\eta/w_*\), the birthday bound gives conditional miss probability at most \(\exp(-C^2w_*^3/1024)\), or zero if \(|R|<b\).
+
+Under the null, the same repeat event has probability at most \(\binom n2 w_i^2/(\beta m_i)\) by \eqref{eq:diffuse}. Choose a cutoff
+\[
+ \eta_0\le\min\{w_*/8,\ \beta/[6(C+1)^2]\}.
+\]
+For \(\eta\le\eta_0\), the null repeat probability is at most \(1/12\), because \(m_i\eta\ge m_i x\ge1\) absorbs the ceiling in \(n\). Choosing \(C\) first and \(\eta_0\) second makes both probability estimates valid. The two tests combined have null error at most \(1/6\) and alternative error at most \(1/12\). Their sample count is \(O(\max\{A_i,\sqrt{m_i d}\})\) by \eqref{eq:balance}. For \(\eta>\eta_0\), this rate is already at least a fixed multiple of \(\sqrt{m_i}\). Use the earlier upper bound based on \(D_{i+1}\), because \(e-U_{i+1}\ge w_i-c\ge w_*/2\) when \(c\le w_*/2\). Finally the rate \(O(A_i)\) at \(e=U_i\) also works above \(U_i\) by monotonicity, giving the claimed minimum when combined with the coarse bound.
+
+\section{Lower-bound tools}
+
+\begin{lemma}[A small deficit in the retained part]\label{lem:prefix}
+For each boundary \(i\), and \(0<z\le w_*/8\), there is a finite prior on probability laws with \(D_i^-=z\) and original conditional proportions within every bin \(k\ge i\). Its \(n\)-sample mixture has TV at most \(1/20\) from \(q^{\otimes n}\) for \(n\le c_1\sqrt{m_{i-1}}/z^2\), where \(c_1>0\) depends only on \(w_*\) and \(\beta\). The same construction in an arbitrary individual bin realizes TV \(z\) for the uncollapsed full law with bound \(c_1\sqrt{m_j}/z^2\) in bin \(j\).
+\end{lemma}
+
+\begin{proof}
+For \(i>1\) use bin \(j=i-1\). When \(m_j\ge4/\beta\), its largest probability is at most \(w_j/2\) by \eqref{eq:diffuse}. Sort its entries in decreasing order and pair successive entries, padding the last with zero if needed. If \(d_{ab}=\min(q_a,q_b)\), then \(L=\sum d_{ab}\ge(w_j-\max q_a)/2\ge w_j/4\). This follows since the sum of signed differences of successive odd and even entries is an alternating sum bounded above by its first entry. Shift \(\alpha d_{ab}\) in one direction or the other in each pair by independent fair signs, where \(\alpha=z/L\le1/2\). Pairs with \(d_{ab}=0\) are unchanged. Every law remains nonnegative and exactly normalized with deficit \(z\) in bin \(j\).
+
+Let \(\sigma,\sigma'\) be independent sign vectors. For their laws \(p^\sigma,p^{\sigma'}\), the one-draw likelihood inner product under \(q\) is \(1+\sum_{a,b}\lambda_{ab}\sigma_{ab}\sigma'_{ab}\), with
+\[
+ \lambda_{ab}=\alpha^2 d_{ab}^2(1/q_a+1/q_b)\le2\alpha^2d_{ab}
+\]
+on positive pairs. Product likelihoods raise this inner product to the \(n\)-th power. Using \(1+v\le e^v\) and independent fair sign products, the second moment of the mixture likelihood is at most
+\[
+ \prod_{a,b}\cosh(n\lambda_{ab})
+ \le \exp\!\left(\tfrac12 n^2\sum_{a,b}\lambda_{ab}^2\right)
+ \le \exp\!\left(\frac{512 n^2 z^4}{\beta w_*^2 m_j}\right).
+\]
+The final inequality uses \(\alpha\le4z/w_j\) and \(\sum d_{ab}^2\le\sum_{a\in B_j}q_a^2\). The bound \(\cosh y\le e^{y^2/2}\) follows from the respective power series. TV is at most one half the square root of the second moment minus one, by Cauchy--Schwarz. Taking \(c_1\) small enough proves the bound.
+
+When \(m_j<4/\beta\), transfer mass \(z\) from the head to bin \(j\), preserving the conditional proportions in the bin. The one-draw chi-square divergence is \(z^2(1/w_0+1/w_j)\le2z^2/w_*\). The product second moment is then at most \(\exp(2nz^2/w_*)\), which works at the same rate with smaller \(c_1\) because \(m_j\) is bounded. The head deficit is exactly \(z\). For \(i=1\) use the same transfer to bin~1. The suffix includes the recipient, whose mass can change but whose conditional proportions are unchanged. The bound \(c_1/z^2\) gives the claimed order since \(m_0=1\). To realize TV \(z\) in an individual bin before any collapsing, apply the pair construction or the head transfer just described. All likelihood ratios are taken on the positive support of \(q\), which contains the support of every constructed law.
+\end{proof}
+
+\begin{lemma}[Empirical collapse of suffix bins]\label{lem:collapse}
+Let a preliminary prior have original conditional proportions in each suffix bin \(k\ge i\), with any prescribed total masses \(s_k\) (possibly depending on the prior draw). Independently draw \(K_k\ge1\) latent labels iid from \(q(\cdot\mid B_k)\), and replace the proportions in that bin with the empirical distribution of these labels, keeping total mass \(s_k\). The resulting normalized prior has
+\[
+  \E B_i^+\le\sum_{k\ge i}\frac{K_k w_k}{\beta m_k}.
+\]
+The distance between the preliminary and collapsed ordered \(n\)-sample mixtures is at most
+\[
+ \binom n2\E\!\left[\sum_{k\ge i}\frac{s_k^2}{K_k}\right].
+\]
+Conditioning on an event of prior probability at least \(1-\gamma\) changes the induced sample distribution by at most \(\gamma\) in TV.
+\end{lemma}
+
+\begin{proof}
+The support of the replacement distribution is a subset of the sampled latent labels. Its overlap is at most the sum of null masses of the labels drawn, counting duplicate labels if necessary. The expectation from bin \(k\) is \(K_k\sum_{a\in B_k}q_a^2/w_k\), proving the overlap bound.
+
+To couple the ordered records, first expose the preliminary prior and the coarse draws that retain individual labels before bin \(i\), and just the bin identity afterwards. These draws agree in both experiments. For each observation in bin \(k\) take an independent uniform index in \([K_k]\). The collapsed experiment uses the latent label at that index. In the preliminary experiment use the same latent label at the first visit to an index, and draw a fresh independent label from \(q(\cdot\mid B_k)\) on each later visit. Conditional on the entire index pattern, the resulting preliminary labels are independent with the requisite probabilities. The samples disagree only if a pair of positions visits the same suffix bin and the same latent index. Given the preliminary law, each specified pair has probability \(\sum s_k^2/K_k\) of this event. The union bound and averaging prove the TV estimate. Conditional laws differ from their unconditional mixture by at most the discarded mass, and generating samples from a prior cannot increase TV.
+\end{proof}
+
+\section{Matching lower bounds in Theorem~\ref{thm:rates}}
+
+A randomized test has a rejection function with values in \([0,1]\). If it meets the required errors against every far alternative, its expected rejection differs by at least \(1/3\) between the null and any mixture of far alternatives. Such a difference is bounded by TV. We construct mixtures with TV strictly less than \(1/3\). In any nonempty alternative range, one sample is a lower bound.
+
+Fix \(i\) and the radius window \(U_i-c\le e\le U_i+c\). Let \(x\) be as in \eqref{eq:balance}, \(d_+=(e-U_i)_+\), and \(g=b x\), where \(0<b\le w_*/64\) is fixed. Also take \(c\le w_*/64\), so \(z=d_++2g\le w_*/8\). Apply Lemma~\ref{lem:prefix} with deficit \(z\), then Lemma~\ref{lem:collapse} with
+\[
+ K_k=\left\lfloor\frac{\beta m_k g}{100 r w_k}\right\rfloor\qquad(k\ge i).
+\]
+For sufficiently large \(m_i\), these are independent of the sample number, at least one and of order \(m_k x\). Indeed \(m_k x\ge m_i^{4/5}\) and the coefficients are bounded below by positive fixed constants. For bounded \(m_i\), all rates in this radius window are bounded, so the one-sample lower bound suffices in the nonempty range. The expected suffix overlap is at most \(g/100\). Condition on \(B_i^+\le g\), a prior event with probability at least \(99/100\) by Markov's inequality. Every remaining alternative has TV at least \(U_i+z-g>e\) by \eqref{eq:decomp}.
+
+By both lemmas and the triangle inequality the sample TV of the conditioned prior is less than \(1/3\) for
+\[
+ n\le c_2\min\left\{\frac{\sqrt{m_{i-1}}}{(d_++g)^2},\ \sqrt{m_i x}\right\}
+\]
+with \(c_2>0\) small enough. More explicitly \(z=d_++2g\le2(d_++g)\), so Lemma~\ref{lem:prefix} can contribute at most \(1/20\) by choosing \(c_2\le c_1/4\). The sum in Lemma~\ref{lem:collapse} is at most a fixed constant divided by \(m_i x\), so reducing \(c_2\) makes its contribution at most \(1/20\). The conditioning contributes at most \(1/100\). This gives cost \(\Omega(A_i)\) below \(U_i\). Above \(U_i\), the displayed minimum has the claimed order: if \(d_+\ge x\), then \(d_++g\) is comparable to \(d_+\); if \(d_+<x\), then the first term is at least a fixed multiple of \(A_i\).
+
+Below \(U_i\), let \(d=U_i-e\). The extra term matters only for \(d\ge x\). Keep all bin masses and all retained labels fixed, and collapse with \(K_k=\lfloor\beta m_k d/(200r w_k)\rfloor\). If any \(K_k<1\), then \(m_i d\) is bounded. Otherwise the counts have order \(m_k d\), including when a floor is one. Conditioning on \(B_i^+\le d/2\) discards at most \(1/100\) of the prior. Every remaining law is strictly far, and the collision bound proves \(\Omega(\sqrt{m_i d})\). Between the boundary windows use this same construction with \(d\) replaced by the fixed number \(c\), since \(e\le U_i-c\). This gives \(\Omega(\sqrt{m_i})\).
+
+For \(0<e\le c\), change bin \(r\) by TV \(2e\) using Lemma~\ref{lem:prefix}'s individual-bin assertion, giving \(\Omega(\sqrt{m_r}/e^2)\). Beyond the last transition window the one-sample lower bound completes the table. This proves Theorem~\ref{thm:rates}.
+
+\section{Proof of Theorem~\ref{thm:moments}}
+
+Let the head have mass \(1/2\) and let five bins each have mass \(1/10\). The two bin-size lists are
+\begin{align*}
+ M^A&=(b,m,m,m^4,L_A), &L_A&=2m^5,\\
+ M^B&=(b,m,m^2,m^3,L_B), &L_B&=2m^5+m+m^4-m^2-m^3,
+\end{align*}
+where \(b\) is fixed below. The alphabet sizes are the same and these lists are nondecreasing for sufficiently large \(m\). Bins 2--4 are conditionally uniform throughout. In bins 1 and 5 we will adjust the weights without changing their bin totals. At \(e=3/10=U_3\), Theorem~\ref{thm:rates} then gives order \(m^{1/2}\) for \(q_m^A\) and \(m^{9/10}\) for \(q_m^B\). The head is uniquely largest in both laws.
+
+Remove the power 1, which is fixed by normalization, and remove duplicate powers. Let \(d_-,d_+\) count specified powers respectively below and above 1. Set \(b=d_++2\). Fix a vector of \(b\) distinct positive probabilities summing to \(1/10\) for bin 1. Put \(J=d_-+1\), and restrict \(m\) to multiples of \(J\) so that \(J\) divides both \(L_A\) and \(L_B\). Partition bin 5 into \(J\) subgroups of equal size, make each subgroup internally uniform, and choose distinct positive subgroup masses totaling \(1/10\). When \(J=1\), there is only the single fixed mass. The reference \(q_m^A\) uses these starting masses. The construction varies only the bin 1 probabilities and bin 5 subgroup masses of \(q_m^B\), preserving their two sums and positivity. Both references satisfy \eqref{eq:diffuse} for \(\beta=\min(1/b,1/J)\). This follows in bin 1 because its conditional second moment is at most 1, and in bin 5 because an internally uniform subgroup of mass \(v_j\) contributes \(Jv_j^2/L_A\) or \(Jv_j^2/L_B\) respectively before conditioning on the bin.
+
+Let \(F_m\) be the vector of the prescribed summary values of \(q_m^B\) minus those of \(q_m^A\), as a function of the two adjustable weight vectors, each parameterized by all but its last entry. Scale each row with power \(p<1\) by \(L_A^{p-1}\). At the common starting vectors, each row with \(p>1\) tends to zero, because both contributions from every growing bin tend to zero before scaling. For \(p<1\), the scaled contributions of bins 1--4 and of the head tend to zero since their sizes are \(o(L_A)\). The scaled contribution from bin 5 with subgroup masses \(v_1,\dots,v_J\) is
+\[
+  L_A^{p-1}(L_B/J)^{1-p}\sum_{j=1}^J v_j^p
+\]
+for \(q_m^B\), and the formula with \(L_A\) in place of \(L_B\) for \(q_m^A\). Their difference tends to zero since \(L_B/L_A\to1\). The entropy difference from bins 3 and 4 cancels exactly because their masses match and \(\log m+\log m^4=\log m^2+\log m^3\). For bin 5, the remaining entropy difference at the starting vectors is \((1/10)\log(L_B/L_A)\), which also tends to zero. Thus \(F_m\) tends to zero at the starting vectors.
+
+In a fixed small neighborhood of the starting vectors the derivatives of \(F_m\) converge uniformly, by the explicit power and entropy formulas on positive masses. Order the low-power rows first and the bin 5 variables first. In the limiting Jacobian, the low-power derivative on the bin 1 variables is zero, and the block on the bin 5 variables is a fixed positive row scaling of the derivative of \((\sum v_j^p)_{p<1}\). When the constant sum row is included, the functions evaluated on the distinct starting weights are \(1,x^{p-1}\) for distinct \(p<1\), with nonzero scalar factors in the power rows. Similarly, the high-power and entropy block on bin 1 becomes the evaluations of \(1,\log x,x^{p-1}\) for distinct \(p>1\), after elementary row operations and adjoining the sum row. Therefore both square derivative blocks on the respective fixed-sum hyperplanes are invertible. The off-diagonal derivative of the entropy on bin 5 does not affect the invertibility of the block triangular limiting Jacobian.
+
+To justify the evaluation-matrix assertion, set \(t=\log x\). A nonzero combination of \(k\) exponentials with distinct real exponents has at most \(k-1\) distinct zeros. Divide by the exponential with lowest exponent and differentiate, then apply Rolle's theorem and induction. A combination of \(1,t\) and \(d_+\) exponentials with distinct nonzero exponents likewise has at most \(d_++1\) distinct zeros, by differentiating twice and using the previous bound, or directly for a linear combination of only \(1,t\). These bounds imply nonsingularity at the required numbers of distinct starting points. Restricting to fixed sum and dropping the sum row gives the derivative blocks used above.
+
+Let \(J_0\) be the invertible limiting Jacobian at the starting vectors. By uniform convergence of the derivatives, choose a fixed small closed ball centered at these vectors on which \(\|I-J_0^{-1} DF_m\|\le1/2\) for all sufficiently large \(m\). Also \(F_m\) at the center tends to zero. Thus, for large \(m\), the map \(v\mapsto v-J_0^{-1}F_m(v)\) is a contraction from this ball into itself. Its fixed point makes every summary difference zero exactly. The ball can be chosen to keep all probabilities positive. This proves Theorem~\ref{thm:moments}.
+
+\section{Prior results, verification, and scope}
+
+The interaction between a retained-bin perturbation and loss of overlap in a different bin produces the exact transition exponent in Theorem~\ref{thm:rates}. The split into a coarse test and a repeat detector uses ordinary confidence amplification, and our paired-sign calculation is an adaptation of Paninski's mixture method \cite{paninski}. Canonne's one-head example already gives the square-root rate at a fixed distance below its tail mass \cite[Section~4]{canonne}. The fixed-radius table and the moment comparison concern the sample complexity itself at the same prescribed radius. They do not follow directly from the different-radius comparisons in \cite{vv,bcg,cc}. Dewasurendra's manuscript studies exact-radius rates under a fixed Zipf envelope \cite{zipf}. Yu's proposed answer to the separate Question~3 uses a normalized block-collapse and collision argument \cite{yu}. Our lower-bound coupling compares actual ordered sample laws after replacing within-bin proportions by an empirical distribution, while leaving all bin totals prescribed by the preliminary prior. The techniques overlap with these earlier methods. The sources inspected did not give the present simultaneous multibin rate table or the finite-summary obstruction. This focused check does not establish priority.
+
+The characterization uses a fixed number of bins and a positive lower bound on their masses. The finite-summary obstruction concerns untruncated global statistics and permits the use of truncated or other succinct functionals. These results are partial progress on Canonne's Question~1. The arbitrary-reference problem remains open.
+
+\paragraph{Contributions and verification.}
+Yoshiaki Otsuka directed the research. A Codex GPT-6.2-Sol agent developed the multibin proof and moment construction and drafted the manuscript. A separate GPT-6.2-Sol agent independently reviewed the multibin argument. A Codex GPT-6.2-Astra agent coordinated and reviewed the work. Exact rational calculations replayed six ordered product-law comparisons across two unequal-bin examples, checking normalization, distances under conditioning, the coupling bound, and the signed-mixture likelihood moment. Lean 4 and a separate Rust kernel verified the exact coarse-deficit and overlap identities for half-$\ell_1$ distance, as well as the warm-set mass and size inequalities. The rate theorem and the exact moment-matching construction have mathematical proofs in this manuscript. The finite replays supplement these proofs. External peer review is pending.
+
+\begin{thebibliography}{9}
+\small
+\bibitem{canonne}
+C.~L. Canonne,
+\emph{Open Problem: Tight Characterization of Instance-Optimal Identity Testing},
+COLT 2024, PMLR 247, pp. 5312--5316.
+\href{https://proceedings.mlr.press/v247/canonne24a.html}{Proceedings}.
+
+\bibitem{vv}
+G.~Valiant and P.~Valiant,
+\emph{An Automatic Inequality Prover and Instance Optimal Identity Testing},
+SIAM Journal on Computing 46(1), 429--455, 2017.
+\href{https://doi.org/10.1137/151002526}{DOI}.
+
+\bibitem{bcg}
+E.~Blais, C.~L. Canonne, and T.~Gur,
+\emph{Distribution Testing Lower Bounds via Reductions from Communication Complexity},
+CCC 2017, LIPIcs 79, pp. 28:1--28:40.
+\href{https://doi.org/10.4230/LIPIcs.CCC.2017.28}{DOI}.
+
+\bibitem{cc}
+J.~Chhor and A.~Carpentier,
+\emph{Sharp Local Minimax Rates for Goodness-of-Fit Testing in Multivariate Binomial and Poisson Families and in Multinomials},
+Mathematical Statistics and Learning 5, 1--54, 2022.
+\href{https://doi.org/10.4171/MSL/32}{DOI}.
+
+\bibitem{dgpp}
+I.~Diakonikolas, T.~Gouleakis, J.~Peebles, and E.~Price,
+\emph{Sample-Optimal Identity Testing with High Probability},
+ICALP 2018, LIPIcs 107, pp. 41:1--41:14.
+\href{https://doi.org/10.4230/LIPIcs.ICALP.2018.41}{DOI}.
+
+\bibitem{paninski}
+L.~Paninski,
+\emph{A Coincidence-Based Test for Uniformity Given Very Sparsely Sampled Discrete Data},
+IEEE Transactions on Information Theory 54(10), 4750--4755, 2008.
+\href{https://doi.org/10.1109/TIT.2008.928987}{DOI}.
+
+\bibitem{zipf}
+P.~Dewasurendra,
+\emph{Closing the Harmonic Gap: Exact Identity Testing for Zipfian Distributions},
+manuscript.
+\href{https://andotheror.github.io/pdf/closing-the-harmonic-gap-exact-identity-testing-for-zipfian-distributi.pdf}{Author copy}.
+
+\bibitem{yu}
+E.~Yu,
+\emph{A Proposed Proof of Open Question 3 in Instance-Optimal Identity Testing},
+22 July 2026.
+\href{https://quant.am/statistics/2026/07/22/closing-open-question-3/}{Research note}.
+\end{thebibliography}
+\end{document}

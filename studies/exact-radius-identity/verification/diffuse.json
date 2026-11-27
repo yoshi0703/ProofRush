@@ -1,0 +1,23 @@
+{
+  "lean": "Lean (version 4.36.0, arm64-apple-darwin24.6.0, commit 611c117bfaf7b7ae1cfcf246ce6fba31e8f509e9, Release)",
+  "mathlib": "fc4f59e577feb1a4956671bc04ac18aaaf8cd842",
+  "targets": [
+    "CanonneDiffuse.totalVariation_eq_suffix_mass_add_deficit_sub_overlap",
+    "CanonneDiffuse.complement_deficit_le_coarse_tv",
+    "CanonneDiffuse.suffix_overlap_lt_of_coarse_tv_le",
+    "CanonneDiffuse.totalVariation_le_suffix_mass_add_offset",
+    "CanonneDiffuse.warm_set_bounds_of_coarse_tv_le"
+  ],
+  "sources_sha256": {
+    "DiffuseTV.lean": "4f25bfa9ed61e20c4ae8964502935275fc6ef7d0d312087f24bada31d67c22e7"
+  },
+  "export_sha256": "814354bea58efe82c71c642ba7c5f47dbf575ada6ca8b52d98c6c26229c1d3ce",
+  "exported_axioms": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "nanoda_sha256": "44ba1e3472937ddfc56c9e132a8d227be46694e4a970af8cd2699d09e2acaf10",
+  "isolation": "macOS Seatbelt",
+  "independent_verdict": "Checked 9080 declarations with no errors"
+}

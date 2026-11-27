@@ -1,0 +1,108 @@
+\documentclass[11pt]{article}
+\usepackage[margin=.94in]{geometry}
+\usepackage{fontspec,amsmath,amssymb,amsthm,booktabs,microtype}
+\usepackage[hidelinks,pdftitle={High-confidence identity testing near maximum total variation}]{hyperref}
+\newfontfamily\namefont[Path=../canonne-functional-comparison/fonts/]{ProofRushDirectorJP.otf}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\TV}{\operatorname{TV}}
+\newcommand{\Bin}{\operatorname{Bin}}
+\newcommand{\KL}{D_{\rm KL}}
+\newcommand{\Pp}{\mathbb{P}}
+\newcommand{\E}{\mathbb{E}}
+\title{High-confidence identity testing near maximum total variation}
+\author{ProofRush research team\\[2pt]\small Research directed by Yoshiaki Otsuka ({\namefont 大束良明})}
+\date{27 November 2026, Japan\\\small Working preprint pending external review}
+\begin{document}\maketitle
+
+\begin{abstract}
+We determine the worst-case number of observations needed to test a known law on \(m\ge2\) labels against a total variation alternative at radius \(\varepsilon\), for \(0<\varepsilon<1\) and both error probabilities at most \(\alpha\le1/3\). The endpoint \(\varepsilon\to1\) changes the order in Theorem 2 of Diakonikolas, Gouleakis, Peebles and Price (ICALP 2018) as printed. Let \(d=1-\varepsilon\), \(k=md\), and \(L=\log(1/\alpha)\). For sufficiently small \(d\), the order is \(\sqrt{kL}\) if \(L\le k\) and \(\max\{1,L/\min(\log(2+L/k),\log(1/d))\}\) if \(L\ge k\). The tests use repeated observations and sets of observed labels of small known probability. A one-observation consequence at \(d=1/(4m)\) has been independently kernel-verified. The question in which each individual reference must have its own tight complexity remains open.
+\end{abstract}
+
+\section{Statement and quantifiers}
+Let \(q\) be known and \(p\) unknown. For every fixed \(q\), a randomized test may depend on \(q\) and observes independent draws from \(p\). Write \(N(m,\varepsilon,\alpha)\) for the worst case, over laws \(q\) on \(m\) labels, of the smallest fixed sample size that tests \(p=q\) against \(\TV(p,q)\ge\varepsilon\), with both errors at most \(\alpha\). Here \(\TV=\tfrac12\|p-q\|_1\). Logs are natural and constants in order bounds are absolute.
+
+\begin{theorem}\label{thm:main}
+There is an absolute \(d_0\in(0,1/4)\) such that the following orders hold for \(m\ge2,\ 0<\alpha\le1/3,\ 0<\varepsilon<1\). With \(L=\log(1/\alpha),d=1-\varepsilon,k=md\),
+\[
+N(m,\varepsilon,\alpha)\asymp
+\begin{cases}
+(\sqrt{mL}+L)/\varepsilon^2,& d\ge d_0,\\
+\sqrt{kL},& d\le d_0,\ L\le k,\\
+\displaystyle\max\left\{1,\frac{L}{\min\{\log(2+L/k),\log(1/d)\}}\right\},&
+d\le d_0,\ L\ge k .
+\end{cases}
+\]
+The same orders hold with strict soundness \(\TV(p,q)>\varepsilon\).
+\end{theorem}
+
+At a fixed confidence and small \(d\), the order is \(\max(1,\sqrt{md})\). This can be witnessed without invoking the asymptotic analysis. Take \(d=1/(4m)\) and reject if one observed label belongs to \(R=\{i:q_i\le d\}\). The null rejection probability is at most \(md=1/4\). A far alternative has \(A=\{i:p_i>q_i\}\) with \(p(A)-q(A)=\TV(p,q)\ge1-d\). Thus \(q(A)\le d,\ p(A)\ge1-d\), and \(A\subseteq R\). The alternative miss probability is at most \(d\). For a nonempty inclusive boundary example put \(q_1=d\) and spread the remaining mass positively on the other labels, with \(p\) a point mass at 1. Taking \(q_1=d/2\) gives strict separation. With two errors below \(1/2\) zero observations cannot handle a nonempty alternative.
+
+Definition 1 of Diakonikolas et al.\ \cite{dgpp} explicitly uses half-\(\ell_1\) and inclusive soundness. Its Theorem 2 states that the sufficient bound on the first line is optimal throughout the parameter range. The one-observation example violates that lower-bound reading for growing \(m\). Its sufficient sample bound and its orders for small radii are compatible with Theorem~\ref{thm:main}. For example, the balanced \((1\pm\varepsilon)/m\) perturbations in the full version have TV \(\varepsilon/2\). Rescaling such perturbations gives small-radius lower bounds. Our proof gives lower bounds directly for normalized alternatives in each range. Canonne's COLT question asks for an order for each \(q\), with \(q\) retained in the answer \cite{canonne}.
+
+\section{Small overlap, confidence exponent at most \(k\)}
+Suppose \(d\le d_0,\ \log 3\le L\le k\). Use the known-law version of split distributions from Diakonikolas and Kane \cite{split}. Split each observed label \(i\) independently into one of \(\max(1,\lceil m q_i\rceil)\) equally likely clones. This yields at most \(2m\) labels and reference probabilities \(q'_a\le1/m\). The total variation from \(p'\) to \(q'\) equals that from \(p\) to \(q\), since each original difference is split into equal parts of the same sign. Put \(W=\{a:q'_a\ge1/(8m)\}\). Under the null this set has mass at least \(3/4\). A threshold at \(5/8\) on its empirical frequency detects \(p'(W)<1/2\) with error at most \(\exp(-c b)\) under either relevant hypothesis on a batch of size \(b\). This follows from the bounded-variable Chernoff bound.
+
+If \(p'(W)\ge1/2\), let \(H=\{a\in W:p'_a>q'_a\}\). The sum of \(\min(p'_a,q'_a)\) over all \(a\) is at most \(d\). It follows that \(p'(H)\ge1/2-d\) and \(|H|\le8md=8k\). The tester need not know \(H\).
+
+\begin{lemma}\label{lem:repeat}
+For \(h\) independent draws from a law on at most \(K\) labels, where \(8\le h\le K\), the number of repeats (draws beyond the first occurrence of each label) is at least \(c_1 h^2/K\) except with probability at most \(\exp(-c_2 h^2/K)\), for absolute positive \(c_1,c_2\).
+\end{lemma}
+\begin{proof}
+Pad the law with zeros to \(K\) labels. The uniform law stochastically maximizes the number of distinct labels by the majorization theorem of Wong and Yue \cite{wong}. We include the elementary argument for this specialization. To see this, keep the combined mass of any pair fixed and condition on the draws outside it and the total \(v\) within it. For \(v\ge2\) the probability that both appear is \(1-u^v-(1-u)^v\), maximal at equal weights. The number of distinct labels in the pair otherwise depends only on whether \(v\) vanishes. Repeatedly balancing the smallest and largest masses converges to uniform, as the quadratic deviation drops by half their squared difference at each step. The probabilities of the distinct-count events are continuous.
+
+For the uniform case expose \(j=\lfloor h/2\rfloor\) draws. If fewer than \(j/2\) are distinct, at least \(j/2\) repeats have already occurred. Otherwise each remaining draw hits the first set independently with probability at least \(j/(2K)\). A binomial lower-tail bound supplies \(c_1 h^2/K\) hits except with probability \(\exp(-c_2 h^2/K)\). Each hit is a repeat. The first case implies the same conclusion since \(h\le K\).
+\end{proof}
+
+Use \(b=\lceil\sqrt{kL}\rceil\le2k\). Reject for too little mass in \(W\), or if at least \(\tau b^2/k\) repeat positions occur, with a small fixed \(\tau>0\). Under the null every conditional repeat probability is at most \(b/m\). Iterating the conditional exponential moment bound gives an upper tail dominated in the Chernoff calculation by \(\Bin(b,b/m)\) for \(d_0\) small. Its mean is \(b^2/m=d b^2/k\). The probability of crossing the threshold is at most \((ed/\tau)^{\tau b^2/k}\).
+
+Under the far law with \(p'(W)\ge1/2\), the batch contains at least \(h=\lfloor b/4\rfloor\) observations in \(H\) except with probability \(\exp(-c b)\). Conditional on their number these hits are independent draws from the conditional law on \(H\). Use the first \(h\) and set \(K=\lceil8k\rceil\). For sufficiently large \(b\), \(8\le h\le K\), and \(h^2/K\) is at least a fixed multiple of \(b^2/k\). Lemma~\ref{lem:repeat} then proves power for a sufficiently small \(\tau\). Repeats among the selected hits are also repeats in the full batch. Since \(b\ge L\), both testing errors are at most \(C_1\exp(-c_3 L)\) after choosing \(d_0\) sufficiently small. The two statistics can use the same batch by a union bound.
+
+For \(L\) above a fixed \(L_0\), majority vote across a sufficiently large \emph{constant} number \(B\) of independent batches makes both errors at most \(e^{-L}\). Indeed a majority of failures has probability at most \(2^B(C_1 e^{-c_3 L})^{B/2}\). For \(L<L_0\le k\) use the procedure at \(L_0\), at a constant factor in sample size. If \(k<L_0\), \(H\) has bounded size. An absolute batch size large enough to obtain \(8L_0+1\) hits from a set of mass at least \(1/2-d_0\) with probability \(9/10\) forces a repeat. Under the null its birthday probability is at most \(\binom b2/m\le b^2d_0/\log3\). Reduce \(d_0\) once more to make this small. A constant number of batches then suffices for \(L\le L_0\). The constants in the preceding argument and the bounded batch size can all be fixed before this final reduction.
+
+For the matching lower bound with \(k\ge4\), use \(q\) uniform on all \(m\) labels and choose the alternative uniformly on a uniformly random \(s=\lfloor k/2\rfloor\) element subset. Each has \(\TV=1-s/m>1-d\). Given that the \(n\) observed labels are distinct, the null law and the alternative mixture are both uniform on ordered distinct tuples. For \(n\le s/2\) that event has probability under the mixture
+\[
+(s)_n/s^n\ge\exp(-n^2/s)
+\]
+by \(\log(1-x)\ge-2x\) for \(x\le1/2\), and at least this probability under the null. The overlap of the two sample laws lower bounds the sum of their testing errors. Hence \(2\alpha\ge e^{-n^2/s}\), giving \(n\gtrsim\sqrt{kL}\). If \(n>s/2\) the same order follows from \(L\le k\). For bounded \(k\), nonemptiness of a strict alternative in the worst case provides the constant lower bound.
+
+\section{Confidence exponent at least \(k\)}
+Let \(D=\min(\log(2+L/k),\log(1/d))\), assume \(L\ge k\) and \(d\le d_0\), and choose \(n\) to be a multiple of eight of order \(C\max(1,L/D)\). Write \(b=n/2\). Reject if the distinct labels observed in some \(b\) positions have total \(q\)-mass at most \(d\). A far law has a set \(A\) with \(q(A)\le d,\ p(A)\ge1-d\). The probability of missing \(b\) hits there is at most \(2^n d^{n/2}\). The test can be computed in \(O(n^2)\) additions and comparisons given the observed labels' probabilities. If a label has count \(v\) and known mass \(q_i\), update the minimum cost to cover at least \(j\) positions by
+\[
+D'_j=\min(D_j,q_i+D_{\max(0,j-v)})
+\qquad(0\le j\le b).
+\]
+Initially \(D_0=0\), with other costs infinite. Selecting every occurrence of a chosen label incurs its mass once, so \(D_b\le d\) is the stated rejection event.
+
+Fix the \(b\) positions temporarily. If their distinct label set \(S\) has \(q(S)\le d\), at most \(b/4\) distinct labels in it can have \(q_i>4d/b\). If fewer than \(b/4\) observations are repeats within these positions, more than \(b/2\) are labels with \(q_i\le4d/b\). This set has null mass at most \(4k/b\). Otherwise there are at least \(b/4\) repeat positions, with the previously seen set at each such position still of null mass at most \(d\). For any specified collection of repeat positions with this property, sequential conditioning gives probability at most \(d^{b/4}\). Union bounds over positions inside the batch and then over the batch itself give null error at most
+\[
+2^{n+b}\bigl((4k/b)^{b/2}+d^{b/4}\bigr).
+\]
+For \(x=L/k\ge1\), \(n/k\ge Cx/\log(2+x)\). Thus \(n/k\) can be made uniformly large and \(\log(n/k)\ge c\log(2+x)\). With \(d_0\) sufficiently small, these two error bounds are at most \(\exp(-L)\) by taking \(C\) sufficiently large.
+
+For the first lower bound put reference mass \(d/2\) at one atom and spread the remaining mass positively. The point mass at that atom is strictly far. The overlap of the observation laws is \((d/2)^n\), giving \(n\log(2/d)\ge L-\log2\). For the second bound, if \(n\le(m-1)/2\), put \(r=m-1\), \(t=\min(1/2,rd/(4n))\). Give the null a head of mass \(1-t\) and a uniform tail on \(r\) atoms. Take each alternative uniform on a uniformly chosen \(2n\)-subset of the tail. Its overlap with \(q\) is \(2nt/r\le d/2\). On the event of \(n\) distinct tail observations, the null and alternative mixture are conditionally uniform on identical ordered records. Their event probabilities are at least \((t/2)^n\) and \(2^{-n}\), respectively. Hence \(n\log(2/t)\ge L-\log2\), which implies \(n\log(2+n/k)\gtrsim L\) since \(r\ge m/2\). If \(n>(m-1)/2\), \(n/k\ge1/(4d)\) and the first bound already implies \(n\log(2+n/k)\gtrsim L\). These two inequalities give \(n\gtrsim L/D\) directly when \(n\le L\). When \(n>L\) the conclusion follows because \(D\) is bounded below. Nonempty strict instances give the lower bound of one.
+
+\section{Joining the remaining radii}
+At the fixed \(d=d_0\), the endpoint lower order is \(\sqrt{mL}+L\), with an absolute factor depending on the absolute choice of \(d_0\). When \(L\ge md_0\), the first term is at most \(L/\sqrt{d_0}\) and the lower bound includes a constant multiple of \(L\). For \(1/16\le\varepsilon\le1-d_0\) monotonicity in the tested radius gives this lower bound, and the classical upper bound \cite{dgpp} matches.
+
+For completeness, for \(\varepsilon\le1/16\) one obtains the small-radius lower bounds directly with normalized, strictly far alternatives. Write \(M=2\lfloor m/2\rfloor\), assign equal weights totalling \(u=1\) to the \(M\) labels when \(m\) is even, or \(u=3/4\) when it is odd and place the remainder on the last atom. Independently in each pair of the \(M\) labels, transfer \(3\varepsilon/M\) in a random direction. The resulting laws are positive and at TV \(3\varepsilon/2\). For the mixture \(P\) of their \(n\)-sample laws and the null sample law \(Q\), a pair of independent sign vectors has one-sample likelihood inner product \(1+\lambda\sum_{j=1}^{M/2}\sigma_j\sigma'_j\), where \(\lambda=18\varepsilon^2/(uM)\). Raising to the \(n\)th power, bounding by an exponential and averaging gives
+\[
+\KL(P\|Q)\le\log(1+\chi^2(P,Q))
+ \le \frac{M}{2}\log\cosh(n\lambda)
+ \le C n^2\varepsilon^4/M.
+\]
+A successful randomized test produces a rejection event of probability at least \(1-\alpha\) under \(P\) and at most \(\alpha\) under \(Q\). Data processing gives \(\KL(P\|Q)\ge(1-2\alpha)\log((1-\alpha)/\alpha)\gtrsim L\). This proves the \(\sqrt{mL}/\varepsilon^2\) term. For the \(L/\varepsilon^2\) term use a Bernoulli reference with mass \(1/2\) and alternative mass \(1/2+2\varepsilon\); their one-sample KL is at most the chi-square divergence \(16\varepsilon^2\). The experiment can be lifted to any alphabet by splitting one category in fixed proportions. Combining these bounds with the classical upper bound completes the proof.
+
+\section{Verification and research record}
+The archive includes a Lean 4 proof for the inclusive universal one-sample theorem using the literal half-\(\ell_1\) distance, and a strictly positive null admitting an alternative at the boundary. A separate Rust kernel checked its exported proof. The confidence-dependent theorem is proved mathematically in this manuscript. Finite exact code tests the histogram procedure and the probabilistic constructions on small alphabets. The corrected region concerns worst-case reference laws. It does not supply the reference-dependent functional in Canonne's Question 1. A targeted search of the original versions and related publications did not establish an earlier statement of the piecewise order. External priority and peer review are pending.
+
+Yoshiaki Otsuka ({\namefont 大束良明}) directed the project. Codex GPT-6.2-Sol developed the narrow endpoint constructions. Codex GPT-6.2-Astra derived the full endpoint extension and coordinated the work. Separate Sol research agents checked the probability arguments, implemented exact checks and formalized the one-sample result. The work used an Apple M3 Pro and the existing Codex environment on 27 November 2026 JST.
+
+\begin{thebibliography}{9}
+\bibitem{dgpp} I.~Diakonikolas, T.~Gouleakis, J.~Peebles and E.~Price. Sample-Optimal Identity Testing with High Probability. \emph{ICALP 2018}, LIPIcs 107, 41:1--41:14. \href{https://doi.org/10.4230/LIPIcs.ICALP.2018.41}{doi:10.4230/LIPIcs.ICALP.2018.41}. \href{https://www.cs.utexas.edu/~ecprice/papers/uniformity.pdf}{Author's full version}.
+\bibitem{canonne} C.~L.~Canonne. Open Problem: Tight Characterization of Instance-Optimal Identity Testing. \emph{COLT 2024}, PMLR 247, 5312--5316. \href{https://proceedings.mlr.press/v247/canonne24a.html}{Proceedings}.
+\bibitem{paninski} L.~Paninski. A coincidence-based test for uniformity given very sparsely sampled discrete data. \emph{IEEE Transactions on Information Theory} 54 (2008), 4750--4755. \href{https://doi.org/10.1109/TIT.2008.928987}{doi:10.1109/TIT.2008.928987}.
+\bibitem{split} I.~Diakonikolas and D.~M.~Kane. A new approach for testing properties of discrete distributions. \emph{FOCS 2016}, 685--694. \href{https://cseweb.ucsd.edu/~dakane/testingApproach.pdf}{Author version}.
+\bibitem{wong} C.~K.~Wong and P.~C.~Yue. A majorization theorem for the number of distinct outcomes in $n$ independent trials. \emph{Discrete Mathematics} 6 (1973), 391--398. \href{https://doi.org/10.1016/0012-365X(73)90070-8}{DOI}.
+\end{thebibliography}
+\end{document}

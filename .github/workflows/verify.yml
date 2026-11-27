@@ -30,6 +30,11 @@ jobs:
       - name: Reproduce daily and seasonal beach litter counts and the bag audit
         run: python3 -B studies/shoreline-zone-coverage/replay/check.py
 
+      - name: Reproduce exact comparisons for the two radius-dependent identity tests
+        run: |
+          python3 -B studies/exact-radius-identity/check_priors.py
+          python3 -B studies/exact-radius-identity/check_endpoint.py
+
       - name: Compare the identity-testing functionals in exact arithmetic
         run: python3 -B studies/canonne-functional-comparison/check.py
 
@@ -107,7 +112,7 @@ jobs:
           cd "$mathlib"
           mapfile -t study_modules < <(
             awk '$1 == "import" && $2 ~ /^Mathlib[.]/ {print $2}' \
-              "$GITHUB_WORKSPACE"/studies/{masked-guidance,string-identified-bpe,attention-value-dimension,shoreline-transects,althofer-game,canonne-functional-comparison,shallit-hankel}/lean/*.lean | sort -u
+              "$GITHUB_WORKSPACE"/studies/{masked-guidance,string-identified-bpe,attention-value-dimension,shoreline-transects,althofer-game,canonne-functional-comparison,shallit-hankel,shoreline-zone-coverage,exact-radius-identity}/lean/*.lean | sort -u
           )
           lake exe cache get Mathlib.Combinatorics.SimpleGraph.Coloring.Vertex \
             Mathlib.Combinatorics.SimpleGraph.Diam Mathlib.Data.Fin.VecNotation "${study_modules[@]}"
@@ -236,3 +241,17 @@ jobs:
             --nanoda "$RUNNER_TEMP/nanoda/target/release/nanoda_bin" \
             --docker-image "$CHECK_IMAGE" --run-dir "$RUNNER_TEMP/shoreline-zone-coverage"
           tail -n 1 "$RUNNER_TEMP/shoreline-zone-coverage/nanoda.txt" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Independently check the endpoint tester and the diffuse-bin inequalities
+        shell: bash
+        run: |
+          set -euo pipefail
+          umask 022
+          for bundle in endpoint diffuse; do
+            output="$RUNNER_TEMP/exact-radius-$bundle"
+            python3 studies/exact-radius-identity/verify.py --bundle "$bundle" \
+              --mathlib "$RUNNER_TEMP/mathlib" \
+              --nanoda "$RUNNER_TEMP/nanoda/target/release/nanoda_bin" \
+              --docker-image "$CHECK_IMAGE" --run-dir "$output"
+            tail -n 1 "$output/nanoda.txt" >> "$GITHUB_STEP_SUMMARY"
+          done

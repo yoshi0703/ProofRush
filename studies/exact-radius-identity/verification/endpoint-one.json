@@ -1,0 +1,21 @@
+{
+  "lean": "Lean (version 4.36.0, arm64-apple-darwin24.6.0, commit 611c117bfaf7b7ae1cfcf246ce6fba31e8f509e9, Release)",
+  "mathlib": "fc4f59e577feb1a4956671bc04ac18aaaf8cd842",
+  "targets": [
+    "CanonneEndpoint.tv_eq_mass_difference",
+    "CanonneEndpoint.one_sample_endpoint",
+    "CanonneEndpoint.positive_null_with_boundary_alternative"
+  ],
+  "sources_sha256": {
+    "EndpointOne.lean": "29e32f88ea7da8312d5abf5a7e565bb1da818b65146e51e4c72eca2d3550240a"
+  },
+  "export_sha256": "77bd5161a4183f3b4fd23f6e5926ea2b797afb1f1764cc0ace304e7e0d9d82c2",
+  "exported_axioms": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "nanoda_sha256": "44ba1e3472937ddfc56c9e132a8d227be46694e4a970af8cd2699d09e2acaf10",
+  "isolation": "macOS Seatbelt",
+  "independent_verdict": "Checked 8885 declarations with no errors"
+}
