@@ -1,0 +1,24 @@
+--- Verifying Erdos030.lindstrom_theorem ---
+'Erdos030.lindstrom_theorem' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.erdos_turan_theorem ---
+'Erdos030.erdos_turan_theorem' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.kernel_transfer_single ---
+'Erdos030.kernel_transfer_single' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.sidon_sub_0949 ---
+'Erdos030.sidon_sub_0949' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.balogh_furedi_roy_theorem ---
+'Erdos030.balogh_furedi_roy_theorem' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.obryant_theorem ---
+'Erdos030.obryant_theorem' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.carter_hunter_obryant_theorem ---
+'Erdos030.carter_hunter_obryant_theorem' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
+--- Verifying Erdos030.bose_lower_bound_theorem ---
+'Erdos030.bose_lower_bound_theorem' depends on axioms: [propext, Classical.choice, Quot.sound]
+[PASS] Verified cleanly with standard axioms: ['Classical.choice', 'Quot.sound', 'propext']
