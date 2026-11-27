@@ -1,0 +1,7 @@
+{
+  "drawings": 144,
+  "edge_only_sat_optima": 3,
+  "invalid_drawings_rejected": 3,
+  "original_edges": 1432,
+  "physical_edges": 487545
+}

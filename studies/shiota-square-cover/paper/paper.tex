@@ -1,0 +1,104 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,left=25mm,right=25mm,top=20mm,bottom=20mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,array}
+\usepackage[hidelinks,pdfauthor={ProofRush. Research directed by Yoshiaki Otsuka}]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\OPT}{\operatorname{OPT}}
+\newcommand{\ind}{\mathbf{1}}
+\title{Covering grid edges with the boundaries of side-two squares is NP-complete}
+\author{ProofRush\\\small AI-assisted research directed by Yoshiaki Otsuka}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Given a finite subgraph of the square lattice, can its edge set be expressed as the union of the boundaries of exactly \(k\) side-two squares? We prove NP-completeness, answering a question posed by Takumi Shiota at CCCG 2025. Five fixed local configurations turn an orthogonal drawing of a subcubic planar graph into a grid edge set. Some square placements are forced. The remaining placements form the vertex set of an odd subdivision of the input graph, and their covering constraints are exactly vertex-cover constraints. This gives an additive identity for the optimum. The reduction works for distinct placements and for placements with repetition.
+\end{abstract}
+
+\section{The decision problem}
+The input consists of a finite unit grid graph \(G\), specified by its integer coordinates and unit horizontal and vertical edges, and a binary integer \(k\). A placement centered at \(c\in\Z^2\) has the eight unit edges of the boundary \(B(c)\) of \(c+[-1,1]^2\). It is admissible if \(B(c)\subseteq E(G)\). The eight boundary vertices induce a cycle whenever these edges occur. Indeed the only ambient unit edges between these vertices are the eight perimeter edges. The displayed input permits absent adjacencies between listed lattice vertices. For example, numbering the grid lines of Figure~4 from its upper left, starting at zero, there is no horizontal edge from \((3,6)\) to \((4,6)\). Shiota specifies the grid edge set \cite{shiota}. Isolated input vertices have no effect.
+
+\begin{theorem}\label{thm:main}
+Deciding whether \(E(G)\) is the union of exactly \(k\) admissible boundaries is NP-complete. This holds under either convention on repetition. The decision problem with at most \(k\) boundaries is also NP-complete.
+\end{theorem}
+
+Each unit edge belongs to the boundaries of four candidate squares. Thus \(G\) has at most \(4|E(G)|\) admissible centers and their coordinates lie within one unit of an input endpoint. Negative budgets are rejected immediately. For distinct placements a certificate lists \(k\) centers and verifies their boundary union. For repetition a certificate lists its support, of size at most \(k\). If \(k>0\), the support must be nonempty, in which case one center can be repeated to reach \(k\). These are polynomial certificates for binary coordinates and budget. The border drawing problem discussed by Shiota permits rectangular border operations of different sizes and styles \cite{border}. For hardness we use Vertex Cover on a planar simple graph \(H\) of maximum degree three supplied with a bendless orthogonal drawing on an \(n\times n\) integer grid. This restriction is NP-hard by Bergren, Eiben, Ganian and Kanj \cite[Theorem 4.3]{bergren}. Isolated vertices can be removed. Their removal preserves the minimum cover size \(\tau(H)\).
+
+\section{Five configurations of square centers}
+Take two disjoint sets \(F,O\) of prescribed centers, called guards and options, and an undirected graph \(L\) on \(O\). The constructed input will be \(E=\bigcup_{c\in F\cup O}B(c)\). For a unit edge \(e\), denote by \(C(e)\) the prescribed centers whose boundaries contain \(e\). The following criteria characterize all its covers.
+
+\begin{lemma}\label{lem:local}
+Suppose the following hold.
+\begin{enumerate}
+\item Every admissible square center belongs to \(F\cup O\).
+\item For each \(f\in F\) there is an edge with \(C(e)=\{f\}\).
+\item For each \(uv\in L\) there is an edge with \(C(e)=\{u,v\}\).
+\item Whenever \(e\in E\) has \(C(e)\cap F=\varnothing\), some edge \(uv\in L\) has \(u,v\in C(e)\).
+\end{enumerate}
+Then the square covers are exactly the sets \(F\cup S\) for which \(S\subseteq O\) is a vertex cover of \(L\).
+\end{lemma}
+\begin{proof}
+The first two properties force all guards and restrict remaining choices to options. The third forces one endpoint of every link in \(L\). In the other direction, a guard covers each edge incident to any guard, and the fourth property forces every other edge to be covered by a selected endpoint.
+\end{proof}
+
+Table~\ref{tab:cores} specifies the five configurations in the integer box \([-3,3]^2\). An end has an east port. A straight core and a switch have east and west ports. A corner has east and north ports. A tee has east, west and north ports. All dihedral transforms are allowed. At a non-switch site join the origin to the axial options on each port in increasing order of their distance. The tee skips distance one. The switch has one path, in order
+\[
+ (-3,0),\ (-2,0),\ (0,1),\ (0,-1),\ (2,0),\ (3,0).
+\]
+Outside the core, continue each port along its ray, putting an optional center at each axial distance \(t\ge4\). Join successive axial centers starting at distance three. At transverse offsets \(+1,-1\) put guards precisely when \(t\bmod4\) is zero or one. The pure wire uses these rules on a whole line. All unspecified positions are empty.
+
+\input{cores}
+
+\begin{lemma}\label{lem:stencils}
+The infinite wire and the five infinite configurations satisfy the four local criteria of Lemma~\ref{lem:local}.
+\end{lemma}
+\begin{proof}
+Two centers whose squares share a unit edge are at Chebyshev distance at most two. At a position \(p\) compute \(C(e)\) for every \(e\in B(p)\) by inspecting the prescribed centers in \(p+[-2,2]^2\). Test that all eight sets are nonempty if and only if \(p\) is prescribed. At a guard test for a singleton \(C(e)=\{p\}\). At an option test that each of its eight sets contains a guard or both endpoints of a link. For every declared link from this option test that some \(C(e)\) consists of exactly its endpoints. All declared links have endpoint distance at most two. These tests first establish the complete admissible set, so the witnesses obtained from \(C(e)\) also give the witnesses in the actual input graph.
+
+For a core one evaluates the tests at the 121 offsets in \([-5,5]^2\). Outside that box the radius-two patch is either empty or agrees with a patch of the pure wire. For the wire there are four longitudinal residues and seven transverse offsets from \(-3\) through \(3\); outside those offsets the patch is empty. The five lists of 121 checks and all 28 wire checks pass. The tables, the loop just described, and the separate Lean finite computations using kernel evaluation are supplied with the proof \cite{companion}. A patch that contains no prescribed center passes directly.
+\end{proof}
+
+\section{Construction on an arbitrary drawing}
+Replace distinct coordinates along each axis by their ordered ranks. This preserves incidence and intersection of closed orthogonal segments. Double each coordinate. At every lattice site of the resulting segments put a hub with ports given by their incident unit steps. Each original segment now has even lattice length at least two. Direct each segment east or north. Its first interior site is available solely to that edge.
+
+Next multiply the hub coordinates by 17. Put the corresponding end, corner, straight or tee at each hub. At the first interior site of an original edge use a switch exactly if the number of tee endpoints is even. For a horizontal switch keep its local coordinates, and for a vertical one transpose them. Each occupied coarse site owns the square of integer offsets \([-8,8]^2\) around its physical hub. Keep the roles prescribed by its infinite configuration inside this square. The ownership squares partition the lattice when empty sites are included. Along each coarse step join the axial options between the boundary ports of its cores. An equivalent description fills the interval of axial indices \(4,\ldots,13\) between hubs at 0 and 17, with links from 3 through 14. The guard residues match at the seam because \(t\equiv0,1\pmod4\) precisely when \(17-t\equiv0,1\pmod4\). Output the physical unit-edge set \(E=\bigcup_{c\in F\cup O}B(c)\).
+
+\begin{lemma}\label{lem:glue}
+The four criteria of Lemma~\ref{lem:local} hold throughout this finite construction.
+\end{lemma}
+\begin{proof}
+If an anchor is within distance five of a hub, its radius-two patch lies within seven of that hub. Other hubs are at distance at least 17. A coarse unit segment not incident to the hub has coarse-grid distance at least one from it. Its scaled axis is therefore at least 17 away, and its one-unit flanks cannot reach the seven-neighborhood. The port definitions and matching residues make this the same patch as in the infinite configuration.
+
+At an anchor outside all such collars the patch meets no core of radius three. Each prescribed center in the patch lies within one of a coarse step's physical axis. If two nonincident steps contributed, their axes would have points within distance six. This is impossible because distinct disjoint coarse unit segments with integer endpoints have distance at least one before scaling and at least 17 after scaling. For two perpendicular steps incident to one hub, a patch meeting both of their width-one strips has its anchor within three of that hub in both coordinates. For opposite steps, points in the two strips beyond the cores differ by at least eight in the axial coordinate. Thus only one step can contribute there. Orient its axis from 0 to 17. An anchor seeing this strip has transverse distance at most three. Since it avoids both radius-five collars, its longitudinal index lies between 6 and 11. Its radius-two patch therefore spans only indices 4 through 13, where the roles and consecutive links agree with the pure wire. Lemma~\ref{lem:stencils} gives the required tests everywhere.
+\end{proof}
+
+On an original edge of compressed lattice length \(d\), the initial physical length is \(34d\). A tee deletes the first option on an incident edge, shortening its path by one. A switch replaces four links by three, also shortening the path by one. If \(t\in\{0,1,2\}\) endpoints are tees, the final number of links is
+\[
+  L_e=34d-t-\ind_{\{t\ {\rm even}\}}.
+\]
+This is positive and odd. Interior routes consist of distinct axial points and, at a switch, the two distinct off-axis points in that edge's private ownership box. Distinct original segments have disjoint interiors. The off-axis points are in the first interior coarse site's box, away from every other original edge. Hence the optional graph is a subdivision of \(H\) by internally disjoint paths of lengths \(L_e\).
+
+\section{The optimum and the exact budget}
+Write \(L_e=2r_e+1\). Consider one route with the original endpoints' selections fixed. The \(r_e\) disjoint pairs of consecutive internal vertices require at least \(r_e\) selected vertices. If neither endpoint is selected, the first and last internal vertices must both be selected; pairing the remaining internal vertices in order gives the improved lower bound \(r_e+1\). Alternating selections attain these bounds in each case. Here every \(r_e\ge1\).
+
+Each vertex cover of \(H\) extends with exactly \(\sum_e r_e\) internal vertices. Conversely, take the original vertices selected in any cover of the subdivision. For each missed edge add one original endpoint. The additional internal vertex on each missed route pays for this repair. By Lemmas~\ref{lem:local} and \ref{lem:glue},
+\[
+  \OPT(E)=|F|+\sum_e r_e+\tau(H).
+\]
+There are \(M=|F\cup O|\) admissible squares, and taking all of them covers \(E\). For an original budget \(b\) output \(K=\min(M,|F|+\sum_e r_e+b)\). A square cover of size at most \(K\) exists exactly when \(\tau(H)\le b\). Such a cover can always be enlarged to \(K\) using unused admissible centers. Conversely an exact cover with repetitions can be deduplicated to an at-most cover. This proves the same decision equivalence under both conventions. It covers an empty input, which yields \(K=0\).
+
+For \(n\) source vertices and \(m\) edges, compression and doubling give at most \(2m(n-1)\) unit steps and \(n+2m(n-1)\) occupied hubs. Each site contributes at most \(17^2\) centers and each center eight unit edges. All output coordinates have absolute value at most \(34n+9\), and \(K\le M\). Enumerating the steps, cells and boundary edges takes polynomial time, including comparisons and duplicate removal on binary coordinates. Together with membership in NP this proves Theorem~\ref{thm:main}.
+
+\section*{Verification and provenance}
+The Lean development proves the three decision equivalences for every supplied source drawing after normalization. It also checks the induced boundary cycles, finite certificates and polynomial output bounds. The NP-completeness conclusion uses the published source hardness theorem \cite[Theorem 4.3]{bergren} and the binary-encoding running-time argument above. A separate checker reconstructs admissible centers directly from unit edges and compares every covering constraint with the predicted subdivision. On small examples a SAT solver checks the optimum and one below it. Yoshiaki Otsuka directed the research. OpenAI Codex agents developed the construction, implemented the proofs and performed the internal reviews. The companion records the checks, models and computing environment \cite{companion}. External specialist peer review is pending.
+
+\small
+\begin{thebibliography}{9}
+\setlength{\itemsep}{1pt}
+\bibitem{shiota} T. Shiota, Geometric Graph Covering, Question 4, in \emph{Open Problems from CCCG 2025}, Proceedings of the 37th Canadian Conference on Computational Geometry, 2025, pp. 373--374. \href{https://cccg-wads-2025.eecs.yorku.ca/CCCG_2025_Open_Problems.pdf}{Proceedings}. \href{https://shiotatakumi.github.io/MyPage/download/250814-CCCG-2025-Open-Problem.pptx}{Presenter's slides}.
+\bibitem{bergren} D. Bergren, E. Eiben, R. Ganian and I. Kanj, On covering segments with unit intervals, \emph{SIAM J. Discrete Math.} 36 (2022), 1200--1230. \href{https://doi.org/10.1137/20M1336412}{doi:10.1137/20M1336412}.
+\bibitem{border} K. Iwama, E. Miyano and H. Ono, Drawing borders efficiently, \emph{Theory Comput. Syst.} 44 (2009), 230--244. \href{https://doi.org/10.1007/s00224-008-9117-y}{doi:10.1007/s00224-008-9117-y}.
+\bibitem{companion} ProofRush, \emph{Exact grid-boundary cover, proof and replay}, 2026. \href{https://github.com/yoshi0703/ProofRush/releases/tag/shiota-square-cover-v1.0.0}{Versioned source, verification and research record}.
+\end{thebibliography}
+\end{document}

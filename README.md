@@ -2,11 +2,15 @@
 
 ## Instance-optimal identity testing at the specified distance
 
-For every finite or countable discrete reference law, we give a functional of the law and the requested total variation distance that characterizes the minimum sample count within universal factors. For finite rational inputs there is a closed polynomial-time formula. This is our proposed answer to Clément Canonne’s COLT 2024 Open Question 1. External specialist review and prize adjudication are pending. [English preprint](studies/canonne-q1/paper/paper.pdf) · [Proof, evaluator and independent verification](studies/canonne-q1/README.md)
+For every finite or countable discrete reference law, we give a functional of the law and the requested total variation distance that characterizes the minimum sample count within universal factors. For finite real inputs the formula uses prefix sums and fixed powers. For explicitly listed rational masses and binary multiplicities, a rounded version runs in polynomial bit time. This is our proposed answer to Clément Canonne’s COLT 2024 Open Question 1. External specialist review and prize adjudication are pending. [English preprint](studies/canonne-q1/paper/paper.pdf) · [Proof, evaluator and independent verification](studies/canonne-q1/README.md)
 
 ## Exact-radius identity testing
 
 Two preprints study how many observations distinguish a known discrete distribution from alternatives at a specified total variation distance. The first gives matching bounds at every strict radius for a fixed number of diffuse bins and constructs references that share entropy, maximum atom and any prescribed finite list of power sums while their testing costs diverge in ratio. The second determines the worst-case order over reference distributions, including a regime near maximum distance where one observation suffices. The latter corrects the all-parameter lower-bound claim in ICALP 2018. Both manuscripts await external review. The subsequent instance-specific theorem is described above. [Fixed-bin paper](studies/exact-radius-identity/diffuse-bins.pdf) · [Worst-case paper](studies/exact-radius-identity/worst-case.pdf) · [Proof scope, exact code and reproduction](studies/exact-radius-identity/README.md)
+
+## Can a fixed number of square boundaries cover a grid graph?
+
+Takumi Shiota posed this problem at CCCG 2025. We prove NP-completeness by constructing a unit grid graph whose minimum square-boundary cover equals the vertex-cover number of the source graph plus an explicitly computable offset. The construction handles exactly $k$ placements with or without repetition. The preprint and proof await external specialist review. [Original question](https://cccg-wads-2025.eecs.yorku.ca/CCCG_2025_Open_Problems.pdf#page=3) · [English preprint](studies/shiota-square-cover/paper/paper.pdf) · [Construction, Lean proof and replay](studies/shiota-square-cover/README.md)
 
 ## A direct comparison for instance-optimal identity testing
 
