@@ -1,5 +1,8 @@
 /work/
 /outputs/
+/state/
+/worktrees/
+Formal/.lake/
 .DS_Store
 __pycache__/
 .lake/

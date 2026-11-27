@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(./scripts/worktree_ctl.sh *)",
+      "Bash(./scripts/dispatch_worker.sh *)",
+      "Bash(./scripts/verify_gate.sh *)",
+      "Bash(python3 scripts/state_ctl.py *)"
+    ],
+    "deny": [
+      "Bash(git push *)",
+      "Bash(gh repo create *)",
+      "Bash(gh pr create *)",
+      "Bash(gh release *)"
+    ]
+  }
+}
