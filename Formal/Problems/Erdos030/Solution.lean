@@ -5,6 +5,7 @@ import Problems.Erdos030.SmoothBumpBarrier
 import Problems.Erdos030.Track2EquidistAndM3AP
 import Problems.Erdos030.Track3BoseVariance
 import Problems.Erdos030.Universal3APBound
+import Problems.Erdos030.Lasserre2SeparationsAndFejer
 import Mathlib.FieldTheory.Finite.GaloisField
 import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.Tactic
@@ -4200,5 +4201,141 @@ theorem bose_sparse_background_cross_variance {p : ℕ} (hp : p.Prime) :
   refine ⟨S, hS_sub, hS_card, hflat, ?_⟩
   intro ν hν
   exact bose_sparse_background_cross_variance_of_flat hp hS_sub hS_card hflat hν.2
+
+/-! ### Section 14: Milestone 3 — Exact `N = 6` Lasserre-2 Separation (L2-A1) & All-`N` Smooth Fejér `SDP_1+` Barrier (L2-B) -/
+
+/-- Theorem L2-A1 (Exact Convex-Hierarchy Separation at `N = 6`):
+`Lasserre_2(6) = h(6) = 3 < 7/2 ≤ M(6) ≤ SDP_1(6)`,
+proved by the 2-square closed-form Boolean SoS identity
+`(3 - S)^2 + 2 * (S - C(S, 2))^2 = 9 - 3 * S + 12 * C(S, 4)` together with the explicit
+fractional Sidon witness `μ = (1, 1, 0, 1/2, 0, 1)` lifted via `shor_rlt_sdp1_lift`. -/
+theorem strict_separation_lasserre2_6_lt_fractional_sdp1 :
+    h 6 = 3 ∧
+    (∀ y : Finset ℕ → ℝ, IsLasserre2Feasible 6 y → ∑ i ∈ Finset.range 6, y {i} ≤ 3) ∧
+    (∃ y : Finset ℕ → ℝ, IsLasserre2Feasible 6 y ∧ ∑ i ∈ Finset.range 6, y {i} = 3) ∧
+    (3 : ℝ) < (7 : ℝ) / 2 ∧
+    ∃ (μ : ℕ → ℝ) (X : ℕ → ℕ → ℝ),
+      IsFractionalSidon 6 μ ∧
+      IsSDP1Feasible 6 μ X ∧
+      ∑ i ∈ Finset.range 6, μ i = (7 : ℝ) / 2 := by
+  have hach : ∃ y : Finset ℕ → ℝ, IsLasserre2Feasible 6 y ∧ ∑ i ∈ Finset.range 6, y {i} = 3 := by
+    obtain ⟨y, hy, hsum⟩ := exists_lasserre2_achieving_h 6
+    rw [h_6_eq_3] at hsum
+    exact ⟨y, hy, by simpa using hsum⟩
+  let μ : ℕ → ℝ := fun i =>
+    match i with | 0 => 1 | 1 => 1 | 2 => 0 | 3 => 1 / 2 | 4 => 0 | 5 => 1 | _ => 0
+  have hμ_frac : IsFractionalSidon 6 μ := by
+    refine ⟨?_, ?_⟩
+    · intro x hx; interval_cases x <;> dsimp only [μ] <;> norm_num
+    · intro d hd1 hd6
+      interval_cases d <;> simp [Finset.sum_range_succ, μ] <;> norm_num
+  obtain ⟨hSDP1, _⟩ := shor_rlt_sdp1_lift hμ_frac
+  have hμ_sum : ∑ i ∈ Finset.range 6, μ i = (7 : ℝ) / 2 := by
+    simp [Finset.sum_range_succ, μ]; norm_num
+  exact ⟨h_6_eq_3, fun _ hy => lasserre2_6_le_3 hy, hach, by norm_num,
+    μ, (fun i j => if i = j then μ i else μ i * μ j), hμ_frac, hSDP1, hμ_sum⟩
+
+/-- Theorem L2-B (Elementary All-`N` Smooth Fejér `SDP_1+` Barrier, Zero Primes/Bose/Fourier):
+For EVERY integer `N ≥ 81`, there exist `(μ, X)` satisfying:
+1. `IsSDP1Feasible N μ X` (full Shor + RLT + McCormick + all `N - 1` pointwise Sidon cuts),
+2. all Boolean Quadric Polytope (BQP) triangle inequalities `X i j + X i k - X j k ≤ μ i`,
+3. all `Θ(N^2)` exact 3-AP linear cuts `X a b + X b c + X a c ≤ 1`,
+4. all `Θ(N^3)` exact 4-tuple Sidon linear cuts `X a b + X a c + X a e + X b c + X b e + X c e ≤ 3`,
+5. strict excess `∑_{i < N} μ i > √N + (2 / 5) * N^(1/4)`. -/
+theorem smooth_fejer_sdp1_barrier_all_N {N : ℕ} (hN81 : 81 ≤ N) :
+    ∃ (μ : ℕ → ℝ) (X : ℕ → ℕ → ℝ),
+      IsSDP1Feasible N μ X ∧
+      (∀ i, i < N → ∀ j, j < N → ∀ k, k < N → i ≠ j → i ≠ k → j ≠ k →
+        X i j + X i k - X j k ≤ μ i) ∧
+      (∀ a b c, a < b → b < c → c < N → a + c = 2 * b →
+        X a b + X b c + X a c ≤ 1) ∧
+      (∀ a b c e, a < b → b < c → c < e → e < N → a + e = b + c →
+        X a b + X a c + X a e + X b c + X b e + X c e ≤ 3) ∧
+      Real.sqrt (N : ℝ) + (2 / 5 : ℝ) * (N : ℝ) ^ (4⁻¹ : ℝ) < ∑ i ∈ Finset.range N, μ i := by
+  obtain ⟨hSymm, hPSD, hDiag, hMc, hSid, hBQP, h3AP, h4Sid, _, hgt⟩ :=
+    smooth_fejer_sdp1_core hN81
+  exact ⟨_, _, ⟨hSymm, hPSD, hDiag, hMc, hSid⟩, hBQP, h3AP, h4Sid, hgt⟩
+
+/-- Theorem L2-B Asymptotic Constant (`(1 / 2 - ε) * N^(1/4)` for ALL sufficiently large `N`):
+For EVERY `ε > 0`, eventually for all `N` in `atTop`, the Smooth Fejér construction achieves
+`IsSDP1Feasible N μ X` + all BQP, 3-AP, and 4-Sidon linear cuts with
+`∑_{i < N} μ i ≥ √N + (1 / 2 - ε) * N^(1/4)`. -/
+theorem smooth_fejer_sdp1_barrier_half {ε : ℝ} (hε : 0 < ε) :
+    ∀ᶠ N : ℕ in atTop,
+      ∃ (μ : ℕ → ℝ) (X : ℕ → ℕ → ℝ),
+        IsSDP1Feasible N μ X ∧
+        (∀ i, i < N → ∀ j, j < N → ∀ k, k < N → i ≠ j → i ≠ k → j ≠ k →
+          X i j + X i k - X j k ≤ μ i) ∧
+        (∀ a b c, a < b → b < c → c < N → a + c = 2 * b →
+          X a b + X b c + X a c ≤ 1) ∧
+        (∀ a b c e, a < b → b < c → c < e → e < N → a + e = b + c →
+          X a b + X a c + X a e + X b c + X b e + X c e ≤ 3) ∧
+        Real.sqrt (N : ℝ) + (1 / 2 - ε) * (N : ℝ) ^ (4⁻¹ : ℝ) ≤ ∑ i ∈ Finset.range N, μ i := by
+  set R : ℕ := max 3 (Nat.ceil (1 / ε) + 1)
+  rw [Filter.eventually_atTop]
+  refine ⟨R ^ 4, fun N hNge => ?_⟩
+  have hR3 : 3 ≤ R := le_max_left _ _
+  have hN81 : 81 ≤ N := le_trans (by have := Nat.pow_le_pow_left hR3 4; norm_num at this; exact this) hNge
+  obtain ⟨hSymm, hPSD, hDiag, hMc, hSid, hBQP, h3AP, h4Sid, hsum, _⟩ :=
+    smooth_fejer_sdp1_core hN81
+  refine ⟨_, _, ⟨hSymm, hPSD, hDiag, hMc, hSid⟩, hBQP, h3AP, h4Sid, ?_⟩
+  rw [hsum]
+  set L : ℕ := Nat.sqrt (Nat.sqrt (N ^ 3))
+  have hNposR : (0 : ℝ) < (N : ℝ) := by exact_mod_cast (show 0 < N by omega)
+  set t : ℝ := (N : ℝ) ^ (4⁻¹ : ℝ)
+  have ht_pos : 0 < t := Real.rpow_pos_of_pos hNposR _
+  have ht4 : t ^ 4 = (N : ℝ) := by
+    dsimp only [t]; rw [← Real.rpow_natCast, ← Real.rpow_mul hNposR.le]; norm_num
+  have ht2 : t ^ 2 = Real.sqrt (N : ℝ) := by
+    dsimp only [t]; rw [Real.sqrt_eq_rpow, ← Real.rpow_natCast, ← Real.rpow_mul hNposR.le]; norm_num
+  have ht_ge_R : (R : ℝ) ≤ t := by
+    have hpow : (R : ℝ) ^ 4 ≤ t ^ 4 := by rw [ht4]; exact_mod_cast hNge
+    by_contra hlt; push Not at hlt
+    have : t ^ 4 < (R : ℝ) ^ 4 := pow_lt_pow_left₀ hlt ht_pos.le (by norm_num)
+    linarith only [hpow, this]
+  have ht3 : 3 ≤ t := le_trans (by exact_mod_cast hR3) ht_ge_R
+  have hεt : 1 ≤ ε * t := by
+    have h1 : 1 / ε ≤ (R : ℝ) := by
+      have ha : 1 / ε ≤ (Nat.ceil (1 / ε) : ℝ) := Nat.le_ceil _
+      have hb : (Nat.ceil (1 / ε) : ℝ) ≤ (R : ℝ) := by
+        exact_mod_cast (le_trans (Nat.le_succ _) (le_max_right 3 _))
+      linarith only [ha, hb]
+    have h2 : 1 / ε ≤ t := le_trans h1 ht_ge_R
+    have h3 := mul_le_mul_of_nonneg_left h2 hε.le
+    rw [mul_one_div_cancel hε.ne'] at h3
+    exact h3
+  have hN3_lt : N ^ 3 < (L + 1) ^ 4 := by
+    have h1 : Nat.sqrt (N ^ 3) < (L + 1) * (L + 1) := Nat.lt_succ_sqrt (Nat.sqrt (N ^ 3))
+    have h2 : N ^ 3 < (Nat.sqrt (N ^ 3) + 1) * (Nat.sqrt (N ^ 3) + 1) := Nat.lt_succ_sqrt (N ^ 3)
+    have h3 : Nat.sqrt (N ^ 3) + 1 ≤ (L + 1) * (L + 1) := h1
+    have h4 : (Nat.sqrt (N ^ 3) + 1) * (Nat.sqrt (N ^ 3) + 1) ≤
+        ((L + 1) * (L + 1)) * ((L + 1) * (L + 1)) := Nat.mul_le_mul h3 h3
+    nlinarith only [h2, h4]
+  have ht3_lt_L1 : t ^ 3 < (L : ℝ) + 1 := by
+    have hpow : (t ^ 3) ^ 4 < ((L : ℝ) + 1) ^ 4 := by
+      have : (t ^ 3) ^ 4 = (t ^ 4) ^ 3 := by ring
+      rw [this, ht4]; exact_mod_cast hN3_lt
+    by_contra hle; push Not at hle
+    have : ((L : ℝ) + 1) ^ 4 ≤ (t ^ 3) ^ 4 := pow_le_pow_left₀ (by positivity) hle 4
+    linarith only [hpow, this]
+  by_cases hc : 1 / 2 - ε ≤ 0
+  · have hle1 : Real.sqrt (N : ℝ) + (1 / 2 - ε) * t ≤ Real.sqrt (N : ℝ) := by
+      nlinarith only [hc, ht_pos]
+    have hle2 : Real.sqrt (N : ℝ) ≤ Real.sqrt ((N : ℝ) + (L : ℝ)) :=
+      Real.sqrt_le_sqrt (by linarith only [Nat.cast_nonneg (α := ℝ) L])
+    exact le_trans hle1 hle2
+  · push Not at hc
+    rw [← ht2]
+    have hsq : (t ^ 2 + (1 / 2 - ε) * t) ^ 2 ≤ (N : ℝ) + (L : ℝ) := by
+      rw [← ht4]
+      have hsq_c : (1 / 2 - ε) ^ 2 ≤ 1 / 4 := by nlinarith only [hc, hε]
+      have ht2_ge9 : 9 ≤ t ^ 2 := by nlinarith only [ht3]
+      have h2εt3 : 2 * t ^ 2 ≤ 2 * ε * t ^ 3 := by
+        have := mul_le_mul_of_nonneg_right hεt (sq_nonneg t)
+        linarith only [this]
+      have hc_t2 : (1 / 2 - ε) ^ 2 * t ^ 2 ≤ (1 / 4 : ℝ) * t ^ 2 :=
+        mul_le_mul_of_nonneg_right hsq_c (sq_nonneg t)
+      nlinarith only [ht3_lt_L1, ht2_ge9, h2εt3, hc_t2]
+    exact Real.le_sqrt_of_sq_le hsq
 
 end Erdos030
